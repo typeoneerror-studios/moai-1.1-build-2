@@ -1,0 +1,24 @@
+Thumbs.db
+.DS_Store
+/vs2010/ipch
+/vs2010/bin
+/vs2008/bin
+
+/ide/bin
+/ide/obj
+
+/src/config
+
+build/
+xcuserdata/
+DerivedData/
+*.pbxuser
+*.perspectivev3
+
+# Artifacts when building with CMake
+CMakeFiles
+CMakeCache.txt
+cmake_install.cmake
+*.o
+*.a
+src/moai/moai

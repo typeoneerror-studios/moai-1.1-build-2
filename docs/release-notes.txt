@@ -1,0 +1,392 @@
+================================================================
+= Moai SDK
+= Version 1.1
+= Revision 1
+================================================================
+Many, many bug fixes and minor improvements. Contributions from Double Fine
+and Harebrained Schemes. Support for Glyph Designer (BMFont) and Particle
+Designer (PEX). See commit log for details.
+
+Changes of note:
+
+- MOAIEnvironment - added support for desktop platform info
+- iOS Sample Host - removed .xib files
+- iOS - added c-ares for async DNS; tweaked to work on iOS
+- iOS - added openUDID
+- MOAIFont - support for BMFont format
+- MOAIParticlePlugin - refactor of plugin system and support for PEX format
+- MOAIProp - Removed 'stretch to frame' functionality
+- MOAIProp - Removed setFrame (); use setBounds () instead
+- MOAIProp - added getDims ()
+- MOAIProp - first pass implementation of billboarding (proof of concept)
+- MOAILayer - added ISO_SORT sort mode
+- MOAIAction - added pause ()
+- MOAIDraw, MOAIAnimCurve - added drawAnimCurve () for previewing/debugging anim curves
+- MOAIGfxQuad2D - now possible to set non-rectangular screen and UV quad
+- MOAIBox2DWorld - added flag to toggle debug drawing
+- MOAIBox2DBody - added 'angle' param to addRect ()
+- MOAIBox2DBody - added addChain ()
+- MOAIUntzSound - added getLength ()
+- MOAIScissorRect - first pass implementation of scissor rect (proof of concept)
+- Crittercism - exposed breadcrumbs API
+- Quad and tile decks - added transform () and transformUV () methods
+- MOAIBoundsDeck - new deck type to override/remap item bounds in other decks
+- MOAIFoo, MOAIFooMgr - C++ Lua binding example classes
+
+================================================================
+= Moai SDK
+= Version 1.0
+= Revision 3
+================================================================
+Most of the improvements this revision were from our contributors, so...
+A *big* thanks to AJ, Byron, Chris, Evgeni, Joar, Nathan, Odie, Rodrigo, Thomas, Tommo (did I miss anyone?)
+And a big thanks to the companies using Moai (you know who you are) for sharing your feedback improvements
+Thanks to all our past contributors as well
+And a big thank you to all the awesome devs in general who use and support Moai!
+
+- MOAIBox2DFixture - Added getFilterData method
+- MOAIBox2DWorld - Fixed Moai unit scalar to be applied more consistently across API
+- MOAIBox2DWorld - fixed bug where addRopeJoint was ignoring anchor point parameters
+- MOAIFileSystem - '.' and '..' now omitted from directory iteration
+- MOAIHttpTask - added getResponseCode ()
+- MOAINode, MOAINodeMgr - bug fixes and optimizations - skip attribute pull if no effect
+- MOAIEnvironment - added field for device DPI (not fully supported across all hosts yet)
+- MOAIDraw - API additions for drawing arrays
+- MOAILayer - fixed Z-axis sort
+- MOAIGfxDevice - now skipping glEnable and glDisable texture calls under OpenGL ES 2
+- MOAIGfxDevice - improved CPU vertex matrix caching (CPU transofmation pipeline only)
+- MOAIShader - more log output (via MOAILog)
+- MOAIShader - *Huge* OpenGL 2 fill rate performance improvement by adjusting precision of 'varying' attributes
+- MOAISim - fix to time step when using update multiplier
+- MOAIThread - now returns update step value from coroutine.yield ()
+- MOAIKeyboardIOS - *preliminary* implementation - this is a WIP!
+- MOAIAdColonyAndroid - updated AdColony library (requires fewer permissions)
+- ParticleHelper - support for new particle script commands
+- Untz - optimizations to autio mixing (fewer memory read/writes)
+- IOS - Facebook and reference counting stability improvements
+- JSFL (flash export) - Fix to GfxQuadDeck2D exporter
+- zipfs, MOAIFileSystem - many small fixes and improvments
+- luasocket - Now should load correctly on startup
+- First pass integration of dynamic file reevaluator on Windows and OSX (OSX temporarily disabled by default)
+
+================================================================
+= Moai SDK
+= Version 1.0
+= Revision 2
+================================================================
+- Added doxygen fields for all Lua-bound classes
+- MOAIPartition - changed 'Layer' to 'Level' to avoid confusion
+- MOAILuaObjectModel - improved extension method; fixed missing upvalue bug in _extendSingleton ()
+- MOAITextBox - fixed bug in 'more' flag (was breaking paging demo)
+- MOAITextBox - added setGlyphScale () to stretch or shrink glyphs when laying out and rendering text
+- MOAITextBox - fixed cleanup (had introduced leak in last release to avoid crash; now cleans up safely)
+- MOAITextStyle - added setScale () to stretch or shrink glyphs without chaing glyph set
+- MOAITextStyle - added getters to match setters
+- MOAIImageTexture - fixed invalidate () to work with new gfx resource lifecycle
+- MOAIFrameBuffer - fixed bug in gfx resource lifecycle implementation (was breaking framebuffer demo)
+- MOAIEaseDriver - fixed bug in 'chase' mode (ease driver links to source attributes)
+- MOAIEnvironment - implemented event listener using MOAIGlobalEventSource superclass
+- Fixed anim driver sample to properly demonstrate use of APPEND and CONTINUE
+- Update to ParticleHelper to support atan2rot (thank you, Tommo!)
+
+================================================================
+= Moai SDK
+= Version 1.0
+= Revision 1
+================================================================
+- Complete rework of font and textbox systems to allow for dynamic glyph management, multi-texture fonts and text styles
+- Merge with 3D branch and update to 3D rendering pipeline and coordinate system
+- Addition of backwards compatibility lua wrapper (continued support for MOAIProp2D, MOAILayer2D, etc.)
+- Refactor of MOAIApp into platform specific interfaces
+- Addition of software synth to Untz (thank you, Kengo!)
+- MOAIHttpTask - improved API
+- MOAIEaseDriver - now inherits from MOAITimer; supports looping
+- MOAIAnimCurve - now supports wrapping modes
+- MOAITimer - additional looping modes (CONTINUE and CONTINUE_REVERSE)
+- MOAIParticleScript - additional trig commands
+- MOAIRenderMgr, MOAIRenderable - higher level base class for rendering; now uses lua table as render stack
+- Switched to ooid library for cross-platform guid generation
+- Crittercism integrated with iOS and Android
+- Facebook integrated with iOS and Android
+- Ad Colony integrated with iOS and Android
+- Android - support for push (Google C2DM)
+- Android - all third-party components are now optional
+- Android - remove package name restriction in precompiled libmoai.so
+- Support for multi-texturing
+- Many additional platform, SDK and host fixes/improvements
+
+================================================================
+= Moai SDK
+= Version 0.95 Beta
+= Revision 3
+================================================================
+- Added method chaining on MOAIActions (thanks, Pygy!)
+- Fixed a bug in ZipFS affecting un-zipaligned APKs (and therefore, debugging in Eclipse)
+- Fixed build warnings in Xcode
+- Allow Android builds to target armeabi, armeabi-v7a (default) or both
+- Rename 'android' top-level source directory to 'ant' for consistency with other SDK organization
+- Rename 'nacl' top-level source directory to 'scons' for consistency with other SDK organization
+- Rename 'android' sample host directory to 'ant' for consistency with other SDK organization
+- Rename 'nacl' sample host directory to 'chrome' for consistency with other SDK organization
+- Rename 'xcode-ios' sample host directory to 'xcode/ios' for consistency with other SDK organization
+- Rename 'xcode-osx' sample host directory to 'xcode/osx' for consistency with other SDK organization
+- Reorganize the 'scons' top-level source directory to more closely match other build organizations
+- Added 'sdk-setup' scripts to 'ant' (Android) and 'chrome' (Native Client) sample hosts to copy necessary resources
+- A handful of documentation fixes (thanks again, Pygy!)
+
+================================================================
+= Moai SDK
+= Version 0.95 Beta
+= Revision 1
+================================================================
+- Added luafilesystem to luaext; enabled in glut host
+- Added moaigui to samples/contrib folder
+- Added proof-of-concept implementation of Moai class extension model (extend () method)
+- Added attributes for box2D objects; can now be linked and animated (thank you, Byron!)
+- Many fixes to MOAIBox2DWheel joint binding and coordinate converstions (thank you, Thomas!)
+- Updated sample for TexturePacker (thanks, Paul!)
+- Added blocking (synchronous) option for MOAIHttpTask
+- Fixed cycle handling in dep graph update
+- Fixed crash bug in propListForPoint
+- Fixed gl-vertexBuffer sample to work with default mesh shader
+- Moved Moai http and data IO event handler to top of sim loop (callbacks now execute *before* action manager update)
+- Moved uslsext into uslscore; got rid of some unused source files
+- MOAIProp2D - Added expandForSort flag to enable axis sorting of individual map tiles
+- MOAILayer2D - Added additional sort modes
+- MOAIThread - renamed to MOAICoroutine (left alias in place for back compat)
+- MOAIImage - fixed detection of JPEG images (thanks, Joshua!)
+- MOAIShader - added UNIFORM_PEN_COLOR (bind global pen color to shader)
+- MOAIMesh - added default shader
+- MOAIGrid - support for 'fancy' tile shapes (hex, diamond, oblique)
+- MOAITextBox - added flag to reverse LTR order of characters
+- MOAIPathFinder - proof-of-concept implementation of A* pathfinding
+- MOAIWheelSensor - wheel input sensor
+- zipfs - fixed crashes on entry reading and seek 
+- Android - host mounts APK as vfs (no more unpacking to SD card)
+- Android - imroved handling of back button
+- Android - min SDK is now API level-8 (Froyo, 2.2)
+- Android - allow project name to differ from app name
+- Android - expose proper app name through MOAIEnvironment
+- Android - improved multi-touch performance and input stability
+- Android - added keystore and alias password support
+- Android - added simple support for sharing
+- Android - added openURL to host
+- Untz - many fixes and improvements (all platforms)
+- iOS - added an AKU call for rotation event
+- Tapjoy - updated to 8.1.5
+- Native Client - added a sample host
+
+================================================================
+= Moai SDK
+= Version 0.9 Beta
+= Revision 8
+================================================================
+- Add Lua callbacks to determine the success or failure of a Tweet (iPhone)
+- Add Lua callbacks for connectivity change notifications
+- Add a Lua callback to trap 'back' button presses (Android)
+- Add Lua methods for simple AlertDialog creation and response (Android)
+
+================================================================
+= Moai SDK
+= Version 0.9 Beta
+= Revision 7
+================================================================
+- MOAITextBox - exposed set line spacing
+- MOAIApp - exposed basic Twitter API
+- MOAILayer2D - added user configurable sort
+- MOAITexture - CPU based mipmap generation (previously using OpenGL's)
+- MOAITexture - changed default wrap mode to GL_CLAMP_TO_EDGE
+- MOAIImage - fixed USColor alpha-only color conversion bug
+- USMemStream - fixed crash bug (crash when writing 0 bytes)
+- MOAIGfxDevice - moved setClearColor, setClearDepth from MOAISim
+- MOAIGfxDevice - can set MOAIColor as clear color
+- MOAIColor - added additive color inheritance attribute
+- MOAIPartitionCell - gather props for point now checks local bounds as well as global
+- MOAIXmlParser - fixed crash on file open
+- MOAIWebView - improved alignment
+- MOAISim - added 'long delay' flag and threshold for automatically handling long loads; etc.
+- untz - lowered streaming buffer size for better memory performance
+- untz - improved memoty use; release temporary buffers used during audio decoding
+- Google In-App Billing support exposed in Lua (Android) - see samples/android/app-billing
+
+================================================================
+= Moai SDK
+= Version 0.9 Beta
+= Revision 1
+================================================================
+- MOAIFont loadFromTTF - dpi param now optional
+- MOAIFont loadFromTTF - now also loads OTF (it's a secret!)
+- MOAIFont, MOAITextBox - exposed additional metrics
+- MOAIFont - fixed serialization bugs (uninitialized values)
+- Box2D - converted sleep constants to world members
+- Box2D - exposed contact normal through arbiter
+- Box2D - Update to Box2D 2.2.1 and new features (thank you, Byron Wright!)
+- MOAICameraFitter2D - Improved functionality; added fitting modes
+- MOAIImage - Added resize, copyRect (with scaling and filtering)
+- MOAIJsonParser - Fixed encode bug (nested arrays exported improperly)
+- MOAILayerBridge2D - Updated/fixed and added an example
+- MOAIShader - Improved uniform binding (now uses attribute system)
+- MOAIEaseDriver - Improved to allow targeted attributes (i.e. chasing)
+- MOAISerializer - Support for custom fields on Lua objects
+- MOAITransform - Added pivot point
+- Overhaul of traits system (trait inheritance now handled by attributes system)
+- Integration with TLSF memory manager (via zipfs)
+- Improved substitution model for stdio, stlib via header injection (all libraries)
+- Reverted to 'pristine' Lua-5.1.3 (modifications no longer due to header injection)
+- Code organization, refactor: moved all Lua binding, contexts, lifecycle code into moaicore
+- Added Tapjoy SDK, binaries and video support (ios)
+- Improved Android build and host
+- Added Lua contributions from community (cpRect, ParticleHelper - thanks to Andrew Scott and Tommo Zhou!)
+- Lots of little bug fixes and API tweaks; integrated bug fixes from community
+
+================================================================
+= Moai SDK
+= Version 0.8 Beta
+= Revision 4
+================================================================
+- Improved error/warning reporting from MOAITexture
+- Added debug name for textures generated by font ripper
+- Improved MOAILog output string format (Android)
+- Workaround for OpenGL context unavailable in time thread bug (Android)
+
+================================================================
+= Moai SDK
+= Version 0.8 Beta
+= Revision 1
+================================================================
+
+- Improvements to Apsalar Lua implementation
+- Exposed MOAITextBox setSpeed ()
+- moaiext-debugger project (vs2008, vs2010) for Lua debug harness
+- Untz looping bug fixed
+- Untz now supports shared audio data (multpile sounds using same source)
+- Settings for MOAISim to skip frames after long loads
+- Settings for MOAISim to throttle sim update steps
+- Options for tracking Moai object allocations (via histogram)
+- Fixes to Lua binding system (prevent circular references and premature GC)
+- Updated Xcode projects to build under Xcode 4.2 and iOS SDK 5.0
+- Modified traits system to allow multiple traits sources
+- Added _tostring metamethod on USLuaObject userdata
+- Improved Box2D binding - mouse joint, better errors and warnings
+- Fixed bugs around destruction of Box2D objects during collision handler
+- Additional tests for memory leaks and cirular references
+- Fixed Moai's tailored (zipfs) build of luac
+- Improved Xcode compiler settings
+- Updated Xcode SDK build to build device specific versions of libmoai
+- Improved MOAICameraFitter2D algorithm
+- Expanded GameCenter binding to include acheivements
+- Fixed default font shader (bug causing fringe around glyphs)
+- Added binding for IJG libjpeg
+- Added Tapjoy SDK and support for video offers (iOS)
+- Improvents to attribute system implementation
+- Improvements to MOAIWebView (iOS)
+- Added event for app opening from registered URL (iOS)
+
+================================================================
+= Moai SDK
+= Version 0.7 Beta
+= Revision 1
+================================================================
+
+- Implemented release/renew cycle for OpenGL resources to handle lost context scenario
+- Replaced physfs with custom vfs (zipfs)
+- Patched Lua 5.1.3 file io to use stdio 'lookalike' functions from zipfs
+- Partial implementation of vfscanf via zipfs_vfscanf
+- Fixed viewport layers transform bug for offscreen buffers
+- Fixed MOAICameraFitter to properly recognize world space bounds
+- Added moai-untz target to osx sample host
+- Added basic Game Center support (leaderboards)
+- Added toolbar to MOAIWebView (ios)
+- Fixed MOAIWebView to appear correctly in both portrait and landscape modes (ios)
+- Extended Box2D wrapper to better expose joints API
+- Added resize event to MOAIGfxDevice
+
+================================================================
+= Moai SDK
+= Version 0.6 Beta
+= Revision 2
+================================================================
+
+- Integration of code contributions from Harebrained Schemes (Crimson dev team). Thanks!
+- Harebrained - Memory tracking and diagnostics for Lua and texture use
+- Harebrained - Additions/completions of Box2D API
+- Harebrained - Additions/completions to iOS in-app purchase API
+- Harebrained - Lua object dump/leak detection
+- Harebrained - MOAISim update loop configuration for variable step ‘boost’ mode
+- Untz - EOF bugs fixed
+- Untz - moveVolume, seekVolume, ATTR_VOLUME added to MOAIUntzSound
+- Fixed MOAIAction stop bug (removal during action tree update, found by Benny Chen)
+- Fixed buffer overflow bug in MOAIPartitionResultBuffer
+- Rewrote and improved MOAISim update loop; added update loop configuration API
+- Updated the Flash jsfl exporter samples to use shared settings file
+- Fixed Flash jsfl exporters to work with non-centered registration points
+- Added support for immediate mode drawing via MOAIDraw and MOAIScriptDeck
+- Added finalization event to MOAISim
+- Android host - Added log message if SD card cannot be written to
+- Improved logging model; inclusion of default log messages
+- Improved lifecycle management of context objects (USGlobals, USGlobalsMgr)
+- Restored Box2D physics demo (in samples/basics folder)
+- Added getDistance method to MOAICameraFitter
+
+================================================================
+= Moai SDK
+= Version 0.5 Beta
+= Revision 1
+================================================================
+
+- Serialization support for MOAIFont
+- Ability to get/set MOAIFont image or texture
+- First pass of OpenGL programmable pipeline integration
+- Refactor of uslsext graphics objects into moaicore
+- First pass of PhysFS integration
+- Updated MOAIVertexFormat to support programmable pipeline
+- Fixed GLUT bug causing processor over-use when in the background
+- Added support for offscreen rendering (MOAIFrameBuffer)
+- Added support for interlaced PNGs
+- Fixed seek() and move() helper functions when used with a duration of 0
+- Added particle presets demo to iOS sample
+- Modified iOS sample host to create GLES 2 context with a fallback to GLES 1.1
+- Improvements to untz (streaming sounds, fixes on all supported platforms)
+- Updated Flash jsfl export commants to handle offset registration points
+- Removed upper limit on props per layer
+
+================================================================
+= Moai SDK
+= Version 0.4 Beta
+= Revision 12
+================================================================
+
+- Included Moai Project Setup document which, among other things, describes how to set up your Moai IDE projects.
+- Changed the iOS host packaging script. It no longer rsync's edits to files. Also, support for multiple target folders added.
+- Integrated Thorbjørn's contributed 64-bit compatbility changes.
+- Various improvments to SDK packaging scripts.
+
+================================================================
+= Moai SDK
+= Version 0.4 Beta
+= Revision 11
+================================================================
+
+- Inclusion of Tapjoy and Apsalar lua modules
+- Misc. bug fixes
+
+================================================================
+= Moai SDK
+= Version 0.4 Beta
+= Revision 10
+================================================================
+
+- Fixed iPhone touch input coordinates on retina display devices
+- Added new log message type for unsupported 'new'; removed 'new' from MOAIInputDevice and all MOAISensor classes
+- Fixed bug in particle processing causing physics to be skipped if no forces attached to state
+- Fixed MOAITexture filter documentation
+- Fixed MOAIProp2D partition membership trait inheritance bug (removal from partition failed to affect children)
+- Cleaned some more cruft out of MOAISim
+- Updated Lua binding code; added getClass, getClassName to Lua bound objects
+- Added first pass of Tapjoy Lua SDK and examples
+- Renamed MOAILevelSensor to MOAIMotionSensor
+- Exposed MOAIActionMgr to Lua; added getRoot () and setLoc () to MOAIActionMgr
+- Renamed 'user' pointer to 'userdata' in Aku
+- Deprecated userdata param on AKUCreateContext (now must set with AKUSetUserdata)
+- Code improvements and formatting in iPhone MoaiSample app
+- Fixed internal lua ref bug (inconsistent behavior in projects with tens of thousands of refs) and added asserts

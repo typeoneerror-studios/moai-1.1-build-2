@@ -1,0 +1,8 @@
+bin/
+Debug/
+Release/
+CodeAnalyst/
+*.user
+*.ncb
+*.suo
+*.cache

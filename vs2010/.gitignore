@@ -1,0 +1,10 @@
+bin/
+ipch/
+Debug/
+Release/
+CodeAnalyst/
+*.opensdf
+*.user
+*.ncb
+*.suo
+*.sdf
