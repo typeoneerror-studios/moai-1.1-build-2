@@ -8,6 +8,8 @@
 
 set -e
 
+src="$( cd "$( dirname $0 )" && pwd )"
+
 osx_schemes=( "libmoai-osx" "libmoai-osx-3rdparty" "libmoai-osx-luaext" "libmoai-osx-untz" "libmoai-osx-zlcore" )
 # osx_schemes=( "libmoai-osx" "libmoai-osx-3rdparty" "libmoai-osx-fmod-ex" "libmoai-osx-luaext" "libmoai-osx-untz" "libmoai-osx-zlcore" )
 osx_sdks=( "macosx" )
@@ -74,10 +76,10 @@ for platform in $platforms; do
 	fi
 
 	for config in $configurations; do
-		for sdk in $sdks; do		
+		for sdk in $sdks; do
 			for scheme in $schemes; do
 				echo "Building libmoai/$scheme/$sdk for $platform $config"
-				xcodebuild -configuration $config -workspace libmoai.xcodeproj/project.xcworkspace -scheme $scheme -sdk $sdk build CONFIGURATION_BUILD_DIR=/tmp/$platform/$job/libmoai/$scheme/$sdk/$config
+				xcodebuild -configuration $config -workspace $src/libmoai.xcodeproj/project.xcworkspace -scheme $scheme -sdk $sdk build CONFIGURATION_BUILD_DIR=/tmp/$platform/$job/libmoai/$scheme/$sdk/$config
 				echo "Done. Binaries available in /tmp/$platform/$job/libmoai/$scheme/$sdk/$config"
 			done
 		done
@@ -91,7 +93,7 @@ for platform in $platforms; do
 			for sdk in $sdks; do
 				libs="$libs /tmp/$platform/$job/libmoai/$scheme/$sdk/$config/$scheme.a"
 			done
-			lipo -create -output "/tmp/$platform/$job/libmoai/$config/universal/$scheme.a" $libs						
+			lipo -create -output "/tmp/$platform/$job/libmoai/$config/universal/$scheme.a" $libs
 		done
 	done
 
