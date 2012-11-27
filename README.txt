@@ -22,7 +22,7 @@ This SDK uses the CPAL license (http://www.opensource.org/licenses/cpal_1.0). Re
 
 Happy game-making with Moai. Check out the Moai Wiki at http://getmoai.com/wiki/, ping us through the forums at http://getmoai.com/forums/ or email us at support@getmoai.com if you need help. The Moai team is here to help.
 
-Project structure: 
+Project structure:
 
 3rdparty - All of the 3rd party libraries we use.
 ant - Android source and reference projects.
@@ -34,7 +34,7 @@ src - Moai source code and headers.
 test - Lua unit and stress tests for Moai.
 vs2008 - Visual Studio 2008 source and reference projects.
 vs2010 - Visual Studio 2010 source and reference projects.
-xcode - Mac OSX and iOS source and reference projects. 
+xcode - Mac OSX and iOS source and reference projects.
 
 Developing on Windows:
 
@@ -63,6 +63,6 @@ As Moai is written in C++, we've generally preferred Objective-C++ for our work.
 
 Developing for Android:
 
-Run ant/make-host.sh. This will create a new Android host template in the folder ant/untitled-host. Edit the local and global settings files in ant/untitled-host to setup the environment and choose a sample to run - by default it is setup to run ../../samples/anim/anim-basic. 
+Run ant/make-host.sh. This will create a new Android host template in the folder ant/untitled-host. Edit the local and global settings files in ant/untitled-host to setup the environment and choose a sample to run - by default it is setup to run ../../samples/anim/anim-basic.
 
 Use the ant/untitled-host/run-host.sh script in the generated directory to create the Android host once it has been configured. This will create the ant/untitled-host/build directory which contains a full Android project that can be imported into Eclipse and then launches the application onto the default Android emulator or device.
