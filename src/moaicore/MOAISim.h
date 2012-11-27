@@ -14,9 +14,11 @@ class MOAIProp;
 //================================================================//
 /**	@name	MOAISim
 	@text	Sim timing and settings class.
-	
+
 	@const	EVENT_FINALIZE
-	
+	@const  EVENT_PAUSED
+	@const  EVENT_RESUMED
+
 	const SIM_LOOP_FORCE_STEP
 	const SIM_LOOP_ALLOW_BOOST
 	const SIM_LOOP_ALLOW_SPIN
@@ -24,11 +26,11 @@ class MOAIProp;
 	const SIM_LOOP_NO_SURPLUS
 	const SIM_LOOP_RESET_CLOCK
 	const SIM_LOOP_ALLOW_SOAK
-	
+
 	const LOOP_FLAGS_DEFAULT
 	const LOOP_FLAGS_FIXED
 	const LOOP_FLAGS_MULTISTEP
-	
+
 	const DEFAULT_STEPS_PER_SECOND			Value is 60
 	const DEFAULT_BOOST_THRESHOLD			Value is 3
 	const DEFAULT_LONG_DELAY_THRESHOLD		Value is 10
@@ -50,6 +52,8 @@ private:
 	// events
 	enum {
 		EVENT_FINALIZE,
+		EVENT_RESUMED,
+		EVENT_PAUSED,
 	};
 
 	u32				mLoopState;
@@ -58,21 +62,21 @@ private:
 	double			mSimTime;		// elapsed simulation running time (in seconds)
 	double			mRealTime;		// time updated from system clock
 	double			mFrameTime;		// time last frame time was measured (in seconds)
-	
+
 	static const u32 FPS_BUFFER_SIZE = 30;
 	float			mFrameRate;
 	float			mFrameRateBuffer [ FPS_BUFFER_SIZE ];
 	u32				mFrameRateIdx;
-	
+
 	USTaskThread	mDataIOThread;
-	
+
 	u32				mLoopFlags;
 	double			mBoostThreshold;
 	double			mLongDelayThreshold;
 	double			mCpuBudget;
 	u32				mStepMultiplier;
 	double			mTimerError;
-	
+
 	//----------------------------------------------------------------//
 	static int		_clearLoopFlags				( lua_State* L );
 	static int		_crash						( lua_State* L );
@@ -122,7 +126,7 @@ private:
 	double			StepSim						( double step, u32 multiplier );
 
 public:
-	
+
 	enum {
 		SIM_LOOP_FORCE_STEP			= 0x01,		// forces at least one sim step to occur on every call to update
 		SIM_LOOP_ALLOW_BOOST		= 0x02,		// allow a variable time step 'boost' if sim time falls behind
@@ -133,23 +137,23 @@ public:
 		SIM_LOOP_RESET_CLOCK		= 0x40,		// resets the time deficit then autoclears self (use after long load)
 		SIM_LOOP_ALLOW_SOAK			= 0x80,		// TODO
 	};
-	
+
 	DECL_LUA_SINGLETON ( MOAISim )
-	
+
 	GET ( USTaskThread&, DataIOThread, mDataIOThread )
 	GET ( double, Step, mStep )
-	
+
 	static const u32 LOOP_FLAGS_DEFAULT		= SIM_LOOP_ALLOW_SPIN | SIM_LOOP_LONG_DELAY;
 	static const u32 LOOP_FLAGS_FIXED		= SIM_LOOP_FORCE_STEP | SIM_LOOP_NO_DEFICIT | SIM_LOOP_NO_SURPLUS;
 	static const u32 LOOP_FLAGS_MULTISTEP	= SIM_LOOP_ALLOW_SPIN | SIM_LOOP_NO_SURPLUS;
 	static const u32 LOOP_FLAGS_SOAK		= SIM_LOOP_LONG_DELAY | SIM_LOOP_ALLOW_SOAK;
-	
+
 	static const u32 DEFAULT_STEPS_PER_SECOND		= 60;	// default sim step to 60hz
 	static const u32 DEFAULT_BOOST_THRESHOLD		= 3;	// sim must fall 3 steps behind before variable rate boost
 	static const u32 DEFAULT_LONG_DELAY_THRESHOLD	= 10;	// sim will not try to correct for long gaps
 	static const u32 DEFAULT_CPU_BUDGET				= 2;	// sim may spend up to 2 steps attempting to catch up during spin
 	static const u32 DEFAULT_STEP_MULTIPLIER		= 1;
-	
+
 	//----------------------------------------------------------------//
 					MOAISim						();
 					~MOAISim					();

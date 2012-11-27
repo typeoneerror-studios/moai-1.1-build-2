@@ -1,10 +1,26 @@
 ----------------------------------------------------------------
--- Copyright (c) 2010-2011 Zipline Games, Inc. 
--- All Rights Reserved. 
+-- Copyright (c) 2010-2011 Zipline Games, Inc.
+-- All Rights Reserved.
 -- http://getmoai.com
 ----------------------------------------------------------------
 
 MOAISim.openWindow ( "test", 320, 480 )
+
+function onPaused ()
+
+    print ( "PAUSED" )
+
+end
+
+MOAISim.setListener ( MOAISim.EVENT_PAUSED, onPaused )
+
+function onResumed ()
+
+    print ( "RESUMED" )
+
+end
+
+MOAISim.setListener ( MOAISim.EVENT_RESUMED, onResumed )
 
 viewport = MOAIViewport.new ()
 viewport:setSize ( 320, 480 )
