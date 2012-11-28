@@ -50,7 +50,7 @@ int MOAIGameCenterIOS::_authenticatePlayer ( lua_State* L ) {
 				
 				MOAIGameCenterIOS::Get ().mLocalPlayer = localPlayer;
 				MOAIGameCenterIOS::Get ().mIsGameCenterSupported = TRUE;	
-				MOAIGameCenterIOS::Get ().mHasAuthFailed = TRUE;	
+				MOAIGameCenterIOS::Get ().mHasAuthFailed = FALSE;	
 				MOAIGameCenterIOS::Get ().GetAchievements ();						
 			}
 		 }];
