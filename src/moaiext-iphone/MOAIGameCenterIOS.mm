@@ -39,12 +39,18 @@ int MOAIGameCenterIOS::_authenticatePlayer ( lua_State* L ) {
 			
 			if ( [ error code ] == GKErrorNotSupported || [ error  code ] == GKErrorGameUnrecognized ) {
 				
+				printf ( "GK Not Supported or game unrecognized." );
+				
 				MOAIGameCenterIOS::Get ().mIsGameCenterSupported = FALSE;
+				MOAIGameCenterIOS::Get ().mHasAuthFailed = TRUE;
 			}
 			else if ([ GKLocalPlayer localPlayer ].isAuthenticated) {
 				
+				printf ( "Local player is authenticated." );
+				
 				MOAIGameCenterIOS::Get ().mLocalPlayer = localPlayer;
 				MOAIGameCenterIOS::Get ().mIsGameCenterSupported = TRUE;	
+				MOAIGameCenterIOS::Get ().mHasAuthFailed = TRUE;	
 				MOAIGameCenterIOS::Get ().GetAchievements ();						
 			}
 		 }];
@@ -139,6 +145,22 @@ int MOAIGameCenterIOS::_isSupported ( lua_State* L ) {
 	MOAILuaState state ( L );
 
 	lua_pushboolean ( state, MOAIGameCenterIOS::Get ().mIsGameCenterSupported );
+	
+	return 1;
+}
+
+/**	@name	hasAuthFailed
+	@text	Returns whether or not GameCenter auth failed or was canceled at 
+	        any point because GameCenter is stupid.
+			
+	@in		nil
+	@out	bool	hasAuthFailed
+*/
+int MOAIGameCenterIOS::_hasAuthFailed ( lua_State* L ) {
+	
+	MOAILuaState state ( L );
+
+	lua_pushboolean ( state, MOAIGameCenterIOS::Get ().mHasAuthFailed );
 	
 	return 1;
 }
@@ -273,7 +295,8 @@ int MOAIGameCenterIOS::_showDefaultLeaderboard ( lua_State* L ) {
 
 //----------------------------------------------------------------//
 MOAIGameCenterIOS::MOAIGameCenterIOS () :
-	mIsGameCenterSupported ( false ) {
+	mIsGameCenterSupported ( false ),
+    mHasAuthFailed ( false ) {
 
 	RTTI_SINGLE ( MOAILuaObject )		
 	
@@ -301,8 +324,9 @@ void MOAIGameCenterIOS::RegisterLuaClass ( MOAILuaState& state ) {
 	
 	luaL_Reg regTable [] = {
 		{ "authenticatePlayer",			_authenticatePlayer },
-		{ "getPlayerAlias",					_getPlayerAlias },
+		{ "getPlayerAlias",				_getPlayerAlias },
 		{ "getScores",					_getScores },
+		{ "hasAuthFailed",				_hasAuthFailed },
 		{ "isSupported",				_isSupported },
 		{ "reportAchievementProgress",	_reportAchievementProgress },
 		{ "reportScore",				_reportScore },
