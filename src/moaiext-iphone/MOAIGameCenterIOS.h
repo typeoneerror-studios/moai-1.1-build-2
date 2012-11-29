@@ -15,11 +15,11 @@
 //================================================================//
 /**	@name	MOAIGameCenterIOS
 	@text	Wrapper for iOS GameCenter functionality.
-	
+
 	@const	TIMESCOPE_TODAY			Get leaderboard scores for today.
 	@const	TIMESCOPE_WEEK			Get leaderboard scores for the week.
 	@const	TIMESCOPE_ALLTIME		Get leaderboard scores for all time.
-	
+
 	@const	PLAYERSCOPE_GLOBAL		Get leaderboard scores for everyone.
 	@const	PLAYERSCOPE_FRIENDS		Get leaderboard scores only for active player's friends.
 */
@@ -36,12 +36,13 @@ private:
 	static int	_isSupported				( lua_State* L );
 	static int	_reportAchievementProgress	( lua_State* L );
 	static int	_reportScore				( lua_State* L );
+	static int  _resetAuthFailedFlag		( lua_State* L );
 	static int	_setGetScoresCallback		( lua_State* L );
 	static int	_showDefaultAchievements	( lua_State* L );
 	static int	_showDefaultLeaderboard		( lua_State* L );
-	
+
 public:
-	
+
 	DECL_LUA_SINGLETON ( MOAIGameCenterIOS );
 
 	enum {
@@ -54,15 +55,15 @@ public:
 		PLAYERSCOPE_GLOBAL = 0,
 		PLAYERSCOPE_FRIENDS
 	};
-	
+
 	MOAILuaRef								mGetScoresCallback;
-	BOOL									mHasAuthFailed;	
+	BOOL									mHasAuthFailed;
 	BOOL									mIsGameCenterSupported;
 	MOAIGameCenterIOSLeaderboardDelegate*	mLeaderboardDelegate;
 	MOAIGameCenterIOSAchievementDelegate*	mAchievementDelegate;
 	NSMutableDictionary*        			mAchievementsDictionary;
 	GKLocalPlayer*							mLocalPlayer;
-	
+
 	void			CallScoresCallback				( NSArray* scores );
 	void			CreateAchievementDictionary		( NSArray* achievements );
 	void			GetAchievements					();
@@ -72,7 +73,7 @@ public:
 	void			RegisterLuaClass				( MOAILuaState& state );
 	void			ReportAchievementProgress		( cc8* identifier, float percent );
 	void			ReportScore						( s64 score, cc8* category );
-	
+
 };
 
 //================================================================//
