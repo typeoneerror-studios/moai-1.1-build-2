@@ -6,8 +6,9 @@ echo "Building all platforms..."
 
 echo ""
 
-$src"/buildios.sh"
-$src"/buildandroid.sh"
+$src/buildosx.sh
+$src/buildios.sh
+$src/buildandroid.sh
 
 echo ""
 echo "Done."

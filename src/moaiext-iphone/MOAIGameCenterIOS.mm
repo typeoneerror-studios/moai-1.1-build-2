@@ -173,6 +173,8 @@ int MOAIGameCenterIOS::_hasAuthFailed ( lua_State* L ) {
 */
 int MOAIGameCenterIOS::_resetAuthFailedFlag ( lua_State* L ) {
 
+	MOAILuaState state ( L );
+		
 	MOAIGameCenterIOS::Get ().mHasAuthFailed = FALSE;
 
 	return 0;
@@ -308,8 +310,8 @@ int MOAIGameCenterIOS::_showDefaultLeaderboard ( lua_State* L ) {
 
 //----------------------------------------------------------------//
 MOAIGameCenterIOS::MOAIGameCenterIOS () :
-	mIsGameCenterSupported ( false ),
-    mHasAuthFailed ( false ) {
+	mHasAuthFailed ( false ),
+	mIsGameCenterSupported ( false ) {
 
 	RTTI_SINGLE ( MOAILuaObject )
 
@@ -343,7 +345,7 @@ void MOAIGameCenterIOS::RegisterLuaClass ( MOAILuaState& state ) {
 		{ "isSupported",				_isSupported },
 		{ "reportAchievementProgress",	_reportAchievementProgress },
 		{ "reportScore",				_reportScore },
-		{ "resetAuthFailedFlag"			_resetAuthFailedFlag },
+		{ "resetAuthFailedFlag",		_resetAuthFailedFlag },
 		{ "setGetScoresCallback",		_setGetScoresCallback },
 		{ "showDefaultAchievements",	_showDefaultAchievements },
 		{ "showDefaultLeaderboard",		_showDefaultLeaderboard },
