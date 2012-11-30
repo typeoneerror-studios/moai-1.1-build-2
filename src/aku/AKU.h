@@ -1,6 +1,6 @@
 //----------------------------------------------------------------//
-// Copyright (c) 2010-2011 Zipline Games, Inc. 
-// All Rights Reserved. 
+// Copyright (c) 2010-2011 Zipline Games, Inc.
+// All Rights Reserved.
 // http://getmoai.com
 //----------------------------------------------------------------//
 
@@ -66,6 +66,7 @@ AKU_API double			AKUGetSimStep					();
 AKU_API char*			AKUGetWorkingDirectory			( char* buffer, int length );
 AKU_API int				AKUMountVirtualDirectory		( char const* virtualPath, char const* archive );
 AKU_API void			AKUPause						( bool pause );
+AKU_API void			AKUShouldPause					();
 AKU_API void			AKUReleaseGfxContext			();
 AKU_API void			AKURender						();
 AKU_API void			AKURunBytecode					( void* data, size_t size );

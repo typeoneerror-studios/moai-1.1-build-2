@@ -54,6 +54,7 @@ private:
 		EVENT_FINALIZE,
 		EVENT_RESUMED,
 		EVENT_PAUSED,
+		EVENT_WILL_PAUSE
 	};
 
 	u32				mLoopState;
@@ -163,6 +164,7 @@ public:
 	void			ResumeMOAI					();
 	void			SendFinalizeEvent			();
 	void			SetStep						( double step );
+	void			ShouldPause					();
 	void			Update						();
 };
 

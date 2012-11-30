@@ -1,6 +1,6 @@
 //----------------------------------------------------------------//
-// Copyright (c) 2010-2011 Zipline Games, Inc. 
-// All Rights Reserved. 
+// Copyright (c) 2010-2011 Zipline Games, Inc.
+// All Rights Reserved.
 // http://getmoai.com
 //----------------------------------------------------------------//
 
@@ -20,7 +20,7 @@
 //================================================================//
 @interface MoaiView : OpenGLView < UIAccelerometerDelegate > {
 @private
-	
+
 	AKUContextID					mAku;
 	NSTimeInterval					mAnimInterval;
     RefPtr < CADisplayLink >		mDisplayLink;
@@ -31,5 +31,6 @@
 	-( void )	moaiInit	:( UIApplication* )application;
 	-( void )	pause		:( BOOL )paused;
 	-( void )	run			:( NSString* )filename;
-	
+	-( void )   shouldPause;
+
 @end

@@ -697,8 +697,8 @@ double MOAISim::MeasureFrameRate () {
 //----------------------------------------------------------------//
 void MOAISim::OnGlobalsFinalize () {
 	this->SendFinalizeEvent ();
-}
 
+}
 //----------------------------------------------------------------//
 void MOAISim::OnGlobalsRestore () {
 }
@@ -710,10 +710,18 @@ void MOAISim::OnGlobalsRetire () {
 //----------------------------------------------------------------//
 void MOAISim::PauseMOAI () {
 
-	this->mLoopState = PAUSED;
-
 	MOAILuaStateHandle state = MOAILuaRuntime::Get ().State ();
 	if ( this->PushListener ( EVENT_PAUSED, state )) {
+		state.DebugCall ( 0, 0 );
+	}
+
+	this->mLoopState = PAUSED;
+}
+
+void MOAISim::ShouldPause () {
+
+	MOAILuaStateHandle state = MOAILuaRuntime::Get ().State ();
+	if ( this->PushListener ( EVENT_WILL_PAUSE, state )) {
 		state.DebugCall ( 0, 0 );
 	}
 }
@@ -725,6 +733,7 @@ void MOAISim::RegisterLuaClass ( MOAILuaState& state ) {
 	state.SetField ( -1, "EVENT_FINALIZE", ( u32 )EVENT_FINALIZE );
 	state.SetField ( -1, "EVENT_PAUSED", ( u32 )EVENT_PAUSED );
 	state.SetField ( -1, "EVENT_RESUMED", ( u32 )EVENT_RESUMED );
+	state.SetField ( -1, "EVENT_WILL_PAUSE", ( u32 )EVENT_WILL_PAUSE );
 
 	state.SetField ( -1, "SIM_LOOP_FORCE_STEP", ( u32 )SIM_LOOP_FORCE_STEP );
 	state.SetField ( -1, "SIM_LOOP_ALLOW_BOOST", ( u32 )SIM_LOOP_ALLOW_BOOST );

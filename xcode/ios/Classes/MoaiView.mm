@@ -1,6 +1,6 @@
 //----------------------------------------------------------------//
-// Copyright (c) 2010-2011 Zipline Games, Inc. 
-// All Rights Reserved. 
+// Copyright (c) 2010-2011 Zipline Games, Inc.
+// All Rights Reserved.
 // http://getmoai.com
 //----------------------------------------------------------------//
 
@@ -70,7 +70,7 @@ namespace MoaiInputDeviceSensorID {
 	//----------------------------------------------------------------//
 	-( void ) accelerometer:( UIAccelerometer* )acel didAccelerate:( UIAcceleration* )acceleration {
 		( void )acel;
-		
+
 		AKUEnqueueLevelEvent (
 			MoaiInputDeviceID::DEVICE,
 			MoaiInputDeviceSensorID::LEVEL,
@@ -82,31 +82,31 @@ namespace MoaiInputDeviceSensorID {
 
 	//----------------------------------------------------------------//
 	-( void ) dealloc {
-	
+
 		AKUDeleteContext ( mContext );
-		
+
 		[ super dealloc ];
 	}
 
 	//----------------------------------------------------------------//
 	-( void ) drawView {
-						
+
 		[ self beginDrawing ];
-		
+
 		AKUSetContext ( mAku );
         AKUSetViewSize ( mWidth, mHeight );
 		AKURender ();
 
 		[ self endDrawing ];
 	}
-	
+
 	//----------------------------------------------------------------//
 	-( void ) handleTouches :( NSSet* )touches :( BOOL )down {
-	
+
 		for ( UITouch* touch in touches ) {
-			
+
 			CGPoint p = [ touch locationInView:self ];
-			
+
 			AKUEnqueueTouchEvent (
 				MoaiInputDeviceID::DEVICE,
 				MoaiInputDeviceSensorID::TOUCH,
@@ -117,10 +117,10 @@ namespace MoaiInputDeviceSensorID {
 			);
 		}
 	}
-	
+
 	//----------------------------------------------------------------//
 	-( id )init {
-		
+
 		self = [ super init ];
 		if ( self ) {
 		}
@@ -129,106 +129,106 @@ namespace MoaiInputDeviceSensorID {
 
 	//----------------------------------------------------------------//
 	-( id ) initWithCoder:( NSCoder* )encoder {
-	
+
 		self = [ super initWithCoder:encoder ];
 		if ( self ) {
 		}
 		return self;
 	}
-	
+
 	//----------------------------------------------------------------//
 	-( id ) initWithFrame :( CGRect )frame {
-	
+
 		self = [ super initWithFrame:frame ];
 		if ( self ) {
 		}
 		return self;
 	}
-	
+
 	//----------------------------------------------------------------//
 	-( void ) moaiInit :( UIApplication* )application {
-	
+
 		mAku = AKUCreateContext ();
 		AKUSetUserdata ( self );
-		
+
 		AKUExtLoadLuasql ();
 		AKUExtLoadLuacurl ();
 		AKUExtLoadLuacrypto ();
 		AKUExtLoadLuasocket ();
-		
+
 #ifdef USE_UNTZ
 		AKUUntzInit ();
 #endif
-        
+
 #ifdef USE_FMOD_EX
         AKUFmodExInit ();
 #endif
-        
+
 		AKUAudioSamplerInit ();
-        
+
 		AKUSetInputConfigurationName ( "iPhone" );
 
 		AKUReserveInputDevices			( MoaiInputDeviceID::TOTAL );
 		AKUSetInputDevice				( MoaiInputDeviceID::DEVICE, "device" );
-		
+
 		AKUReserveInputDeviceSensors	( MoaiInputDeviceID::DEVICE, MoaiInputDeviceSensorID::TOTAL );
 		AKUSetInputDeviceCompass		( MoaiInputDeviceID::DEVICE, MoaiInputDeviceSensorID::COMPASS,		"compass" );
 		AKUSetInputDeviceLevel			( MoaiInputDeviceID::DEVICE, MoaiInputDeviceSensorID::LEVEL,		"level" );
 		AKUSetInputDeviceLocation		( MoaiInputDeviceID::DEVICE, MoaiInputDeviceSensorID::LOCATION,		"location" );
 		AKUSetInputDeviceTouch			( MoaiInputDeviceID::DEVICE, MoaiInputDeviceSensorID::TOUCH,		"touch" );
-		
+
 		CGRect screenRect = [[ UIScreen mainScreen ] bounds ];
 		CGFloat scale = [[ UIScreen mainScreen ] scale ];
 		CGFloat screenWidth = screenRect.size.width * scale;
 		CGFloat screenHeight = screenRect.size.height * scale;
-		
+
 		AKUSetScreenSize ( screenWidth, screenHeight );
-		
+
 		AKUSetDefaultFrameBuffer ( mFramebuffer );
 		AKUDetectGfxContext ();
-		
+
 		mAnimInterval = 1; // 1 for 60fps, 2 for 30fps
-		
+
 		mLocationObserver = [[[ LocationObserver alloc ] init ] autorelease ];
-		
+
 		[ mLocationObserver setHeadingDelegate:self :@selector ( onUpdateHeading: )];
 		[ mLocationObserver setLocationDelegate:self :@selector ( onUpdateLocation: )];
-		
+
 		UIAccelerometer* accel = [ UIAccelerometer sharedAccelerometer ];
 		accel.delegate = self;
 		accel.updateInterval = mAnimInterval / 60;
-		
+
 		// init aku
 		AKUIphoneInit ( application );
 		AKURunBytecode ( moai_lua, moai_lua_SIZE );
-		
+
 		// add in the particle presets
 		ParticlePresets ();
 	}
-	
+
 	//----------------------------------------------------------------//
 	-( void ) onUpdateAnim {
-		
+
 		[ self openContext ];
 		AKUSetContext ( mAku );
 		AKUUpdate ();
-		
+
 		[ self drawView ];
 	}
-	
+
 	//----------------------------------------------------------------//
 	-( void ) onUpdateHeading :( LocationObserver* )observer {
-	
+
 		AKUEnqueueCompassEvent (
 			MoaiInputDeviceID::DEVICE,
 			MoaiInputDeviceSensorID::COMPASS,
 			( float )[ observer heading ]
 		);
 	}
-	
+
 	//----------------------------------------------------------------//
 	-( void ) onUpdateLocation :( LocationObserver* )observer {
-	
+
 		AKUEnqueueLocationEvent (
 			MoaiInputDeviceID::DEVICE,
 			MoaiInputDeviceSensorID::LOCATION,
@@ -240,10 +240,10 @@ namespace MoaiInputDeviceSensorID {
 			( float )[ observer speed ]
 		);
 	}
-	
+
 	//----------------------------------------------------------------//
 	-( void ) pause :( BOOL )paused {
-	
+
 		if ( paused ) {
 			AKUPause ( YES );
 			[ self stopAnimation ];
@@ -253,17 +253,23 @@ namespace MoaiInputDeviceSensorID {
 			AKUPause ( NO );
 		}
 	}
-	
+
+	//----------------------------------------------------------------//
+	-( void ) shouldPause {
+
+		AKUShouldPause ();
+	}
+
 	//----------------------------------------------------------------//
 	-( void ) run :( NSString* )filename {
-	
+
 		AKUSetContext ( mAku );
 		AKURunScript ([ filename UTF8String ]);
 	}
-	
+
 	//----------------------------------------------------------------//
 	-( void ) startAnimation {
-		
+
 		if ( !mDisplayLink ) {
 			CADisplayLink* aDisplayLink = [[ UIScreen mainScreen ] displayLinkWithTarget:self selector:@selector( onUpdateAnim )];
 			[ aDisplayLink setFrameInterval:mAnimInterval ];
@@ -274,38 +280,38 @@ namespace MoaiInputDeviceSensorID {
 
 	//----------------------------------------------------------------//
 	-( void ) stopAnimation {
-		
+
         [ mDisplayLink invalidate ];
         mDisplayLink = nil;
 	}
-	
+
 	//----------------------------------------------------------------//
 	-( void )touchesBegan:( NSSet* )touches withEvent:( UIEvent* )event {
 		( void )event;
-		
+
 		[ self handleTouches :touches :YES ];
 	}
-	
+
 	//----------------------------------------------------------------//
 	-( void )touchesCancelled:( NSSet* )touches withEvent:( UIEvent* )event {
 		( void )touches;
 		( void )event;
-		
+
 		AKUEnqueueTouchEventCancel ( MoaiInputDeviceID::DEVICE, MoaiInputDeviceSensorID::TOUCH );
 	}
-	
+
 	//----------------------------------------------------------------//
 	-( void )touchesEnded:( NSSet* )touches withEvent:( UIEvent* )event {
 		( void )event;
-		
+
 		[ self handleTouches :touches :NO ];
 	}
 
 	//----------------------------------------------------------------//
 	-( void )touchesMoved:( NSSet* )touches withEvent:( UIEvent* )event {
 		( void )event;
-		
+
 		[ self handleTouches :touches :YES ];
 	}
-	
+
 @end

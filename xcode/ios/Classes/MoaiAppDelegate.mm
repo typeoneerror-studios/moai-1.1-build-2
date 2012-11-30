@@ -1,6 +1,6 @@
 //----------------------------------------------------------------//
-// Copyright (c) 2010-2011 Zipline Games, Inc. 
-// All Rights Reserved. 
+// Copyright (c) 2010-2011 Zipline Games, Inc.
+// All Rights Reserved.
 // http://getmoai.com
 //----------------------------------------------------------------//
 
@@ -32,19 +32,19 @@
 	//================================================================//
 	#pragma mark -
 	#pragma mark Protocol UIApplicationDelegate
-	//================================================================//	
+	//================================================================//
 
 	//----------------------------------------------------------------//
 	-( void ) application:( UIApplication* )application didFailToRegisterForRemoteNotificationsWithError:( NSError* )error {
-	
+
 		AKUNotifyRemoteNotificationRegistrationComplete ( nil );
 	}
 
 	//----------------------------------------------------------------//
 	-( BOOL ) application:( UIApplication* )application didFinishLaunchingWithOptions:( NSDictionary* )launchOptions {
-		
+
 		[ application setStatusBarHidden:true ];
-		
+
 		mMoaiView = [[ MoaiView alloc ] initWithFrame:[ UIScreen mainScreen ].bounds ];
 		[ mMoaiView setUserInteractionEnabled:YES ];
 		[ mMoaiView setMultipleTouchEnabled:YES ];
@@ -53,7 +53,7 @@
 
 		mMoaiVC = [[ MoaiVC alloc ]	init ];
 		[ mMoaiVC setView:mMoaiView ];
-		
+
 		mWindow = [[ UIWindow alloc ] initWithFrame:[ UIScreen mainScreen ].bounds ];
 		[ mWindow setUserInteractionEnabled:YES ];
 		[ mWindow setMultipleTouchEnabled:YES ];
@@ -62,62 +62,63 @@
 		[ mWindow addSubview:mMoaiView ];
 		[ mWindow setRootViewController:mMoaiVC ];
 		[ mWindow makeKeyAndVisible ];
-        
+
 		[ mMoaiView moaiInit:application ];
-		
+
 		// select product folder
 		NSString* luaFolder = [[[ NSBundle mainBundle ] resourcePath ] stringByAppendingString:@"/lua" ];
 		AKUSetWorkingDirectory ([ luaFolder UTF8String ]);
-		
+
 		// run scripts
 		[ mMoaiView run:@"main.lua" ];
-		
+
         // check to see if the app was lanuched from a remote notification
         NSDictionary* pushBundle = [ launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey ];
         if ( pushBundle != NULL ) {
-            
+
             AKUNotifyRemoteNotificationReceived ( pushBundle );
         }
-		
+
 		// return
 		return true;
 	}
 
-		
+
 	//----------------------------------------------------------------//
 	-( void ) application:( UIApplication* )application didReceiveRemoteNotification:( NSDictionary* )pushBundle {
-		
+
 		AKUNotifyRemoteNotificationReceived ( pushBundle );
 	}
-	
+
 	//----------------------------------------------------------------//
 	-( void ) application:( UIApplication* )application didRegisterForRemoteNotificationsWithDeviceToken:( NSData* )deviceToken {
-	
+
 		AKUNotifyRemoteNotificationRegistrationComplete ( deviceToken );
 	}
-	
+
 	//----------------------------------------------------------------//
 	-( void ) applicationDidBecomeActive:( UIApplication* )application {
-	
+
 		// restart moai view
 		[ mMoaiView pause:NO ];
 	}
-	
+
 	//----------------------------------------------------------------//
 	-( void ) applicationDidEnterBackground:( UIApplication* )application {
-	}
-	
-	//----------------------------------------------------------------//
-	-( void ) applicationWillEnterForeground:( UIApplication* )application {
-	}
-	
-	//----------------------------------------------------------------//
-	-( void ) applicationWillResignActive:( UIApplication* )application {
-	
 		// pause moai view
 		[ mMoaiView pause:YES ];
 	}
-	
+
+	//----------------------------------------------------------------//
+	-( void ) applicationWillEnterForeground:( UIApplication* )application {
+	}
+
+	//----------------------------------------------------------------//
+	-( void ) applicationWillResignActive:( UIApplication* )application {
+
+		[ mMoaiView shouldPause ];
+	}
+
 	//----------------------------------------------------------------//
 	-( void ) applicationWillTerminate :( UIApplication* )application {
 
@@ -126,7 +127,7 @@
 
 	//----------------------------------------------------------------//
 	#if __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_4_1
-		
+
 		//----------------------------------------------------------------//
 		// For iOS 4.2+ support
 		-( BOOL )application:( UIApplication* )application openURL:( NSURL* )url sourceApplication:( NSString* )sourceApplication annotation:( id )annotation {
@@ -134,7 +135,7 @@
 			AKUAppOpenFromURL ( url );
 			return YES;
 		}
-	
+
 	#else
 
 		//----------------------------------------------------------------//
