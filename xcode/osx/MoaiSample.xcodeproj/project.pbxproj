@@ -788,7 +788,8 @@
 					"\"../../src/hosts\"",
 					"\"../../src\"",
 				);
-				SDKROOT = macosx;
+				OTHER_CFLAGS = "-mmacosx-version-min=10.6";
+				SDKROOT = macosx10.7;
 				SKIP_INSTALL = YES;
 				WARNING_CFLAGS = "-Wall";
 			};
@@ -839,7 +840,8 @@
 					"\"../../src/hosts\"",
 					"\"../../src\"",
 				);
-				SDKROOT = macosx;
+				OTHER_CFLAGS = "-mmacosx-version-min=10.6";
+				SDKROOT = macosx10.7;
 				SKIP_INSTALL = YES;
 				WARNING_CFLAGS = "-Wall";
 			};
