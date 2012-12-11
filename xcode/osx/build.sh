@@ -43,9 +43,6 @@ fi
 
 for config in $configurations; do
 	echo "Building MoaiSample/moai/macosx for $config"
-	xcodebuild -configuration $config -workspace $src/MoaiSample.xcodeproj/project.xcworkspace -scheme moai -sdk macosx build CONFIGURATION_BUILD_DIR=/tmp/osx/$job/MoaiSample/moai/macosx/$config
+	xcodebuild -configuration $config -workspace $src/MoaiSample.xcodeproj/project.xcworkspace -scheme moai -sdk macosx10.7 build CONFIGURATION_BUILD_DIR=/tmp/osx/$job/MoaiSample/moai/macosx/$config
 	echo "Done. Binaries available in /tmp/osx/$job/MoaiSample/moai/macosx/$config"
-	# echo "Building MoaiSample/moai-fmod/macosx for $config"
-	# xcodebuild -configuration $config -workspace $src/MoaiSample.xcodeproj/project.xcworkspace -scheme moai-fmod -sdk macosx build CONFIGURATION_BUILD_DIR=/tmp/osx/$job/MoaiSample/moai-fmod/macosx/$config
-	# echo "Done. Binaries available in /tmp/osx/$job/MoaiSample/moai-fmod/macosx/$config"
 done
