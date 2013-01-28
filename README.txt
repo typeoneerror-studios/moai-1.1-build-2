@@ -1,3 +1,15 @@
+Welcome to T1E Moai!
+
+This is our crappy copy of MOAI 1.1. 1.2 introduced so many issues that are not being resolved, that we branched 1.1 and added our  features to it. This is specifically for one of our games and generally would not be used ever again.
+
+It also includes the FMOD audio library, since UNTZ sucks balls, balls, balls, and MOAI made it clear there was no plans to fix it since it is third-party.
+
+To build MOAI for OSX or iOS, use the build*.sh scripts.
+
+And here's the rest of the MOAI Readme that was not written by us:
+
+----------------
+
 Welcome to Moai!
 
 Thanks for checking out the Moai source code. Here's the scoop.

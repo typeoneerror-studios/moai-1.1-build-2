@@ -278,7 +278,7 @@
 		CD7C736913B95413006CFA19 /* ParticlePresets.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ParticlePresets.cpp; path = ../../src/hosts/ParticlePresets.cpp; sourceTree = SOURCE_ROOT; };
 		CD7C736A13B95413006CFA19 /* ParticlePresets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ParticlePresets.h; path = ../../src/hosts/ParticlePresets.h; sourceTree = SOURCE_ROOT; };
 		CDE8A82A155E435800C2DFF5 /* moai-fmod */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "moai-fmod"; sourceTree = BUILT_PRODUCTS_DIR; };
-		CDE8A831155E43AD00C2DFF5 /* libfmodex.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfmodex.dylib; path = "FMOD Programmers API/api/lib/libfmodex.dylib"; sourceTree = DEVELOPER_DIR; };
+		CDE8A831155E43AD00C2DFF5 /* libfmodex.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfmodex.dylib; path = ../../FMOD/Mac/api/lib/libfmodex.dylib; sourceTree = "<group>"; };
 		CDEE22E413543D6600C2E04C /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = SDKs/MacOSX10.6.sdk/System/Library/Frameworks/GLUT.framework; sourceTree = DEVELOPER_DIR; };
 		CDEE22E613543D8600C2E04C /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = SDKs/MacOSX10.6.sdk/System/Library/Frameworks/OpenGL.framework; sourceTree = DEVELOPER_DIR; };
 		E99C2A76152E27E500DD8423 /* FolderWatcher-mac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "FolderWatcher-mac.h"; path = "../../src/hosts/FolderWatcher-mac.h"; sourceTree = "<group>"; };
@@ -869,7 +869,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(FMOD_OSX_SDK_ROOT)/api/lib\"",
+					../../FMOD/Mac/api/lib,
 				);
 				PRODUCT_NAME = "moai-fmod";
 			};
@@ -894,7 +894,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(FMOD_OSX_SDK_ROOT)/api/lib\"",
+					../../FMOD/Mac/api/lib,
 				);
 				PRODUCT_NAME = "moai-fmod";
 			};
