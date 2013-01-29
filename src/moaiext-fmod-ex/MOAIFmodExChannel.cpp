@@ -13,14 +13,14 @@
 //----------------------------------------------------------------//
 /**	@name	getVolume
  @text	Returns the current volume of the channel.
- 
+
  @in	MOAIFmodExChannel self
  @out	float Volume - the volume currently set in this channel.
  */
 int MOAIFmodExChannel::_getVolume ( lua_State* L ) {
-	
+
 	MOAI_LUA_SETUP ( MOAIFmodExChannel, "U" )
-	
+
 	lua_pushnumber ( state, self->GetVolume ());
 	return 1;
 }
@@ -28,19 +28,19 @@ int MOAIFmodExChannel::_getVolume ( lua_State* L ) {
 //----------------------------------------------------------------//
 /**	@name	isPlaying
  @text	Returns true if channel is playing.
- 
+
  @in	MOAIFmodExChannel self
  @out	boolean.
  */
 int MOAIFmodExChannel::_isPlaying ( lua_State* L ) {
-	
+
 	MOAI_LUA_SETUP ( MOAIFmodExChannel, "U" )
-	
+
 	bool isPlaying = self->mPlayState == PLAYING;
 
 	if ( self->mSound ) {
 		lua_pushboolean ( state, isPlaying );
-		return 1; 
+		return 1;
 	}
 	return 0;
 }
@@ -60,11 +60,11 @@ int MOAIFmodExChannel::_moveVolume ( lua_State* L ) {
 
 	MOAIEaseDriver* action = new MOAIEaseDriver ();
 	action->ReserveLinks ( 1 );
-	
+
 	float delta		= state.GetValue < float >( 2, 0.0f );
 	float length	= state.GetValue < float >( 3, 0.0f );
 	u32 mode		= state.GetValue < u32 >( 4, USInterpolate::kSmooth );
-	
+
 	action->SetLink ( 0, self, MOAIFmodExChannelAttr::Pack ( ATTR_VOLUME ), delta, mode );
 
 	action->SetSpan ( length );
@@ -80,7 +80,7 @@ int MOAIFmodExChannel::_moveVolume ( lua_State* L ) {
 
 	@in		MOAIFmodExChannel self
 	@in		MOAIFmodExSound sound		The sound to play.
-	@in		boolean loop			Whether the sound should be looped.
+	@in		boolean loopCount			Number of times to loop.
 	@out	nil
 */
 int MOAIFmodExChannel::_play ( lua_State* L ) {
@@ -94,6 +94,29 @@ int MOAIFmodExChannel::_play ( lua_State* L ) {
 
 	self->Play ( sound, loopCount );
 
+	return 0;
+}
+
+//----------------------------------------------------------------//
+/**	@name	playWithLoopPoint
+ @text	Plays the specified sound, looping at a certain point after end.
+ 
+ @in		MOAIFmodExChannel self
+ @in		MOAIFmodExSound sound		The sound to play.
+ @in		float loopPoint				Where to loop back to in seconds.
+ @out		nil
+ */
+int MOAIFmodExChannel::_playWithLoopPoint ( lua_State* L ) {
+	MOAI_LUA_SETUP ( MOAIFmodExChannel, "UU" )
+	
+	self->mPlayState = PLAYING;
+	MOAIFmodExSound* sound = state.GetLuaObject < MOAIFmodExSound >( 2, true );
+	if ( !sound ) return 0;
+	
+	float loopPoint = state.GetValue < float >( 3, 0.0f );
+	
+	self->PlayWithLoopPoint( sound, loopPoint );
+	
 	return 0;
 }
 
@@ -112,11 +135,11 @@ int MOAIFmodExChannel::_seekVolume ( lua_State* L ) {
 
 	MOAIEaseDriver* action = new MOAIEaseDriver ();
 	action->ReserveLinks ( 1 );
-	
+
 	float target	= state.GetValue < float >( 2, 0.0f );
 	float length	= state.GetValue < float >( 3, 0.0f );
 	u32 mode		= state.GetValue < u32 >( 4, USInterpolate::kSmooth );
-	
+
 	action->SetLink ( 0, self, MOAIFmodExChannelAttr::Pack ( ATTR_VOLUME ), target - self->mVolume, mode );
 
 	action->SetSpan ( length );
@@ -187,7 +210,7 @@ int MOAIFmodExChannel::_setLooping ( lua_State* L ) {
 */
 int MOAIFmodExChannel::_stop ( lua_State* L ) {
 	MOAI_LUA_SETUP ( MOAIFmodExChannel, "U" )
-	
+
 	self->mPlayState = STOPPED;
 	self->Stop ();
 
@@ -205,7 +228,7 @@ bool MOAIFmodExChannel::ApplyAttrOp ( u32 attrID, MOAIAttrOp& attrOp, u32 op ) {
 		attrID = UNPACK_ATTR ( attrID );
 
 		if ( attrID == ATTR_VOLUME ) {
-			this->mVolume = attrOp.Apply ( this->mVolume, op, MOAIAttrOp::ATTR_READ_WRITE );
+			this->mVolume = attrOp.Apply ( this->mVolume, op, MOAINode::ATTR_READ_WRITE );
 			this->SetVolume ( this->mVolume );
 			return true;
 		}
@@ -224,7 +247,7 @@ MOAIFmodExChannel::MOAIFmodExChannel () :
 	mVolume ( 1.0f ),
 	mPaused ( false ) ,
 	mLooping ( false ) {
-	
+
 	RTTI_SINGLE ( MOAINode )
 }
 
@@ -235,26 +258,61 @@ MOAIFmodExChannel::~MOAIFmodExChannel () {
 }
 
 //----------------------------------------------------------------//
+void MOAIFmodExChannel::PlayWithLoopPoint ( MOAIFmodExSound* sound, float loopPoint ) {
+
+	this->Stop ();
+	this->mSound = sound;
+	if ( !sound ) return;
+	if ( !sound->mSound ) return;
+
+	FMOD::System* soundSys = MOAIFmodEx::Get ().GetSoundSys ();
+	if ( !soundSys ) return;
+
+	FMOD_RESULT result;
+	FMOD::Channel* channel = 0;
+	
+	uint in = loopPoint * 1000;
+	uint out = 0;
+
+//	printf ( "PLAY SOUND WITH LOOP %s, in: %d, out: %d\n", sound->GetFileName (), in, out );
+	
+	sound->mSound->setLoopPoints(in, FMOD_TIMEUNIT_MS, out, FMOD_TIMEUNIT_MS);
+		
+	result = soundSys->playSound ( FMOD_CHANNEL_FREE, sound->mSound, true, &channel );
+	if ( result != FMOD_OK ) {
+		printf ( "FMOD ERROR: Sound did not play\n" );
+		return;
+	}
+
+	this->mChannel = channel;
+	this->mChannel->setMode ( FMOD_LOOP_NORMAL );
+
+	this->SetVolume ( this->mVolume );
+	this->SetPaused ( this->mPaused );
+}
+
+//----------------------------------------------------------------//
 void MOAIFmodExChannel::Play ( MOAIFmodExSound* sound, int loopCount ) {
 
 	this->Stop ();
 	this->mSound = sound;
 	if ( !sound ) return;
 	if ( !sound->mSound ) return;
-	
+
 	FMOD::System* soundSys = MOAIFmodEx::Get ().GetSoundSys ();
 	if ( !soundSys ) return;
-	
+
 	FMOD_RESULT result;
 	FMOD::Channel* channel = 0;
+
+//	printf ( "PLAY SOUND %s, @ %f\n", sound->GetFileName (), USDeviceTime::GetTimeInSeconds () );
 	
-	//printf ( "PLAY SOUND %s, @ %f\n", sound->GetFileName (), USDeviceTime::GetTimeInSeconds () );
 	result = soundSys->playSound ( FMOD_CHANNEL_FREE, sound->mSound, true, &channel );
 	if ( result != FMOD_OK ) {
 		printf (" FMOD ERROR: Sound did not play\n" );
 		return;
 	}
-	
+
 	this->mChannel = channel;
 	this->mChannel->setMode ( FMOD_LOOP_NORMAL );
 
@@ -264,14 +322,14 @@ void MOAIFmodExChannel::Play ( MOAIFmodExSound* sound, int loopCount ) {
 	else {
 		this->mChannel->setLoopCount ( loopCount );
 	}
-	
+
 	this->SetVolume ( this->mVolume );
 	this->SetPaused ( this->mPaused );
 }
 
 //----------------------------------------------------------------//
 void MOAIFmodExChannel::RegisterLuaClass ( MOAILuaState& state ) {
-	
+
 	state.SetField ( -1, "ATTR_VOLUME", MOAIFmodExChannelAttr::Pack ( ATTR_VOLUME ));
 }
 
@@ -279,15 +337,16 @@ void MOAIFmodExChannel::RegisterLuaClass ( MOAILuaState& state ) {
 void MOAIFmodExChannel::RegisterLuaFuncs ( MOAILuaState& state ) {
 
 	luaL_Reg regTable [] = {
-		{ "getVolume",		_getVolume },
-		{ "isPlaying",		_isPlaying },
-		{ "moveVolume",		_moveVolume },
-		{ "play",			_play },
-		{ "seekVolume",		_seekVolume },
-		{ "setPaused",		_setPaused },
-		{ "setLooping",		_setLooping },
-		{ "setVolume",		_setVolume },
-		{ "stop",			_stop },
+		{ "getVolume",			_getVolume },
+		{ "isPlaying",			_isPlaying },
+		{ "moveVolume",			_moveVolume },
+		{ "play",				_play },
+		{ "playWithLoopPoint",	_playWithLoopPoint },
+		{ "seekVolume",			_seekVolume },
+		{ "setPaused",			_setPaused },
+		{ "setLooping",			_setLooping },
+		{ "setVolume",			_setVolume },
+		{ "stop",				_stop },
 		{ NULL, NULL }
 	};
 
