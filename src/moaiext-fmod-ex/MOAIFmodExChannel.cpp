@@ -13,14 +13,14 @@
 //----------------------------------------------------------------//
 /**	@name	getVolume
  @text	Returns the current volume of the channel.
- 
+
  @in	MOAIFmodExChannel self
  @out	float Volume - the volume currently set in this channel.
  */
 int MOAIFmodExChannel::_getVolume ( lua_State* L ) {
-	
+
 	MOAI_LUA_SETUP ( MOAIFmodExChannel, "U" )
-	
+
 	lua_pushnumber ( state, self->GetVolume ());
 	return 1;
 }
@@ -28,19 +28,19 @@ int MOAIFmodExChannel::_getVolume ( lua_State* L ) {
 //----------------------------------------------------------------//
 /**	@name	getVolume
  @text	Returns the current volume of the channel.
- 
+
  @in	MOAIFmodExChannel self
  @out	float Volume - the volume currently set in this channel.
  */
 int MOAIFmodExChannel::_isPlaying ( lua_State* L ) {
-	
+
 	MOAI_LUA_SETUP ( MOAIFmodExChannel, "U" )
-	
+
 	bool isPlaying = self->mPlayState == PLAYING;
 
 	if ( self->mSound ) {
 		lua_pushboolean ( state, isPlaying );
-		return 1; 
+		return 1;
 	}
 	return 0;
 }
@@ -60,11 +60,11 @@ int MOAIFmodExChannel::_moveVolume ( lua_State* L ) {
 
 	MOAIEaseDriver* action = new MOAIEaseDriver ();
 	action->ReserveLinks ( 1 );
-	
+
 	float delta		= state.GetValue < float >( 2, 0.0f );
 	float length	= state.GetValue < float >( 3, 0.0f );
 	u32 mode		= state.GetValue < u32 >( 4, USInterpolate::kSmooth );
-	
+
 	action->SetLink ( 0, self, MOAIFmodExChannelAttr::Pack ( ATTR_VOLUME ), delta, mode );
 
 	action->SetSpan ( length );
@@ -112,11 +112,11 @@ int MOAIFmodExChannel::_seekVolume ( lua_State* L ) {
 
 	MOAIEaseDriver* action = new MOAIEaseDriver ();
 	action->ReserveLinks ( 1 );
-	
+
 	float target	= state.GetValue < float >( 2, 0.0f );
 	float length	= state.GetValue < float >( 3, 0.0f );
 	u32 mode		= state.GetValue < u32 >( 4, USInterpolate::kSmooth );
-	
+
 	action->SetLink ( 0, self, MOAIFmodExChannelAttr::Pack ( ATTR_VOLUME ), target - self->mVolume, mode );
 
 	action->SetSpan ( length );
@@ -166,14 +166,15 @@ int MOAIFmodExChannel::_setPaused ( lua_State* L ) {
 	@text	Immediately sets the volume of this channel.
 
 	@in		MOAIFmodExChannel self
-	@in		number volume			The volume of this channel. Default value is 0.
+	@in		number looping			Whether to loop sound. Default is false.
 	@out	nil
 */
 int MOAIFmodExChannel::_setLooping ( lua_State* L ) {
 	MOAI_LUA_SETUP ( MOAIFmodExChannel, "U" )
 
-	float volume = state.GetValue < float >( 2, 0.0f );
-	self->mVolume = volume;
+	float looping = state.GetValue < bool >( 2, false );
+	// self->mVolume = volume;
+	self->mLooping = looping
 
 	return 0;
 }
@@ -187,7 +188,7 @@ int MOAIFmodExChannel::_setLooping ( lua_State* L ) {
 */
 int MOAIFmodExChannel::_stop ( lua_State* L ) {
 	MOAI_LUA_SETUP ( MOAIFmodExChannel, "U" )
-	
+
 	self->mPlayState = STOPPED;
 	self->Stop ();
 
@@ -224,7 +225,7 @@ MOAIFmodExChannel::MOAIFmodExChannel () :
 	mVolume ( 1.0f ),
 	mPaused ( false ) ,
 	mLooping ( false ) {
-	
+
 	RTTI_SINGLE ( MOAINode )
 }
 
@@ -241,20 +242,20 @@ void MOAIFmodExChannel::Play ( MOAIFmodExSound* sound, int loopCount ) {
 	this->mSound = sound;
 	if ( !sound ) return;
 	if ( !sound->mSound ) return;
-	
+
 	FMOD::System* soundSys = MOAIFmodEx::Get ().GetSoundSys ();
 	if ( !soundSys ) return;
-	
+
 	FMOD_RESULT result;
 	FMOD::Channel* channel = 0;
-	
+
 	//printf ( "PLAY SOUND %s, @ %f\n", sound->GetFileName (), USDeviceTime::GetTimeInSeconds () );
 	result = soundSys->playSound ( FMOD_CHANNEL_FREE, sound->mSound, true, &channel );
 	if ( result != FMOD_OK ) {
 		printf (" FMOD ERROR: Sound did not play\n" );
 		return;
 	}
-	
+
 	this->mChannel = channel;
 	this->mChannel->setMode ( FMOD_LOOP_NORMAL );
 
@@ -264,14 +265,14 @@ void MOAIFmodExChannel::Play ( MOAIFmodExSound* sound, int loopCount ) {
 	else {
 		this->mChannel->setLoopCount ( 0 );
 	}
-	
+
 	this->SetVolume ( this->mVolume );
 	this->SetPaused ( this->mPaused );
 }
 
 //----------------------------------------------------------------//
 void MOAIFmodExChannel::RegisterLuaClass ( MOAILuaState& state ) {
-	
+
 	state.SetField ( -1, "ATTR_VOLUME", MOAIFmodExChannelAttr::Pack ( ATTR_VOLUME ));
 }
 
