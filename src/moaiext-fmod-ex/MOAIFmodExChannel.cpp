@@ -39,7 +39,7 @@ int MOAIFmodExChannel::_isPlaying ( lua_State* L ) {
 	FMOD_RESULT result = FMOD_OK;
 	bool channelPlaying;
 
-	result = self->mChannel::isPlaying(&channelPlaying);
+	result = self->mChannel->isPlaying(&channelPlaying);
 	bool isPlaying = self->mPlayState == PLAYING && channelPlaying;
 
 	if ( self->mSound ) {
