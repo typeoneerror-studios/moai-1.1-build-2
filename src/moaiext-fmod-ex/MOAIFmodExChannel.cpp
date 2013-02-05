@@ -100,7 +100,7 @@ int MOAIFmodExChannel::_play ( lua_State* L ) {
 //----------------------------------------------------------------//
 /**	@name	playWithLoopPoint
  @text	Plays the specified sound, looping at a certain point after end.
- 
+
  @in		MOAIFmodExChannel self
  @in		MOAIFmodExSound sound		The sound to play.
  @in		float loopPoint				Where to loop back to in seconds.
@@ -108,15 +108,15 @@ int MOAIFmodExChannel::_play ( lua_State* L ) {
  */
 int MOAIFmodExChannel::_playWithLoopPoint ( lua_State* L ) {
 	MOAI_LUA_SETUP ( MOAIFmodExChannel, "UU" )
-	
+
 	self->mPlayState = PLAYING;
 	MOAIFmodExSound* sound = state.GetLuaObject < MOAIFmodExSound >( 2, true );
 	if ( !sound ) return 0;
-	
+
 	float loopPoint = state.GetValue < float >( 3, 0.0f );
-	
+
 	self->PlayWithLoopPoint( sound, loopPoint );
-	
+
 	return 0;
 }
 
@@ -177,8 +177,14 @@ int MOAIFmodExChannel::_setVolume ( lua_State* L ) {
 int MOAIFmodExChannel::_setPaused ( lua_State* L ) {
 	MOAI_LUA_SETUP ( MOAIFmodExChannel, "UB" )
 
-	self->mPlayState = PAUSED;
+	// self->mPlayState = PAUSED;
 	bool paused = state.GetValue < bool >( 2, false );
+	if ( paused ) {
+		self->mPlayState = PAUSED;
+	} else {
+		self->mPlayState = PLAYING;
+	}
+
 	self->SetPaused ( paused );
 
 	return 0;
@@ -270,14 +276,14 @@ void MOAIFmodExChannel::PlayWithLoopPoint ( MOAIFmodExSound* sound, float loopPo
 
 	FMOD_RESULT result;
 	FMOD::Channel* channel = 0;
-	
+
 	uint in = loopPoint * 1000;
 	uint out = 0;
 
 //	printf ( "PLAY SOUND WITH LOOP %s, in: %d, out: %d\n", sound->GetFileName (), in, out );
-	
+
 	sound->mSound->setLoopPoints(in, FMOD_TIMEUNIT_MS, out, FMOD_TIMEUNIT_MS);
-		
+
 	result = soundSys->playSound ( FMOD_CHANNEL_FREE, sound->mSound, true, &channel );
 	if ( result != FMOD_OK ) {
 		printf ( "FMOD ERROR: Sound did not play\n" );
@@ -306,7 +312,7 @@ void MOAIFmodExChannel::Play ( MOAIFmodExSound* sound, int loopCount ) {
 	FMOD::Channel* channel = 0;
 
 //	printf ( "PLAY SOUND %s, @ %f\n", sound->GetFileName (), USDeviceTime::GetTimeInSeconds () );
-	
+
 	result = soundSys->playSound ( FMOD_CHANNEL_FREE, sound->mSound, true, &channel );
 	if ( result != FMOD_OK ) {
 		printf (" FMOD ERROR: Sound did not play\n" );
