@@ -34,6 +34,9 @@ You'll find all the build stuff in *./xcode/*. The project in *./xcode/osx* is u
 2. Wait a while.
 3. If no errors, run *openosx.sh* from the command line.
 4. From the path that opens, copy *moai/macosx/Release/moai* and *moai-fmod/macosx/Release/moai-fmod* binaries to the Shibashiba build (one without -fmod is the untz build) in *bin/osx*.
+5. cd into *bin/osx* and run the following command:
+		
+		install_name_tool -change ./libfmodex.dylib @executable_path/libfmodex.dylib moai-fmod
 
 
 #### Building the iOS binaries.
