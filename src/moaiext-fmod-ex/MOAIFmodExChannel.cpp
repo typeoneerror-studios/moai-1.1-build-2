@@ -36,7 +36,9 @@ int MOAIFmodExChannel::_isPlaying ( lua_State* L ) {
 
 	MOAI_LUA_SETUP ( MOAIFmodExChannel, "U" )
 
-	bool isPlaying = self->mPlayState == PLAYING;
+	bool *channelPlaying;
+	self->mChannel::isPlaying(channelPlaying);
+	bool isPlaying = self->mPlayState == PLAYING && *channelPlaying;
 
 	if ( self->mSound ) {
 		lua_pushboolean ( state, isPlaying );
