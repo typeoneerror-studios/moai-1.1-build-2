@@ -292,9 +292,7 @@ void MOAIFmodExChannel::PlayWithLoopPoint ( MOAIFmodExSound* sound, float loopPo
 		printf( "\n\nFMOD ISSUE: !soundSys\n\n" );
 		return;
 	}
-	
-	printf ( "PLAY SOUND WITH LOOP POINT %s, @ %f\n", sound->GetFileName (), USDeviceTime::GetTimeInSeconds () );
-	
+		
 #else
 	
 	if ( !sound ) return;
@@ -310,6 +308,12 @@ void MOAIFmodExChannel::PlayWithLoopPoint ( MOAIFmodExSound* sound, float loopPo
 
 	uint in = loopPoint * 1000;
 	uint out = 0;
+	
+#if DEBUG_MOAI_FMOD
+	
+	printf ( "PLAY SOUND WITH LOOP POINTS %s, %d, %d, @ %f\n", sound->GetFileName (), in, out, USDeviceTime::GetTimeInSeconds () );
+	
+#endif
 	
 	sound->mSound->getLength(&out, FMOD_TIMEUNIT_MS);
 	sound->mSound->setLoopPoints(in, FMOD_TIMEUNIT_MS, out, FMOD_TIMEUNIT_MS);
