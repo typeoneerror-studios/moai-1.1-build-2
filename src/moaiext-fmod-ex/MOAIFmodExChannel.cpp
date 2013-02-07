@@ -93,7 +93,9 @@ int MOAIFmodExChannel::_play ( lua_State* L ) {
 
 	self->mPlayState = PLAYING;
 	MOAIFmodExSound* sound = state.GetLuaObject < MOAIFmodExSound >( 2, true );
-	if ( !sound ) return 0;
+	if ( !sound ) {
+		return 0;
+	}
 
 	int loopCount = state.GetValue < int >( 3, 0 );
 
@@ -273,20 +275,43 @@ void MOAIFmodExChannel::PlayWithLoopPoint ( MOAIFmodExSound* sound, float loopPo
 
 	this->Stop ();
 	this->mSound = sound;
+	
+#if DEBUG_MOAI_FMOD
+	
+	if ( !sound ) {
+		printf( "\n\nFMOD ISSUE: !sound\n\n" );
+		return;
+	}
+	if ( !sound->mSound ) {
+		printf( "\n\nFMOD ISSUE: !sound->mSound\n\n" );
+		return;
+	}
+	
+	FMOD::System* soundSys = MOAIFmodEx::Get ().GetSoundSys ();
+	if ( !soundSys ) {
+		printf( "\n\nFMOD ISSUE: !soundSys\n\n" );
+		return;
+	}
+	
+	printf ( "PLAY SOUND WITH LOOP POINT %s, @ %f\n", sound->GetFileName (), USDeviceTime::GetTimeInSeconds () );
+	
+#else
+	
 	if ( !sound ) return;
 	if ( !sound->mSound ) return;
-
+	
 	FMOD::System* soundSys = MOAIFmodEx::Get ().GetSoundSys ();
 	if ( !soundSys ) return;
+	
+#endif
 
 	FMOD_RESULT result;
 	FMOD::Channel* channel = 0;
 
 	uint in = loopPoint * 1000;
 	uint out = 0;
-
-//	printf ( "PLAY SOUND WITH LOOP %s, in: %d, out: %d\n", sound->GetFileName (), in, out );
-
+	
+	sound->mSound->getLength(&out, FMOD_TIMEUNIT_MS);
 	sound->mSound->setLoopPoints(in, FMOD_TIMEUNIT_MS, out, FMOD_TIMEUNIT_MS);
 
 	result = soundSys->playSound ( FMOD_CHANNEL_FREE, sound->mSound, true, &channel );
@@ -307,16 +332,38 @@ void MOAIFmodExChannel::Play ( MOAIFmodExSound* sound, int loopCount ) {
 
 	this->Stop ();
 	this->mSound = sound;
+	
+#if DEBUG_MOAI_FMOD
+	
+	if ( !sound ) {
+		printf( "\n\nFMOD ISSUE: !sound\n\n" );
+		return;
+	}
+	if ( !sound->mSound ) {
+		printf( "\n\nFMOD ISSUE: !sound->mSound\n\n" );
+		return;
+	}
+	
+	FMOD::System* soundSys = MOAIFmodEx::Get ().GetSoundSys ();
+	if ( !soundSys ) {
+		printf( "\n\nFMOD ISSUE: !soundSys\n\n" );
+		return;
+	}
+
+	printf ( "PLAY SOUND %s, @ %f\n", sound->GetFileName (), USDeviceTime::GetTimeInSeconds () );
+
+#else
+	
 	if ( !sound ) return;
 	if ( !sound->mSound ) return;
-
+	
 	FMOD::System* soundSys = MOAIFmodEx::Get ().GetSoundSys ();
 	if ( !soundSys ) return;
-
+	
+#endif
+	
 	FMOD_RESULT result;
 	FMOD::Channel* channel = 0;
-
-//	printf ( "PLAY SOUND %s, @ %f\n", sound->GetFileName (), USDeviceTime::GetTimeInSeconds () );
 
 	result = soundSys->playSound ( FMOD_CHANNEL_FREE, sound->mSound, true, &channel );
 	if ( result != FMOD_OK ) {

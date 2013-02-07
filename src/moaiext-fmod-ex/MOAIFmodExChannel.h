@@ -6,6 +6,8 @@
 
 #include <moaicore/moaicore.h>
 
+#define DEBUG_MOAI_FMOD 1
+
 class MOAIFmodExSound;
 
 //================================================================//
