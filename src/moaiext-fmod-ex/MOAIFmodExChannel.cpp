@@ -279,17 +279,17 @@ void MOAIFmodExChannel::PlayWithLoopPoint ( MOAIFmodExSound* sound, float loopPo
 #if DEBUG_MOAI_FMOD
 
 	if ( !sound ) {
-		printf( "\n\nFMOD ISSUE: !sound\n\n" );
+		printf ( "\n\nFMOD ISSUE: !sound\n\n" );
 		return;
 	}
 	if ( !sound->mSound ) {
-		printf( "\n\nFMOD ISSUE: !sound->mSound %s\n\n", sound->GetFileName () );
+		printf ( "\n\nFMOD ISSUE: !sound->mSound %s\n\n", sound->GetFileName () );
 		return;
 	}
 
 	FMOD::System* soundSys = MOAIFmodEx::Get ().GetSoundSys ();
 	if ( !soundSys ) {
-		printf( "\n\nFMOD ISSUE: !soundSys\n\n" );
+		printf ( "\n\nFMOD ISSUE: !soundSys\n\n" );
 		return;
 	}
 
@@ -312,11 +312,7 @@ void MOAIFmodExChannel::PlayWithLoopPoint ( MOAIFmodExSound* sound, float loopPo
 	sound->mSound->getLength(&out, FMOD_TIMEUNIT_MS);
 	sound->mSound->setLoopPoints(in, FMOD_TIMEUNIT_MS, out, FMOD_TIMEUNIT_MS);
 
-#if DEBUG_MOAI_FMOD
-
-	printf ( "PLAY SOUND WITH LOOP POINTS %s, %d, %d, @ %f\n", sound->GetFileName (), in, out, USDeviceTime::GetTimeInSeconds () );
-
-#endif
+	// printf ( "PLAY SOUND WITH LOOP POINTS %s, %d, %d, @ %f\n", sound->GetFileName (), in, out, USDeviceTime::GetTimeInSeconds () );
 
 	result = soundSys->playSound ( FMOD_CHANNEL_FREE, sound->mSound, true, &channel );
 	if ( result != FMOD_OK ) {
@@ -340,21 +336,21 @@ void MOAIFmodExChannel::Play ( MOAIFmodExSound* sound, int loopCount ) {
 #if DEBUG_MOAI_FMOD
 
 	if ( !sound ) {
-		printf( "\n\nFMOD ISSUE: !sound\n\n" );
+		printf ( "\n\nFMOD ISSUE: !sound\n\n" );
 		return;
 	}
 	if ( !sound->mSound ) {
-		printf( "\n\nFMOD ISSUE: !sound->mSound %s\n\n", sound->GetFileName () );
+		printf ( "\n\nFMOD ISSUE: !sound->mSound %s\n\n", sound->GetFileName () );
 		return;
 	}
 
 	FMOD::System* soundSys = MOAIFmodEx::Get ().GetSoundSys ();
 	if ( !soundSys ) {
-		printf( "\n\nFMOD ISSUE: !soundSys\n\n" );
+		printf ( "\n\nFMOD ISSUE: !soundSys\n\n" );
 		return;
 	}
 
-	printf ( "PLAY SOUND %s, @ %f\n", sound->GetFileName (), USDeviceTime::GetTimeInSeconds () );
+	// printf ( "PLAY SOUND %s, @ %f\n", sound->GetFileName (), USDeviceTime::GetTimeInSeconds () );
 
 #else
 
