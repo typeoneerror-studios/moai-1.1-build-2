@@ -6,13 +6,15 @@
 
 #include <moaicore/moaicore.h>
 
+#define DEBUG_MOAI_FMOD 1
+
 class MOAIFmodExSound;
 
 //================================================================//
 // MOAIFmodExChannel
 //================================================================//
 /**	@name	MOAIFmodExChannel
-	@text	FMOD singleton. Unsupported, legacy.
+	@text	FMOD singleton.
 */
 class MOAIFmodExChannel :
 	public virtual MOAINode {
@@ -20,7 +22,7 @@ private:
 
 	MOAISharedPtr < MOAIFmodExSound > mSound;
 	FMOD::Channel* mChannel;
-	
+
 	typedef enum {
 		STOPPED = 0,
 		PLAYING,
@@ -37,6 +39,7 @@ private:
 	static int  _isPlaying			( lua_State* L );
 	static int	_moveVolume			( lua_State* L );
 	static int	_play				( lua_State* L );
+	static int	_playWithLoopPoint	( lua_State* L );
 	static int	_seekVolume			( lua_State* L );
 	static int	_setPaused			( lua_State* L );
 	static int	_setVolume			( lua_State* L );
@@ -61,6 +64,7 @@ public:
 				MOAIFmodExChannel	();
 				~MOAIFmodExChannel	();
 	void		Play				( MOAIFmodExSound* sound, int loopCount );
+	void		PlayWithLoopPoint   ( MOAIFmodExSound* sound, float loopPoint );
 	void		RegisterLuaClass	( MOAILuaState& state );
 	void		RegisterLuaFuncs	( MOAILuaState& state );
 	void		SetPaused			( bool paused );

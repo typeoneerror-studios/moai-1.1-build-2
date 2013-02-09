@@ -27,6 +27,8 @@
 		1B70C4D91475F1D9009C6869 /* libmoai-osx-zlcore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B70C4D21475F198009C6869 /* libmoai-osx-zlcore.a */; };
 		4C623B6415246B10008E4436 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C623B6315246B10008E4436 /* Foundation.framework */; };
 		4C623B6615246B25008E4436 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C623B6515246B25008E4436 /* CoreServices.framework */; };
+		76AC258816B71986009A1676 /* libfmodex.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = CDE8A831155E43AD00C2DFF5 /* libfmodex.dylib */; };
+		76ADDADE16B682FF00C461CF /* libfmodex.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE8A831155E43AD00C2DFF5 /* libfmodex.dylib */; };
 		CDE8A810155E435800C2DFF5 /* GlutHost.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CD7C736713B95413006CFA19 /* GlutHost.cpp */; };
 		CDE8A811155E435800C2DFF5 /* ParticlePresets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CD7C736913B95413006CFA19 /* ParticlePresets.cpp */; };
 		CDE8A812155E435800C2DFF5 /* GlutHostMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CD2D875C13B9AD3C00AF7809 /* GlutHostMain.cpp */; };
@@ -46,7 +48,6 @@
 		CDE8A823155E435800C2DFF5 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07CC7B0613DF7F0F00F2DEDE /* IOKit.framework */; };
 		CDE8A824155E435800C2DFF5 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0300CF7A140DC61000ABCC5B /* AudioToolbox.framework */; };
 		CDE8A825155E435800C2DFF5 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0300CF93140DC65100ABCC5B /* AudioUnit.framework */; };
-		CDE8A832155E43AD00C2DFF5 /* libfmodex.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE8A831155E43AD00C2DFF5 /* libfmodex.dylib */; };
 		CDE8A833155E43E200C2DFF5 /* libmoai-osx-zlcore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B70C4D21475F198009C6869 /* libmoai-osx-zlcore.a */; };
 		E96915581561B4FE007E977B /* libmoai-osx-fmod-ex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE8A82E155E435800C2DFF5 /* libmoai-osx-fmod-ex.a */; };
 		E99C2A78152E27E500DD8423 /* FolderWatcher-mac.mm in Sources */ = {isa = PBXBuildFile; fileRef = E99C2A77152E27E500DD8423 /* FolderWatcher-mac.mm */; };
@@ -247,6 +248,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
+		76AC258716B7196F009A1676 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				76AC258816B71986009A1676 /* libfmodex.dylib in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CDE8A826155E435800C2DFF5 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -278,7 +289,7 @@
 		CD7C736913B95413006CFA19 /* ParticlePresets.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ParticlePresets.cpp; path = ../../src/hosts/ParticlePresets.cpp; sourceTree = SOURCE_ROOT; };
 		CD7C736A13B95413006CFA19 /* ParticlePresets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ParticlePresets.h; path = ../../src/hosts/ParticlePresets.h; sourceTree = SOURCE_ROOT; };
 		CDE8A82A155E435800C2DFF5 /* moai-fmod */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "moai-fmod"; sourceTree = BUILT_PRODUCTS_DIR; };
-		CDE8A831155E43AD00C2DFF5 /* libfmodex.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfmodex.dylib; path = "FMOD Programmers API/api/lib/libfmodex.dylib"; sourceTree = DEVELOPER_DIR; };
+		CDE8A831155E43AD00C2DFF5 /* libfmodex.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfmodex.dylib; path = ../../FMOD/Mac/api/lib/libfmodex.dylib; sourceTree = "<group>"; };
 		CDEE22E413543D6600C2E04C /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = SDKs/MacOSX10.6.sdk/System/Library/Frameworks/GLUT.framework; sourceTree = DEVELOPER_DIR; };
 		CDEE22E613543D8600C2E04C /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = SDKs/MacOSX10.6.sdk/System/Library/Frameworks/OpenGL.framework; sourceTree = DEVELOPER_DIR; };
 		E99C2A76152E27E500DD8423 /* FolderWatcher-mac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "FolderWatcher-mac.h"; path = "../../src/hosts/FolderWatcher-mac.h"; sourceTree = "<group>"; };
@@ -314,7 +325,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CDE8A832155E43AD00C2DFF5 /* libfmodex.dylib in Frameworks */,
+				76ADDADE16B682FF00C461CF /* libfmodex.dylib in Frameworks */,
 				CDE8A817155E435800C2DFF5 /* libSystem.dylib in Frameworks */,
 				CDE8A818155E435800C2DFF5 /* libcrypto.dylib in Frameworks */,
 				CDE8A819155E435800C2DFF5 /* libssl.dylib in Frameworks */,
@@ -449,6 +460,8 @@
 				CDE8A80F155E435800C2DFF5 /* Sources */,
 				CDE8A814155E435800C2DFF5 /* Frameworks */,
 				CDE8A826155E435800C2DFF5 /* CopyFiles */,
+				76AC258716B7196F009A1676 /* CopyFiles */,
+				76AC258916B71B21009A1676 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -623,6 +636,22 @@
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		76AC258916B71B21009A1676 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#install_name_tool -change ./libfmodex.dylib @rpath/libfmodex.dylib \"$TARGET_BUILD_DIR/$PRODUCT_NAME\"\ninstall_name_tool -id @executable_path/libfmodex.dylib $TARGET_BUILD_DIR/libfmodex.dylib";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		0300CF58140DC53C00ABCC5B /* Sources */ = {
@@ -866,10 +895,13 @@
 					DARWIN_NO_CARBON,
 					GLUTHOST_USE_LUAEXT,
 					GLUTHOST_USE_FMOD,
+					GLUTHOST_USE_FMOD_EX,
 				);
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(FMOD_OSX_SDK_ROOT)/api/lib\"",
+					../../FMOD/Mac/api/lib,
+					"\"$(SRCROOT)/../../FMOD/Mac/api/lib\"",
 				);
 				PRODUCT_NAME = "moai-fmod";
 			};
@@ -891,10 +923,13 @@
 					DARWIN_NO_CARBON,
 					GLUTHOST_USE_LUAEXT,
 					GLUTHOST_USE_FMOD,
+					GLUTHOST_USE_FMOD_EX,
 				);
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(FMOD_OSX_SDK_ROOT)/api/lib\"",
+					../../FMOD/Mac/api/lib,
+					"\"$(SRCROOT)/../../FMOD/Mac/api/lib\"",
 				);
 				PRODUCT_NAME = "moai-fmod";
 			};

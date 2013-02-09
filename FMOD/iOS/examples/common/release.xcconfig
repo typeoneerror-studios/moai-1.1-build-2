@@ -1,0 +1,8 @@
+#include "common.xcconfig"
+
+OTHER_LDFLAGS                   = -lfmodex_$PLATFORM_NAME
+DEPLOYMENT_POSTPROCESSING       = YES
+STRIP_STYLE                     = all
+DEAD_CODE_STRIPPING             = YES
+GCC_GENERATE_DEBUGGING_SYMBOLS  = NO
+GCC_OPTIMIZATION_LEVEL          = s

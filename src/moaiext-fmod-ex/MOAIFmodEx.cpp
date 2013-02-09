@@ -25,17 +25,17 @@
 */
 int	MOAIFmodEx::_getMemoryStats( lua_State* L ) {
 	MOAILuaState state ( L );
-	
+
 	bool blocking = state.GetValue < bool >( 1, false );
-	
+
 	int currentAlloc;
 	int maxAlloc;
-	
+
 	FMOD_Memory_GetStats ( &currentAlloc, &maxAlloc, blocking );
-	
+
 	lua_pushnumber ( state, currentAlloc );
 	lua_pushnumber ( state, maxAlloc );
-	
+
 	return 2;
 }
 
@@ -48,7 +48,7 @@ int	MOAIFmodEx::_getMemoryStats( lua_State* L ) {
 int MOAIFmodEx::_init ( lua_State* L ) {
 
 	MOAILuaState state ( L );
-	
+
 #ifdef MOAI_OS_NACL
 	printf ( "Cannot initialize fmod on background thread\n" );
 	return -1;
@@ -61,7 +61,7 @@ int MOAIFmodEx::_init ( lua_State* L ) {
 
 int MOAIFmodEx::_mute ( lua_State* L ) {
 	MOAILuaState state ( L );
-	
+
 	bool mute = state.GetValue < bool >( 1, false );
 
 	MOAIFmodEx::Get().MuteChannels ( mute );
@@ -76,7 +76,7 @@ int MOAIFmodEx::_mute ( lua_State* L ) {
 void MOAIFmodEx::CloseSoundSystem () {
 
 	if ( !this->mSoundSys ) return;
-	
+
 	this->mSoundSys->close ();
 	this->mSoundSys->release ();
 	this->mSoundSys = 0;
@@ -113,31 +113,31 @@ void MOAIFmodEx::OpenSoundSystem () {
 #ifdef MOAI_OS_NACL
 
 	FMOD_NACL_EXTRADRIVERDATA extraDriverData;
-	memset(&extraDriverData, 0, sizeof(FMOD_NACL_EXTRADRIVERDATA)); 
+	memset(&extraDriverData, 0, sizeof(FMOD_NACL_EXTRADRIVERDATA));
 	extraDriverData.instance = g_instance->pp_instance();
 
 	this->mSoundSys->setDSPBufferSize( 1024, 4 );
-	result = this->mSoundSys->init ( 100, FMOD_INIT_NORMAL, &extraDriverData );
+	result = this->mSoundSys->init ( 32, FMOD_INIT_NORMAL, &extraDriverData );
 #else
-	result = this->mSoundSys->init ( 100, FMOD_INIT_NORMAL, 0 );
+	result = this->mSoundSys->init ( 32, FMOD_INIT_NORMAL, 0 );
 #endif
 
 	if ( result != FMOD_OK ) return;
-	
+
 	result = this->mSoundSys->getMasterChannelGroup ( &this->mMainChannelGroup );
 	if ( result != FMOD_OK ) return;
 }
 
 //----------------------------------------------------------------//
 void MOAIFmodEx::RegisterLuaClass ( MOAILuaState& state ) {
-	
+
 	luaL_Reg regTable [] = {
 		{ "getMemoryStats",		_getMemoryStats },
 		{ "init",				_init },
 		{ "mute",				_mute },
 		{ NULL, NULL }
 	};
-	
+
 	luaL_register ( state, 0, regTable );
 }
 

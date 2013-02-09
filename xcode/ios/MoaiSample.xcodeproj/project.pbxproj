@@ -1568,7 +1568,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = USE_FMOD_EX;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(FMOD_IOS_SDK_ROOT)/api/lib\"",
+					../../FMOD/Mac/api/lib,
 				);
 				OTHER_LDFLAGS = (
 					"-lfmodex_$PLATFORM_NAME",
@@ -1585,7 +1585,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = USE_FMOD_EX;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(FMOD_IOS_SDK_ROOT)/api/lib\"",
+					../../FMOD/Mac/api/lib,
 				);
 				OTHER_LDFLAGS = (
 					"-lfmodex_$PLATFORM_NAME",

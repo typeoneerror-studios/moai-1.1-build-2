@@ -1,0 +1,4 @@
+#include "debug.xcconfig"
+#include "designerapi_common.xcconfig"
+
+OTHER_LDFLAGS = -lfmodexL_$PLATFORM_NAME -lfmodeventL_$PLATFORM_NAME -lfmodeventnetL_$PLATFORM_NAME

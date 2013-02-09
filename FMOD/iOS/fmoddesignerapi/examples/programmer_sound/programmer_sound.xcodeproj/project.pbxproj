@@ -1,0 +1,266 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
+		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		AF08CD7C0E99831F00DB227B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF08CD7B0E99831F00DB227B /* AudioToolbox.framework */; };
+		AF75D0560E96036D003E4B2C /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF75D0540E96036D003E4B2C /* CoreAudio.framework */; };
+		AF9EC93E0E9D84F80067ED4A /* Example.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF9EC9350E9D84F80067ED4A /* Example.xib */; };
+		AF9EC9440E9D84F80067ED4A /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = AF9EC93D0E9D84F80067ED4A /* ViewController.mm */; };
+		AFB38B310EA2D9E9009F0CCE /* ExampleAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = AFB38B2D0EA2D9E9009F0CCE /* ExampleAppDelegate.mm */; };
+		AFB38B330EA2D9E9009F0CCE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AFB38B2F0EA2D9E9009F0CCE /* main.m */; };
+		AFB38B340EA2D9E9009F0CCE /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFB38B300EA2D9E9009F0CCE /* MainWindow.xib */; };
+		AFB38B370EA2DA01009F0CCE /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = AFB38B350EA2DA01009F0CCE /* background.png */; };
+		AFB38B380EA2DA01009F0CCE /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = AFB38B360EA2DA01009F0CCE /* icon.png */; };
+		AFBA17190E9F2BD7007E92B4 /* streaming_bank.fsb in Resources */ = {isa = PBXBuildFile; fileRef = AFBA17170E9F2BD7007E92B4 /* streaming_bank.fsb */; };
+		AFBA171A0E9F2BD7007E92B4 /* tutorial_bank.fsb in Resources */ = {isa = PBXBuildFile; fileRef = AFBA17180E9F2BD7007E92B4 /* tutorial_bank.fsb */; };
+		AFBA17560E9F351C007E92B4 /* examples.fev in Resources */ = {isa = PBXBuildFile; fileRef = AFBA17550E9F351C007E92B4 /* examples.fev */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		1D6058910D05DD3D006BFB54 /* programmersound.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = programmersound.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		AF08CD7B0E99831F00DB227B /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		AF75D0540E96036D003E4B2C /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		AF9EC9350E9D84F80067ED4A /* Example.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Example.xib; sourceTree = "<group>"; };
+		AF9EC93C0E9D84F80067ED4A /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		AF9EC93D0E9D84F80067ED4A /* ViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
+		AFB38B2C0EA2D9E9009F0CCE /* ExampleAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExampleAppDelegate.h; path = ../../../examples/common/ExampleAppDelegate.h; sourceTree = SOURCE_ROOT; };
+		AFB38B2D0EA2D9E9009F0CCE /* ExampleAppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ExampleAppDelegate.mm; path = ../../../examples/common/ExampleAppDelegate.mm; sourceTree = SOURCE_ROOT; };
+		AFB38B2E0EA2D9E9009F0CCE /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../../../examples/common/Info.plist; sourceTree = SOURCE_ROOT; };
+		AFB38B2F0EA2D9E9009F0CCE /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ../../../examples/common/main.m; sourceTree = SOURCE_ROOT; };
+		AFB38B300EA2D9E9009F0CCE /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = ../../../examples/common/MainWindow.xib; sourceTree = SOURCE_ROOT; };
+		AFB38B350EA2DA01009F0CCE /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = background.png; path = ../../../examples/media/background.png; sourceTree = SOURCE_ROOT; };
+		AFB38B360EA2DA01009F0CCE /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = ../../../examples/media/icon.png; sourceTree = SOURCE_ROOT; };
+		AFBA17170E9F2BD7007E92B4 /* streaming_bank.fsb */ = {isa = PBXFileReference; lastKnownFileType = file; name = streaming_bank.fsb; path = ../media/streaming_bank.fsb; sourceTree = SOURCE_ROOT; };
+		AFBA17180E9F2BD7007E92B4 /* tutorial_bank.fsb */ = {isa = PBXFileReference; lastKnownFileType = file; name = tutorial_bank.fsb; path = ../media/tutorial_bank.fsb; sourceTree = SOURCE_ROOT; };
+		AFBA17550E9F351C007E92B4 /* examples.fev */ = {isa = PBXFileReference; lastKnownFileType = file; name = examples.fev; path = ../media/examples.fev; sourceTree = SOURCE_ROOT; };
+		AFDC3C830EAEFA3C00E24181 /* common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = common.xcconfig; path = ../../../examples/common/common.xcconfig; sourceTree = SOURCE_ROOT; };
+		AFDC3C840EAEFA3C00E24181 /* debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = debug.xcconfig; path = ../../../examples/common/debug.xcconfig; sourceTree = SOURCE_ROOT; };
+		AFDC3C850EAEFA3C00E24181 /* designerapi_common.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = designerapi_common.xcconfig; path = ../../../examples/common/designerapi_common.xcconfig; sourceTree = SOURCE_ROOT; };
+		AFDC3C860EAEFA3C00E24181 /* designerapi_debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = designerapi_debug.xcconfig; path = ../../../examples/common/designerapi_debug.xcconfig; sourceTree = SOURCE_ROOT; };
+		AFDC3C870EAEFA3C00E24181 /* designerapi_release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = designerapi_release.xcconfig; path = ../../../examples/common/designerapi_release.xcconfig; sourceTree = SOURCE_ROOT; };
+		AFDC3C880EAEFA3C00E24181 /* release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = release.xcconfig; path = ../../../examples/common/release.xcconfig; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1D60588F0D05DD3D006BFB54 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
+				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
+				AF75D0560E96036D003E4B2C /* CoreAudio.framework in Frameworks */,
+				AF08CD7C0E99831F00DB227B /* AudioToolbox.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1D6058910D05DD3D006BFB54 /* programmersound.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
+			isa = PBXGroup;
+			children = (
+				29B97323FDCFA39411CA2CEA /* Libraries */,
+				29B97315FDCFA39411CA2CEA /* Source */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+			);
+			name = CustomTemplate;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				AF857B820EA4676C006B16F2 /* Common */,
+				AF9EC93C0E9D84F80067ED4A /* ViewController.h */,
+				AF9EC93D0E9D84F80067ED4A /* ViewController.mm */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				AFDC3C830EAEFA3C00E24181 /* common.xcconfig */,
+				AFDC3C840EAEFA3C00E24181 /* debug.xcconfig */,
+				AFDC3C850EAEFA3C00E24181 /* designerapi_common.xcconfig */,
+				AFDC3C860EAEFA3C00E24181 /* designerapi_debug.xcconfig */,
+				AFDC3C870EAEFA3C00E24181 /* designerapi_release.xcconfig */,
+				AFDC3C880EAEFA3C00E24181 /* release.xcconfig */,
+				AFB38B350EA2DA01009F0CCE /* background.png */,
+				AFB38B360EA2DA01009F0CCE /* icon.png */,
+				AFB38B2E0EA2D9E9009F0CCE /* Info.plist */,
+				AF9EC9350E9D84F80067ED4A /* Example.xib */,
+				AFB38B300EA2D9E9009F0CCE /* MainWindow.xib */,
+				AFBA17550E9F351C007E92B4 /* examples.fev */,
+				AFBA17170E9F2BD7007E92B4 /* streaming_bank.fsb */,
+				AFBA17180E9F2BD7007E92B4 /* tutorial_bank.fsb */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				AF08CD7B0E99831F00DB227B /* AudioToolbox.framework */,
+				AF75D0540E96036D003E4B2C /* CoreAudio.framework */,
+				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
+				1D30AB110D05D00D00671497 /* Foundation.framework */,
+			);
+			name = Libraries;
+			sourceTree = "<group>";
+		};
+		AF857B820EA4676C006B16F2 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				AFB38B2F0EA2D9E9009F0CCE /* main.m */,
+				AFB38B2C0EA2D9E9009F0CCE /* ExampleAppDelegate.h */,
+				AFB38B2D0EA2D9E9009F0CCE /* ExampleAppDelegate.mm */,
+			);
+			name = Common;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1D6058900D05DD3D006BFB54 /* programmer_sound */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "programmer_sound" */;
+			buildPhases = (
+				1D60588D0D05DD3D006BFB54 /* Resources */,
+				1D60588E0D05DD3D006BFB54 /* Sources */,
+				1D60588F0D05DD3D006BFB54 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = programmer_sound;
+			productName = HelloWorld;
+			productReference = 1D6058910D05DD3D006BFB54 /* programmersound.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "programmer_sound" */;
+			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1D6058900D05DD3D006BFB54 /* programmer_sound */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1D60588D0D05DD3D006BFB54 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AF9EC93E0E9D84F80067ED4A /* Example.xib in Resources */,
+				AFB38B340EA2D9E9009F0CCE /* MainWindow.xib in Resources */,
+				AFB38B370EA2DA01009F0CCE /* background.png in Resources */,
+				AFB38B380EA2DA01009F0CCE /* icon.png in Resources */,
+				AFBA17560E9F351C007E92B4 /* examples.fev in Resources */,
+				AFBA17190E9F2BD7007E92B4 /* streaming_bank.fsb in Resources */,
+				AFBA171A0E9F2BD7007E92B4 /* tutorial_bank.fsb in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1D60588E0D05DD3D006BFB54 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AF9EC9440E9D84F80067ED4A /* ViewController.mm in Sources */,
+				AFB38B310EA2D9E9009F0CCE /* ExampleAppDelegate.mm in Sources */,
+				AFB38B330EA2D9E9009F0CCE /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1D6058940D05DD3E006BFB54 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = programmersound;
+			};
+			name = Debug;
+		};
+		1D6058950D05DD3E006BFB54 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = programmersound;
+			};
+			name = Release;
+		};
+		C01FCF4F08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AFDC3C860EAEFA3C00E24181 /* designerapi_debug.xcconfig */;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		C01FCF5008A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AFDC3C870EAEFA3C00E24181 /* designerapi_release.xcconfig */;
+			buildSettings = {
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "programmer_sound" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1D6058940D05DD3E006BFB54 /* Debug */,
+				1D6058950D05DD3E006BFB54 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "programmer_sound" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4F08A954540054247B /* Debug */,
+				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}

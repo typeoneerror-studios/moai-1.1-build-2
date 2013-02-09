@@ -14325,7 +14325,7 @@
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(FMOD_IOS_SDK_ROOT)/api/inc/**",
+					"../../FMOD/iOS/api/inc/**",
 				);
 				PRODUCT_NAME = "moai-ios-fmod-ex";
 				SDKROOT = iphoneos;
@@ -14361,7 +14361,7 @@
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(FMOD_IOS_SDK_ROOT)/api/inc/**",
+					"../../FMOD/iOS/api/inc/**",
 				);
 				PRODUCT_NAME = "moai-ios-fmod-ex";
 				SDKROOT = iphoneos;
@@ -14397,7 +14397,7 @@
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(FMOD_IOS_SDK_ROOT)/api/inc/**",
+					"../../FMOD/iOS/api/inc/**",
 				);
 				PRODUCT_NAME = "moai-ios-fmod-ex";
 				SDKROOT = iphoneos;
@@ -14433,7 +14433,7 @@
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(FMOD_IOS_SDK_ROOT)/api/inc/**",
+					"../../FMOD/iOS/api/inc/**",
 				);
 				PRODUCT_NAME = "moai-ios-fmod-ex";
 				SDKROOT = iphoneos;
@@ -14617,7 +14617,7 @@
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(FMOD_OSX_SDK_ROOT)/api/inc/**",
+					"../../FMOD/Mac/api/inc/**",
 				);
 				OTHER_CFLAGS = (
 					"-mmacosx-version-min=10.6",
@@ -14661,7 +14661,7 @@
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(FMOD_OSX_SDK_ROOT)/api/inc/**",
+					"../../FMOD/Mac/api/inc/**",
 				);
 				OTHER_CFLAGS = (
 					"-mmacosx-version-min=10.6",
@@ -14705,7 +14705,7 @@
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(FMOD_OSX_SDK_ROOT)/api/inc/**",
+					"../../FMOD/Mac/api/inc/**",
 				);
 				OTHER_CFLAGS = (
 					"-mmacosx-version-min=10.6",
@@ -14749,7 +14749,7 @@
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(FMOD_OSX_SDK_ROOT)/api/inc/**",
+					"../../FMOD/Mac/api/inc/**",
 				);
 				OTHER_CFLAGS = (
 					"-mmacosx-version-min=10.6",

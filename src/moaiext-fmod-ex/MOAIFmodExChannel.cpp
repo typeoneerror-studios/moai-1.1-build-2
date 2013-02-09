@@ -26,22 +26,27 @@ int MOAIFmodExChannel::_getVolume ( lua_State* L ) {
 }
 
 //----------------------------------------------------------------//
-/**	@name	getVolume
- @text	Returns the current volume of the channel.
+/**	@name	isPlaying
+ @text	Returns true if channel is playing.
 
  @in	MOAIFmodExChannel self
- @out	float Volume - the volume currently set in this channel.
+ @out	boolean.
  */
 int MOAIFmodExChannel::_isPlaying ( lua_State* L ) {
 
 	MOAI_LUA_SETUP ( MOAIFmodExChannel, "U" )
 
-	bool isPlaying = self->mPlayState == PLAYING;
+	FMOD_RESULT result = FMOD_OK;
+	bool channelPlaying;
+
+	result = self->mChannel->isPlaying(&channelPlaying);
+	bool isPlaying = self->mPlayState == PLAYING && channelPlaying;
 
 	if ( self->mSound ) {
 		lua_pushboolean ( state, isPlaying );
 		return 1;
 	}
+
 	return 0;
 }
 
@@ -80,7 +85,7 @@ int MOAIFmodExChannel::_moveVolume ( lua_State* L ) {
 
 	@in		MOAIFmodExChannel self
 	@in		MOAIFmodExSound sound		The sound to play.
-	@in		boolean loop			Whether the sound should be looped.
+	@in		boolean loopCount			Number of times to loop.
 	@out	nil
 */
 int MOAIFmodExChannel::_play ( lua_State* L ) {
@@ -88,11 +93,36 @@ int MOAIFmodExChannel::_play ( lua_State* L ) {
 
 	self->mPlayState = PLAYING;
 	MOAIFmodExSound* sound = state.GetLuaObject < MOAIFmodExSound >( 2, true );
-	if ( !sound ) return 0;
+	if ( !sound ) {
+		return 0;
+	}
 
 	int loopCount = state.GetValue < int >( 3, 0 );
 
 	self->Play ( sound, loopCount );
+
+	return 0;
+}
+
+//----------------------------------------------------------------//
+/**	@name	playWithLoopPoint
+ @text	Plays the specified sound, looping at a certain point after end.
+
+ @in		MOAIFmodExChannel self
+ @in		MOAIFmodExSound sound		The sound to play.
+ @in		float loopPoint				Where to loop back to in seconds.
+ @out		nil
+ */
+int MOAIFmodExChannel::_playWithLoopPoint ( lua_State* L ) {
+	MOAI_LUA_SETUP ( MOAIFmodExChannel, "UU" )
+
+	self->mPlayState = PLAYING;
+	MOAIFmodExSound* sound = state.GetLuaObject < MOAIFmodExSound >( 2, true );
+	if ( !sound ) return 0;
+
+	float loopPoint = state.GetValue < float >( 3, 0.0f );
+
+	self->PlayWithLoopPoint( sound, loopPoint );
 
 	return 0;
 }
@@ -127,7 +157,7 @@ int MOAIFmodExChannel::_seekVolume ( lua_State* L ) {
 }
 
 //----------------------------------------------------------------//
-/**	@name	setLooping
+/**	@name	setVolume
 	@text	Immediately sets the volume of this channel.
 
 	@in		MOAIFmodExChannel self
@@ -154,27 +184,32 @@ int MOAIFmodExChannel::_setVolume ( lua_State* L ) {
 int MOAIFmodExChannel::_setPaused ( lua_State* L ) {
 	MOAI_LUA_SETUP ( MOAIFmodExChannel, "UB" )
 
-	self->mPlayState = PAUSED;
+	// self->mPlayState = PAUSED;
 	bool paused = state.GetValue < bool >( 2, false );
+	if ( paused ) {
+		self->mPlayState = PAUSED;
+	} else {
+		self->mPlayState = PLAYING;
+	}
+
 	self->SetPaused ( paused );
 
 	return 0;
 }
 
 //----------------------------------------------------------------//
-/**	@name	setVolume
-	@text	Immediately sets the volume of this channel.
+/**	@name	setLooping
+	@text	Immediately sets looping for this channel.
 
 	@in		MOAIFmodExChannel self
-	@in		number looping			Whether to loop sound. Default is false.
+	@in		boolean looping	  True if channel should loop.
 	@out	nil
 */
 int MOAIFmodExChannel::_setLooping ( lua_State* L ) {
 	MOAI_LUA_SETUP ( MOAIFmodExChannel, "U" )
 
 	float looping = state.GetValue < bool >( 2, false );
-	// self->mVolume = volume;
-	self->mLooping = looping
+	self->mLooping = looping;
 
 	return 0;
 }
@@ -236,20 +271,104 @@ MOAIFmodExChannel::~MOAIFmodExChannel () {
 }
 
 //----------------------------------------------------------------//
-void MOAIFmodExChannel::Play ( MOAIFmodExSound* sound, int loopCount ) {
+void MOAIFmodExChannel::PlayWithLoopPoint ( MOAIFmodExSound* sound, float loopPoint ) {
 
 	this->Stop ();
 	this->mSound = sound;
+
+#if DEBUG_MOAI_FMOD
+
+	if ( !sound ) {
+		printf( "\n\nFMOD ISSUE: !sound\n\n" );
+		return;
+	}
+	if ( !sound->mSound ) {
+		printf( "\n\nFMOD ISSUE: !sound->mSound %s\n\n", sound->GetFileName () );
+		return;
+	}
+
+	FMOD::System* soundSys = MOAIFmodEx::Get ().GetSoundSys ();
+	if ( !soundSys ) {
+		printf( "\n\nFMOD ISSUE: !soundSys\n\n" );
+		return;
+	}
+
+#else
+
 	if ( !sound ) return;
 	if ( !sound->mSound ) return;
 
 	FMOD::System* soundSys = MOAIFmodEx::Get ().GetSoundSys ();
 	if ( !soundSys ) return;
 
+#endif
+
 	FMOD_RESULT result;
 	FMOD::Channel* channel = 0;
 
-	//printf ( "PLAY SOUND %s, @ %f\n", sound->GetFileName (), USDeviceTime::GetTimeInSeconds () );
+	uint in = loopPoint * 1000;
+	uint out = 0;
+
+	sound->mSound->getLength(&out, FMOD_TIMEUNIT_MS);
+	sound->mSound->setLoopPoints(in, FMOD_TIMEUNIT_MS, out, FMOD_TIMEUNIT_MS);
+
+#if DEBUG_MOAI_FMOD
+
+	printf ( "PLAY SOUND WITH LOOP POINTS %s, %d, %d, @ %f\n", sound->GetFileName (), in, out, USDeviceTime::GetTimeInSeconds () );
+
+#endif
+
+	result = soundSys->playSound ( FMOD_CHANNEL_FREE, sound->mSound, true, &channel );
+	if ( result != FMOD_OK ) {
+		printf ( "FMOD ERROR: Sound did not play\n" );
+		return;
+	}
+
+	this->mChannel = channel;
+	this->mChannel->setMode ( FMOD_LOOP_NORMAL );
+
+	this->SetVolume ( this->mVolume );
+	this->SetPaused ( this->mPaused );
+}
+
+//----------------------------------------------------------------//
+void MOAIFmodExChannel::Play ( MOAIFmodExSound* sound, int loopCount ) {
+
+	this->Stop ();
+	this->mSound = sound;
+
+#if DEBUG_MOAI_FMOD
+
+	if ( !sound ) {
+		printf( "\n\nFMOD ISSUE: !sound\n\n" );
+		return;
+	}
+	if ( !sound->mSound ) {
+		printf( "\n\nFMOD ISSUE: !sound->mSound %s\n\n", sound->GetFileName () );
+		return;
+	}
+
+	FMOD::System* soundSys = MOAIFmodEx::Get ().GetSoundSys ();
+	if ( !soundSys ) {
+		printf( "\n\nFMOD ISSUE: !soundSys\n\n" );
+		return;
+	}
+
+	printf ( "PLAY SOUND %s, @ %f\n", sound->GetFileName (), USDeviceTime::GetTimeInSeconds () );
+
+#else
+
+	if ( !sound ) return;
+	if ( !sound->mSound ) return;
+
+	FMOD::System* soundSys = MOAIFmodEx::Get ().GetSoundSys ();
+	if ( !soundSys ) return;
+
+#endif
+
+	FMOD_RESULT result;
+	FMOD::Channel* channel = 0;
+
 	result = soundSys->playSound ( FMOD_CHANNEL_FREE, sound->mSound, true, &channel );
 	if ( result != FMOD_OK ) {
 		printf (" FMOD ERROR: Sound did not play\n" );
@@ -263,7 +382,7 @@ void MOAIFmodExChannel::Play ( MOAIFmodExSound* sound, int loopCount ) {
 		this->mChannel->setLoopCount ( -1 );
 	}
 	else {
-		this->mChannel->setLoopCount ( 0 );
+		this->mChannel->setLoopCount ( loopCount );
 	}
 
 	this->SetVolume ( this->mVolume );
@@ -280,15 +399,16 @@ void MOAIFmodExChannel::RegisterLuaClass ( MOAILuaState& state ) {
 void MOAIFmodExChannel::RegisterLuaFuncs ( MOAILuaState& state ) {
 
 	luaL_Reg regTable [] = {
-		{ "getVolume",		_getVolume },
-		{ "isPlaying",		_isPlaying },
-		{ "moveVolume",		_moveVolume },
-		{ "play",			_play },
-		{ "seekVolume",		_seekVolume },
-		{ "setPaused",		_setPaused },
-		{ "setLooping",		_setLooping },
-		{ "setVolume",		_setVolume },
-		{ "stop",			_stop },
+		{ "getVolume",			_getVolume },
+		{ "isPlaying",			_isPlaying },
+		{ "moveVolume",			_moveVolume },
+		{ "play",				_play },
+		{ "playWithLoopPoint",	_playWithLoopPoint },
+		{ "seekVolume",			_seekVolume },
+		{ "setPaused",			_setPaused },
+		{ "setLooping",			_setLooping },
+		{ "setVolume",			_setVolume },
+		{ "stop",				_stop },
 		{ NULL, NULL }
 	};
 

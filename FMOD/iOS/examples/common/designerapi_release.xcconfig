@@ -1,0 +1,4 @@
+#include "release.xcconfig"
+#include "designerapi_common.xcconfig"
+
+OTHER_LDFLAGS = -lfmodex_$PLATFORM_NAME -lfmodevent_$PLATFORM_NAME -lfmodeventnet_$PLATFORM_NAME
