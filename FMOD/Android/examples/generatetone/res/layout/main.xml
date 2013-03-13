@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" android:padding="10dip">
+<Button 
+	android:layout_height="wrap_content"
+	android:layout_width="fill_parent" android:id="@+id/button1" android:onClick="playSine" android:text="Play Sine Wave"/>
+<Button android:layout_height="wrap_content" android:id="@+id/button2" android:layout_width="fill_parent" android:text="Play Square Wave" android:onClick="playSquare"></Button>
+<Button android:id="@+id/button3" android:layout_height="wrap_content" android:layout_width="fill_parent" android:onClick="playSawUp" android:text="Play Saw Wave"></Button>
+<Button android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/button4" android:text="Play Triangle Wave" android:onClick="playTriangle"></Button>
+<Button android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/button5" android:onClick="playNoise" android:text="Play White Noise"></Button>
+<LinearLayout android:id="@+id/linearLayout1" android:layout_width="match_parent" android:layout_height="wrap_content">
+    <TextView android:text="Volume " android:layout_height="wrap_content" android:textStyle="bold" android:layout_gravity="center_vertical" android:layout_width="wrap_content" android:id="@+id/textVolume"></TextView>
+    <TextView android:layout_height="wrap_content" android:layout_width="match_parent" android:layout_gravity="center_vertical" android:gravity="right" android:text="1.0" android:id="@+id/txtVolume"></TextView>
+</LinearLayout>
+<SeekBar android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/seekBarVolume"></SeekBar>
+<LinearLayout android:id="@+id/linearLayout2" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_gravity="center_vertical">
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Frequency" android:textStyle="bold" android:layout_gravity="right|center_vertical" android:id="@+id/textFrequency"></TextView>
+    <TextView android:layout_height="wrap_content" android:layout_width="match_parent" android:gravity="right" android:text="440.0" android:id="@+id/txtFrequency"></TextView>
+</LinearLayout>
+<SeekBar android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/seekBarFrequency"></SeekBar>
+<LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/LinearLayout3">
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_vertical" android:text="Pan" android:textStyle="bold" android:id="@+id/textPan"></TextView>
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="right" android:text="0.0" android:id="@+id/txtPan"></TextView>
+</LinearLayout>
+<SeekBar android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/seekBarPan"></SeekBar>
+<TextView android:text="@string/copyright" android:id="@+id/textView4" android:layout_height="fill_parent" android:layout_width="fill_parent" android:gravity="bottom|center"></TextView>
+</LinearLayout>

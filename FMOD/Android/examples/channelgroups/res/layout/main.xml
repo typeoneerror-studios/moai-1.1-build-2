@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" android:padding="10dip">
+    <TextView android:id="@+id/textView1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Group A : drumloop.wav, jaguar.wav, swish.wav"></TextView>
+    <TextView android:id="@+id/textView2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Group B : c.ogg, d.ogg, e.ogg"></TextView>
+    <TextView android:id="@+id/textView5" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+<Button 
+	android:layout_height="wrap_content"
+	android:layout_width="fill_parent" android:id="@+id/button1" android:text="Mute / unmute group A" android:onClick="muteGroupA"/>
+<Button android:layout_height="wrap_content" android:id="@+id/button2" android:layout_width="fill_parent" android:text="Mute / unmute group B" android:onClick="muteGroupB"></Button>
+<Button android:id="@+id/button3" android:layout_height="wrap_content" android:layout_width="fill_parent" android:text="Mute / unmute group A and B (master group)" android:onClick="muteMasterGroup"></Button>
+<LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/LinearLayout3">
+    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:textStyle="bold" android:text="Channels Playing:" android:id="@+id/TextView3"></TextView>
+    <TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:text="0" android:gravity="right" android:id="@+id/txtChans"></TextView>
+</LinearLayout>
+<TextView android:text="@string/copyright" android:id="@+id/textView4" android:layout_height="fill_parent" android:layout_width="fill_parent" android:gravity="bottom|center"></TextView>
+</LinearLayout>

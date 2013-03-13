@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" android:padding="10dip">
+<Button 
+	android:layout_height="wrap_content"
+	android:layout_width="fill_parent" android:id="@+id/button1" android:onClick="toggleLowpass" android:text="Toggle LowPass on/off on left speaker"/>
+<Button android:layout_height="wrap_content" android:id="@+id/button2" android:layout_width="fill_parent" android:text="Toggle Chorus on/off on right speaker" android:onClick="toggleChorus"></Button>
+<LinearLayout android:id="@+id/linearLayout1" android:layout_width="match_parent" android:layout_height="wrap_content">
+    <TextView android:id="@+id/textView1" android:layout_height="match_parent" android:layout_width="wrap_content" android:gravity="left|center" android:text="Pan:  " android:textStyle="bold"></TextView>
+    <SeekBar android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/seekBar1"></SeekBar>
+</LinearLayout>
+<LinearLayout android:id="@+id/linearLayout2" android:layout_width="match_parent" android:layout_height="wrap_content">
+</LinearLayout>
+<LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/LinearLayout3">
+    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:textStyle="bold" android:text="Channels Playing:" android:id="@+id/TextView3"></TextView>
+    <TextView android:layout_height="wrap_content" android:layout_width="fill_parent" android:text="0" android:gravity="right" android:id="@+id/txtChans"></TextView>
+</LinearLayout>
+<TextView android:text="@string/copyright" android:id="@+id/textView4" android:layout_height="fill_parent" android:layout_width="fill_parent" android:gravity="bottom|center"></TextView>
+</LinearLayout>

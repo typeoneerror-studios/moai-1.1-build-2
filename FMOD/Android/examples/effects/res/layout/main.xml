@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" android:padding="10dip">
+<Button 
+	android:layout_height="wrap_content"
+	android:onClick="pauseStream" android:layout_width="fill_parent" android:text="Pause / Unpause" android:id="@+id/button1"/>
+<CheckBox android:layout_height="wrap_content" android:onClick="toggleLowpass" android:layout_width="match_parent" android:text="Lowpass" android:id="@+id/checkBox1"></CheckBox>
+<CheckBox android:layout_height="wrap_content" android:layout_width="match_parent" android:text="Highpass" android:onClick="toggleHighpass" android:id="@+id/checkBox2"></CheckBox>
+<CheckBox android:layout_height="wrap_content" android:layout_width="match_parent" android:onClick="toggleEcho" android:text="Echo" android:id="@+id/checkBox3"></CheckBox>
+<CheckBox android:layout_height="wrap_content" android:layout_width="match_parent" android:text="Flange" android:onClick="toggleFlange" android:id="@+id/checkBox4"></CheckBox>
+<CheckBox android:layout_height="wrap_content" android:layout_width="match_parent" android:onClick="toggleDistortion" android:text="Distortion" android:id="@+id/checkBox5"></CheckBox>
+<CheckBox android:layout_height="wrap_content" android:layout_width="match_parent" android:text="Chorus" android:onClick="toggleChorus" android:id="@+id/checkBox6"></CheckBox>
+<CheckBox android:layout_height="wrap_content" android:layout_width="match_parent" android:onClick="toggleParameq" android:text="ParamEq" android:id="@+id/checkBox7"></CheckBox>
+<LinearLayout android:id="@+id/linearLayout2" android:layout_width="match_parent" android:layout_height="wrap_content">
+    <TextView android:text="State:" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:id="@+id/textView1"></TextView>
+    <TextView android:gravity="right" android:text="Paused" android:layout_width="fill_parent" android:id="@+id/txtState" android:layout_height="wrap_content"></TextView>
+</LinearLayout>
+<TextView android:text="@string/copyright" android:layout_height="fill_parent" android:layout_width="fill_parent" android:gravity="bottom|center" android:id="@+id/textView2"></TextView>
+</LinearLayout>

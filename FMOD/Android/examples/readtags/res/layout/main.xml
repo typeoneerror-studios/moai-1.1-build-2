@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" android:padding="10dip">
+    <TextView android:id="@+id/textView1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Artist:" android:textStyle="bold"></TextView>
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/txtArtistTag" android:text="artist"></TextView>
+    <TextView android:id="@+id/textView5" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+    <TextView android:id="@+id/textView2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Title:" android:textStyle="bold"></TextView>
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="title" android:id="@+id/txtTitleTag"></TextView>
+    <TextView android:id="@+id/textView3" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+    <TextView android:id="@+id/textView6" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Check LogCat for more Tag information."></TextView>
+<TextView android:text="@string/copyright" android:id="@+id/textView4" android:layout_height="fill_parent" android:layout_width="fill_parent" android:gravity="bottom|center"></TextView>
+</LinearLayout>

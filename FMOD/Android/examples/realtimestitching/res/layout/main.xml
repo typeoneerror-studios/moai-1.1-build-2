@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" android:padding="10dip">
+<Button 
+	android:text="Play / Pause" 
+	android:layout_height="wrap_content"
+	android:onClick="pauseStream" android:layout_width="fill_parent" android:id="@+id/btnPause"/>
+<TextView android:text="@string/copyright" android:id="@+id/textView4" android:layout_height="fill_parent" android:layout_width="fill_parent" android:gravity="bottom|center"></TextView>
+</LinearLayout>

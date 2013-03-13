@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" android:padding="10dip">
+<Button 
+	android:layout_height="wrap_content"
+	android:layout_width="fill_parent" android:id="@+id/button1" android:onClick="playNextSound" android:text="Play next subsound"/>
+<LinearLayout android:layout_width="match_parent" android:id="@+id/linearLayout4" android:layout_height="wrap_content">
+    <TextView android:text="Next Subsound:" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TextNextSubsound"></TextView>
+    <TextView android:gravity="right" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="0" android:id="@+id/txtNextSubsound"></TextView>
+</LinearLayout>
+<LinearLayout android:layout_width="match_parent" android:id="@+id/linearLayout5" android:layout_height="wrap_content">
+    <TextView android:textStyle="bold" android:id="@+id/TextView01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Total Subsounds"></TextView>
+    <TextView android:gravity="right" android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/txtTotalSubsounds" android:text="0"></TextView>
+</LinearLayout>
+<LinearLayout android:id="@+id/linearLayout1" android:layout_width="match_parent" android:layout_height="wrap_content">
+    <TextView android:layout_width="wrap_content" android:id="@+id/textView1" android:layout_height="wrap_content" android:textStyle="bold" android:text="Position:"></TextView>
+    <TextView android:text="00:00:00 / 00:00:00" android:id="@+id/txtPos" android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="right"></TextView>
+</LinearLayout>
+<LinearLayout android:id="@+id/linearLayout2" android:layout_width="match_parent" android:layout_height="wrap_content">
+    <TextView android:text="State:" android:id="@+id/textView2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold"></TextView>
+    <TextView android:gravity="right" android:text="Paused" android:layout_width="fill_parent" android:id="@+id/txtState" android:layout_height="wrap_content"></TextView>
+</LinearLayout>
+<LinearLayout android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/LinearLayout3">
+</LinearLayout>
+<TextView android:text="@string/copyright" android:id="@+id/textView4" android:layout_height="fill_parent" android:layout_width="fill_parent" android:gravity="bottom|center"></TextView>
+</LinearLayout>
