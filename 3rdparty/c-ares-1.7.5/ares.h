@@ -45,7 +45,7 @@
    libc5-based Linux systems. Only include it on system that are known to
    require it! */
 #if defined(_AIX) || defined(__NOVELL_LIBC__) || defined(__NetBSD__) || \
-    defined(__minix) || defined(__SYMBIAN32__) || defined(__INTEGRITY)
+    defined(__minix) || defined(__SYMBIAN32__) || defined(__INTEGRITY) || defined (ANDROID)
 #include <sys/select.h>
 #endif
 #if (defined(NETWARE) && !defined(__NOVELL_LIBC__))
@@ -303,9 +303,9 @@ typedef int  (*ares_sock_create_callback)(ares_socket_t socket_fd,
                                           void *data);
 
 CARES_EXTERN void ares_set_default_dns_addr(int addr);
-	
+
 CARES_EXTERN int ares_get_default_dns_addr();
-	
+
 CARES_EXTERN int ares_library_init(int flags);
 
 CARES_EXTERN void ares_library_cleanup(void);

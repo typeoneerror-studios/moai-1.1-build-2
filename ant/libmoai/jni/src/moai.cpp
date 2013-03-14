@@ -15,8 +15,15 @@
 #include <moaiext-android/moaiext-jni.h>
 
 #include <aku/AKU.h>
-#include <aku/AKU-untz.h>
 #include <aku/AKU-luaext.h>
+
+#ifdef USE_FMOD
+#include <aku/AKU-fmod-ex.h>
+#endif
+
+#ifdef USE_UNTZ
+#include <aku/AKU-untz.h>
+#endif
 
 //================================================================//
 // Input event locking queue
@@ -162,7 +169,7 @@
 	}
 
 	//----------------------------------------------------------------//
-	extern "C" void Java_com_ziplinegames_moai_Moai_AKUEnqueueCompassEvent ( JNIEnv* env, jclass obj, jint deviceId, jint sensorId, jint heading ) {
+	extern "C" void Java_com_ziplinegames_moai_Moai_AKUEnqueueCompassEvent ( JNIEnv* env, jclass obj, jint deviceId, jint sensorId, jfloat heading ) {
 
 		InputEvent ievent;
 
@@ -262,6 +269,14 @@
 	}
 
 	//----------------------------------------------------------------//
+	extern "C" void Java_com_ziplinegames_moai_Moai_AKUFMODExInit ( JNIEnv* env, jclass obj ) {
+
+#ifdef USE_FMOD
+		AKUFmodExInit ();
+#endif
+	}
+
+	//----------------------------------------------------------------//
 	extern "C" void Java_com_ziplinegames_moai_Moai_AKUInit ( JNIEnv* env, jclass obj ) {
 
 		MOAIAppAndroid::Affirm ();
@@ -270,6 +285,12 @@
 		MOAIDialogAndroid::Affirm ();
 		REGISTER_LUA_CLASS ( MOAIDialogAndroid );
 
+		MOAIMoviePlayerAndroid::Affirm ();
+		REGISTER_LUA_CLASS ( MOAIMoviePlayerAndroid );
+
+		MOAIKeyboardAndroid::Affirm ();
+		REGISTER_LUA_CLASS ( MOAIKeyboardAndroid );
+		
 #ifndef DISABLE_ADCOLONY
 		MOAIAdColonyAndroid::Affirm ();
 		REGISTER_LUA_CLASS ( MOAIAdColonyAndroid );
@@ -329,10 +350,14 @@
 
 		if ( paused ) {
 		
+#ifdef USE_UNTZ
 			AKUUntzSuspend ();
+#endif
 		} else {
 		
+#ifdef USE_UNTZ
 			AKUUntzResume ();
+#endif
 		}		
 	}
 
@@ -530,7 +555,9 @@
 	//----------------------------------------------------------------//
 	extern "C" void Java_com_ziplinegames_moai_Moai_AKUUntzInit ( JNIEnv* env, jclass obj ) {
 		
+#ifdef USE_UNTZ
 		AKUUntzInit ();
+#endif
 	}
 	
 	//----------------------------------------------------------------//
