@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Play Sound</title>
+	
+	<script type="text/javascript">
+	var moduleUrl = "playsound.nmf"
+	
+	var extraCallback = function (message_event)
+		{
+			var elements = message_event.data.split(":");
+			var infoMessage = "Time: " + elements[0] + "ms / " + elements[1] + "ms	" + elements[2] + "	 Channels = " + elements[3];
+			var infoField = document.getElementById('soundInfoField');
+			if (infoField) 
+			{
+				infoField.innerHTML = infoMessage;
+			}
+		}
+	</script>
+	
+	<script type="text/javascript" src="../common_js/common.js"></script>
+</head>
+
+<body onload="attemptLoadModule(true)">
+
+<h1>Play Sound Sample</h1>
+<p>
+ This example shows how to simply load and play multiple sounds.  This is about the simplest
+ use of FMOD.
+ This makes FMOD decode the sound into memory when it loads.  If the sounds are big and possibly take
+ up a lot of ram, then it would be better to use the FMOD_CREATESTREAM flag so that it is 
+ streamed in realtime as it plays.
+  <form name="form"	action="" method="get">
+	<input type="button" value="Play Mono Sound" onclick="sendMessageToModule('playMonoSound')" /> <p/>
+	<input type="button" value="Play Stereo Sound" onclick="sendMessageToModule('playStereoSound')" /> <p/>
+  </form>  
+  
+  <div id="soundInfoField"></div>
+  
+</p>
+<div><strong>Page status:</strong></div>
+<div id="pageStatusField">Page loaded</div><p/ >
+
+<div><strong>Native client module status: </strong></div>
+<div id="moduleStatusField"></div>
+</body>
+</html>

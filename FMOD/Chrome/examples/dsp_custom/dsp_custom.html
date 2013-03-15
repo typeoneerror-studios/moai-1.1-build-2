@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Custom DSP</title>
+	
+	<script type="text/javascript">
+	var moduleUrl = "dsp_custom.nmf"
+	</script>
+	
+	<script type="text/javascript" src="../common_js/common.js"></script>
+</head>
+
+<body onload="attemptLoadModule(true)">
+
+<h1>Custom DSP Sample</h1>
+<p>
+ This example shows how to add a user created DSP callback to process audio data.
+ A read callback is generated at runtime, and can be added anywhere in the DSP network.
+ <p>The sample DSP simply halves the volume.</p>
+  <form name="form"	action="" method="get">
+	<input type="button" value="Toggle Custom DSP" onclick="sendMessageToModule('toggleCustomDsp')" /> <p/>
+  </form>  
+  
+  <div id="soundInfoField"></div>
+  
+</p>
+<div><strong>Page status:</strong></div>
+<div id="pageStatusField">Page loaded</div><p/ >
+
+<div><strong>Native client module status: </strong></div>
+<div id="moduleStatusField"></div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple Event</title>
+	
+	<script type="text/javascript">
+	var moduleUrl = "simple_event.nmf"
+	</script>
+	
+	<script type="text/javascript" src="../common_js/common.js"></script>
+</head>
+
+<body onload="attemptLoadModule(true)">
+
+<h1>Simple Event Sample</h1>
+<p>
+   Demonstrates basic usage of FMOD's data-driven event library
+  <form name="form"	action="" method="get">
+	<input type="button" value="Play Event" onclick="sendMessageToModule('playEvent')" /> <p/>
+  </form>  
+  
+</p>
+<div><strong>Page status:</strong></div>
+<div id="pageStatusField">Page loaded</div><p/ >
+
+<div><strong>Native client module status: </strong></div>
+<div id="moduleStatusField"></div>
+</body>
+</html>

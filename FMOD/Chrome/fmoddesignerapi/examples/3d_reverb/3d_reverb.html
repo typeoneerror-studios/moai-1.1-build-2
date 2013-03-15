@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>3D Reverb</title>
+	
+	<script type="text/javascript">
+	var moduleUrl = "3d_reverb.nmf"
+	var extraCallback = function (message_event)
+		{
+			var infoField = document.getElementById('customDisplay');
+			if (infoField) 
+			{
+				infoField.innerHTML = message_event.data;
+			}
+		}
+	</script>
+	
+	<script type="text/javascript" src="../common_js/common.js"></script>
+</head>
+
+<body onload="attemptLoadModule(true)">
+
+<h1>3D Reverb Sample</h1>
+<p>
+   Example to demonstrate 3d reverb spheres, global reverb, multiple reverb instances and music reverb
+  <form name="form"	action="" method="get">
+	<input type="button" value="Toggle Event" onclick="sendMessageToModule('toggleEvent')" /> <p/>
+	<input type="button" value="Toggle Music" onclick="sendMessageToModule('toggleMusic')" /> <p/>
+	<input type="button" value="Toggle Automove" onclick="sendMessageToModule('toggleAutoMove')" /> <p/>
+	<input type="button" value="Move Forwards" onclick="sendMessageToModule('moveForwards')" /> <p/>
+	<input type="button" value="Move Backwards" onclick="sendMessageToModule('moveBackwards')" /> <p/>
+	<input type="button" value="Increase Reverb" onclick="sendMessageToModule('increaseReverb')" /> <p/>
+	<input type="button" value="Decrease Reverb" onclick="sendMessageToModule('decreaseReverb')" /> <p/>
+  </form>  
+  
+  <div>1, 2 : centre of sphere; m : minimum distance; x : maximum distance</div>
+  <div id="customDisplay"></div>
+  
+</p>
+<div><strong>Page status:</strong></div>
+<div id="pageStatusField">Page loaded</div><p/ >
+
+<div><strong>Native client module status: </strong></div>
+<div id="moduleStatusField"></div>
+</body>
+</html>

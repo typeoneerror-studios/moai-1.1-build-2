@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>3D</title>
+	
+	<script type="text/javascript">
+	var moduleUrl = "3D.nmf"
+	
+	var extraCallback = function (message_event)
+		{
+			var infoField = document.getElementById('soundInfoField');
+			if (infoField) 
+			{
+				infoField.innerHTML = message_event.data;
+			}
+		}
+	</script>
+	
+	<script type="text/javascript" src="../common_js/common.js"></script>
+</head>
+
+<body onload="attemptLoadModule(true)">
+
+<h1>3D Sample</h1>
+<p>
+   This example shows how to perform basic 3d positioning
+  <form name="form"	action="" method="get">
+	<input type="button" value="Toggle Sound 1" onclick="sendMessageToModule('toggleSound1')" /> <p/>
+	<input type="button" value="Toggle Sound 2" onclick="sendMessageToModule('toggleSound2')" /> <p/>
+	<input type="button" value="Play 2D Sound" onclick="sendMessageToModule('play2dSound')" /> <p/>
+	<input type="button" value="Toggle Automove" onclick="sendMessageToModule('toggleAutoMove')" /> <p/>
+	<input type="button" value="Move Left" onclick="sendMessageToModule('moveForwards')" /> <p/>
+	<input type="button" value="Move Right" onclick="sendMessageToModule('moveBackwards')" /> <p/>
+  </form>  
+  
+  <div id="soundInfoField"></div>
+  
+</p>
+<div><strong>Page status:</strong></div>
+<div id="pageStatusField">Page loaded</div><p/ >
+
+<div><strong>Native client module status: </strong></div>
+<div id="moduleStatusField"></div>
+</body>
+</html>

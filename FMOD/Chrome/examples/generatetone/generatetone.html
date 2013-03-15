@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Generate Tone</title>
+	<script type="text/javascript">
+		var moduleUrl = "generatetone.nmf"
+	
+		var extraCallback = function (message_event)
+		{
+			var elements = message_event.data.split(":");
+			document.getElementById('volume').value = elements[0];
+			document.getElementById('frequency').value = elements[1];
+			document.getElementById('pan').value = elements[2];
+		}
+	</script>
+	
+	<script type="text/javascript" src="../common_js/common.js"></script>
+</head>
+<body onload="attemptLoadModule(true)">
+
+<h1>Generated Tone Sample</h1>
+<p>
+ This example shows how simply play generated tones using FMOD::System::playDSP instead of 
+ manually connecting and disconnecting DSP units.
+  <form name="form"
+        action=""
+        method="get">
+    <input type="button" value="Start Sine Wave" onclick="sendMessageToModule('playSineWave')" /> <p/>
+    <input type="button" value="Start Square Wave" onclick="sendMessageToModule('playSquareWave')" /> <p/>
+    <input type="button" value="Start Saw Wave" onclick="sendMessageToModule('playSawWave')" /> <p/>
+    <input type="button" value="Start Triangle Wave" onclick="sendMessageToModule('playTriangleWave')" /> <p/>
+    <input type="button" value="Start White Noise" onclick="sendMessageToModule('playWhiteNoise')" /> <p/>
+    <input type="button" value="Stop Channel" onclick="sendMessageToModule('stopChannel')" /> <p/>
+    <strong>Volume</strong><input type="button" value="-" onclick="sendMessageToModule('volumeDown')" /> 
+	<input type="text" size="5" value="0.0" id="volume"  readonly=true" /> 
+	<input type="button" value="+" onclick="sendMessageToModule('volumeUp')" /><p/>
+    <strong>Frequency</strong><input type="button" value="-" onclick="sendMessageToModule('frequencyDown')" />
+	<input type="text" size="10" value="0.0" id="frequency" readonly=true" />
+	<input type="button" value="+" onclick="sendMessageToModule('frequencyUp')" /><p/>
+    <strong>Pan</strong><input type="button" value="<-" onclick="sendMessageToModule('panLeft')" /> 
+	<input type="text" size="3" value="0.0" id="pan"  readonly=true"/> 
+	<input type="button" value="->" onclick="sendMessageToModule('panRight')" /><p/>
+	
+  </form>
+
+</p>
+<div><strong>Page status:</strong></div>
+<div id="pageStatusField">Page loaded</div><p/ >
+
+<div><strong>Native client module status: </strong></div>
+<div id="moduleStatusField"></div>
+</body>
+</html>

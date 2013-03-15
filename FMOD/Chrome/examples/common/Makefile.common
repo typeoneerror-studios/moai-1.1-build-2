@@ -1,0 +1,103 @@
+ifeq (${NACL_SDK_ROOT},)
+error:
+	@echo "NACL_SDK_ROOT environment variable not defined. Please set it to the Google Native Client SDK installation directory."
+endif
+
+ifeq (${NACL_TARGET_PLATFORM},)
+error2:
+	@echo "NACL_TARGET_PLATFORM environment variable is not defined."
+endif
+
+NACL_SDK_ROOT := $(subst \,/,$(NACL_SDK_ROOT))
+
+ifeq (${NACL_TARGET_PLATFORM},pepper_14)
+NACL_TOOLCHAIN := win_x86
+else
+NACL_TOOLCHAIN := win_x86_newlib
+endif
+
+ifeq (${ABI}, x86-32)
+	NACL_TOOL_PREFIX := ${NACL_SDK_ROOT}/${NACL_TARGET_PLATFORM}/toolchain/${NACL_TOOLCHAIN}/bin/i686-nacl-
+    DEFINES := 
+    CFLAGS := -m32
+    LDFLAGS := ${LDFLAGS} -melf32
+else
+	override ABI = x86-64
+	NACL_TOOL_PREFIX := ${NACL_SDK_ROOT}/${NACL_TARGET_PLATFORM}/toolchain/${NACL_TOOLCHAIN}/bin/x86_64-nacl-
+    DEFINES := 
+    CFLAGS := -m64
+    LDFLAGS := ${LDFLAGS} -melf64
+endif
+
+
+ifeq ($(CONFIG), Debug)
+    CFLAGS := ${CFLAGS} -g -O0
+    DEFINES := ${DEFINES} -D_DEBUG
+    LDFLAGS := ${LDFLAGS}
+    SUFFIX := D
+else
+    CFLAGS := ${CFLAGS} -O2 -fno-stack-check -fno-stack-protector
+    DEFINES := ${DEFINES} -DFINAL -DNDEBUG
+    LDFLAGS := ${LDFLAGS} --strip-unneeded
+
+    ifeq ($(CONFIG), ReleaseWithLogging)
+        DEFINES := ${DEFINES} -DFMOD_DEBUG
+        SUFFIX := L
+    else
+        override CONFIG	= Release
+    endif
+endif
+
+export CYGWIN := nodosfilewarning
+
+DEFINES               := ${DEFINES}
+CFLAGS                := ${CFLAGS} -pthread -fno-builtin
+CXXFLAGS               = ${CFLAGS} -Wno-long-long
+CXX                    = ${NACL_TOOL_PREFIX}g++ ${CXXFLAGS} ${DEFINES}
+CC                     = ${NACL_TOOL_PREFIX}gcc ${CFLAGS} ${DEFINES}
+LINK                   = ${NACL_TOOL_PREFIX}g++ ${LDFLAGS}
+
+LIBS                  := -lppapi_cpp -lppapi -lc -lstdc++ -lm -lpthread -lgcc
+
+FMOD_LIB_PATH		   = ../../api/lib/${NACL_TARGET_PLATFORM}/${NACL_TOOLCHAIN}/${ABI}/libfmodex${SUFFIX}.a
+
+INCLUDE_FMOD           = -I../../api/inc
+INCLUDE_NACL		   = -I${NACL_SDK_ROOT}
+LIBRARY_FMOD           = -L../../api/lib/${NACL_TARGET_PLATFORM}/${NACL_TOOLCHAIN}/${ABI}
+
+NEXE_SUFFIX			   = $(subst -,_,${ABI})
+OBJ_DIR				   = objs/$(CONFIG)/${NACL_TARGET_PLATFORM}/${NACL_TOOLCHAIN}/$(ABI)
+
+OBJ_FILES			   = $(addprefix $(OBJ_DIR)/, $(OBJS))
+
+NEXE_FILE			   = $(NEXE_NAME)_$(NEXE_SUFFIX).nexe
+
+all: banner $(OBJ_DIR) $(NEXE_FILE)
+	@echo "Done."
+
+banner:
+	@echo "============================================================================================="
+	@echo "Build Started: ${CONFIG}, Platform=${NACL_TARGET_PLATFORM}, Toolchain=${NACL_TOOLCHAIN}, ABI=${ABI}"
+	@echo "============================================================================================="
+	@echo ""
+	
+$(NEXE_FILE): $(OBJ_FILES) $(FMOD_LIB_PATH)
+	${LINK} -o $@ $^ ${LIBS}
+	
+$(OBJ_DIR)/%.o: %.cpp
+	${CXX} ${INCLUDE_FMOD} ${INCLUDE_NACL} -o $@ -c $<
+	
+$(OBJ_DIR)/%.o: ../common/%.cpp
+	$(CXX) ${INCLUDE_FMOD} ${INCLUDE_NACL} -o $@ -c $<
+	
+$(OBJ_DIR):
+	@mkdir -p $@
+
+.PHONY: clean	
+clean:
+	@echo "============================================================================================="
+	@echo "Clean Started: ${CONFIG}, Platform=${NACL_TARGET}, Toolchain=${NACL_TOOLCHAIN}, ABI=${ABI}"
+	@echo "============================================================================================="
+	@echo ""
+	@$(RM) $(OBJ_FILES) $(NEXE_FILE)
+	@echo "Done."

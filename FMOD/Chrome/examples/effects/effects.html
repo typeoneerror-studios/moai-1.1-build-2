@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Effects Sample</title>
+	
+	<script type="text/javascript">
+	var moduleUrl = "effects.nmf"
+	
+	var extraCallback = function (message_event)
+		{
+			var elements = message_event.data.split(":");
+			var infoMessage = "Time: " + elements[0] + "ms / " + elements[1] + "ms	" + elements[2] + "	 Channels = " + elements[3];
+			var infoField = document.getElementById('soundInfoField');
+			if (infoField) 
+			{
+				infoField.innerHTML = infoMessage;
+			}
+		}
+	</script>
+	
+	<script type="text/javascript" src="../common_js/common.js"></script>
+</head>
+
+<body onload="attemptLoadModule(true)">
+
+<h1>Effects Sample</h1>
+<p>
+   This example shows how to apply some of the built in software effects to sounds. 
+ This example filters the global mix.  All software sounds played here would be filtered in the 
+ same way.
+ To filter per channel, and not have other channels affected, simply replace system->addDSP with
+ channel->addDSP.
+ Note in this example you don't have to add and remove units each time, you could simply add them 
+ all at the start then use DSP::setActive to toggle them on and off.
+  <form name="form"	action="" method="get">
+	<strong>Low Pass Effect</strong><input type="checkbox" onclick="sendMessageToModule('toggleLowPass')" /> <p/>
+	<strong>High Pass Effect</strong><input type="checkbox" onclick="sendMessageToModule('toggleHighPass')" /> <p/>
+	<strong>Echo Effect</strong><input type="checkbox" onclick="sendMessageToModule('toggleEcho')" /> <p/>
+	<strong>Flange Effect</strong><input type="checkbox" onclick="sendMessageToModule('toggleFlange')" /> <p/>
+	<strong>Distortion Effect</strong><input type="checkbox" onclick="sendMessageToModule('toggleDistortion')" /> <p/>
+	<strong>Chrous Effect</strong><input type="checkbox" onclick="sendMessageToModule('toggleChorus')" /> <p/>
+	<strong>Parametric EQ Effect</strong><input type="checkbox" onclick="sendMessageToModule('toggleParamEq')" /> <p/>
+  </form>  
+    
+</p>
+<div><strong>Page status:</strong></div>
+<div id="pageStatusField">Page loaded</div><p/ >
+
+<div><strong>Native client module status: </strong></div>
+<div id="moduleStatusField"></div>
+</body>
+</html>
