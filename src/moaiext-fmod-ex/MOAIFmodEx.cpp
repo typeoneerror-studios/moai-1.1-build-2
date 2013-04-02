@@ -108,7 +108,24 @@ void MOAIFmodEx::OpenSoundSystem () {
 	//FMOD::Debug_SetLevel(FMOD_DEBUG_LEVEL_ERROR);
 
 	result = FMOD::System_Create ( &this->mSoundSys ); // Create the main system object.
+
+#if DEBUG_MOAI_FMOD
+
+	#if MOAI_ANDROID_HOST
+
+		if ( result != FMOD_OK ) {
+
+			__android_log_print(ANDROID_LOG_DEBUG, "TOE", "FMOD ISSUE: OpenSoundSystem() System_Create() \n");
+			return;
+		}
+
+	#endif
+
+#else
+
 	if ( result != FMOD_OK ) return;
+
+#endif
 
 #ifdef MOAI_OS_NACL
 
@@ -122,10 +139,41 @@ void MOAIFmodEx::OpenSoundSystem () {
 	result = this->mSoundSys->init ( 32, FMOD_INIT_NORMAL, 0 );
 #endif
 
+#if DEBUG_MOAI_FMOD
+
+	#if MOAI_ANDROID_HOST
+
+		if ( result != FMOD_OK ) {
+			__android_log_print(ANDROID_LOG_DEBUG, "TOE", "FMOD ISSUE: OpenSoundSystem() init() \n");
+			return;
+		}
+
+	#endif
+
+#else
+
 	if ( result != FMOD_OK ) return;
 
+#endif
+
 	result = this->mSoundSys->getMasterChannelGroup ( &this->mMainChannelGroup );
+
+#if DEBUG_MOAI_FMOD
+
+	#if MOAI_ANDROID_HOST
+
+		if ( result != FMOD_OK ) {
+			__android_log_print(ANDROID_LOG_DEBUG, "TOE", "FMOD ISSUE: OpenSoundSystem() getMasterChannelGroup() \n");
+			return;
+		}
+
+	#endif
+
+#else
+
 	if ( result != FMOD_OK ) return;
+
+#endif
 }
 
 //----------------------------------------------------------------//

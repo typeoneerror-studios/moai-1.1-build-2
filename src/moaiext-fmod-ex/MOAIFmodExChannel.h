@@ -7,6 +7,7 @@
 #include <moaicore/moaicore.h>
 
 #define DEBUG_MOAI_FMOD 1
+#define MOAI_ANDROID_HOST 1
 
 class MOAIFmodExSound;
 
