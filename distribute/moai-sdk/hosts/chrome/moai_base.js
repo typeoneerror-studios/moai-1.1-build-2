@@ -10,13 +10,13 @@ Moai.Base = function () {
 
 	window.onbeforeunload = function () { return "Leaving this page will erase any current progress."; };
 	window.onload = this.Init;
-	
+
 	this.naclMessageHandler = this.naclMessageHandler.bind ( this );
 }
 
 //message handlers
 Moai.Base.prototype.naclMessageHandler = function ( message_event ) {
-	
+
 	if ( message_event.data.search ( 'URL:Open:' ) != -1 ) {
 		var startFirstArg = 'URL:Open:'.length;
 		var endFirstArg = message_event.data.length;
@@ -35,7 +35,7 @@ Moai.Base.prototype.naclMessageHandler = function ( message_event ) {
 		var startFirstArg = 'ALERT:'.length;
 		var endFirstArg = message_event.data.length;
 		var alertMessage = message_event.data.substr ( startFirstArg, endFirstArg - startFirstArg );
-		
+
 		if ( message_event.data.search ( 'OPENGL' ) != -1 ) {
 			alert ( 'Error: Unable to create OpenGL Context, please make sure you can use WebGL.' );
 			window.open ( "http://www.google.com/support/chrome/bin/answer.py?hl=en&answer=1220892" );
@@ -45,60 +45,65 @@ Moai.Base.prototype.naclMessageHandler = function ( message_event ) {
 		}
 	}
 	else if ( message_event.data.search ( 'UID' ) != -1 ) {
-		
+
 		if ( this.uid == "" ) {
 
 			this.uid = this.guidGenerator() + new Date().getTime();
 			localStorage.setItem('uid', this.uid);
 		}
-		
+
 		console.log ( 'posting: UID:' + this.uid );
 		MoaiModule.postMessage ( 'UID:' + this.uid );
 	}
+	else if ( message_event.data && message_event.data.search ( 'DEBUG_POSTMESSAGE:' ) != -1 ) {
+
+        console.log(message_event.data.substr(18));
+
+    }
 }
 
 //functions
 Moai.Base.prototype.Init = function () {
-	
+
 	//default size is 1024x768, resize if height is too small
 	var scaleH = window.innerHeight / 800;
 	var scaleW = window.innerWidth / 1000;
-	
+
 	var scale;
-	if ( scaleW < scaleH ) { 
+	if ( scaleW < scaleH ) {
 		scale = scaleW;
 	}
 	else {
 		scale = scaleH;
 	}
-	
+
 	if( scale  > 1.0 ) {
 		scale = 1.0;
 	}
-	
-	var moai = document.getElementById ( "moai" );	
+
+	var moai = document.getElementById ( "moai" );
 	if( moai ) {
-		
+
 		moai.width = scale * 960;
 		moai.height = scale * 640;
 	}
-	
+
 	var game = document.getElementById ( "game" );
 	if( game ) {
-		
+
 		game.style.width = ( scale * 960 ) + 'px';
 		game.style.height = ( scale * 640 ) + 'px';
 	}
-	
+
 	var banner = document.getElementById ( "moai_image" );
 	if( banner ) {
-	
+
 		banner.width = ( scale * 967 );// + "px";
 		banner.height = ( scale * 157 );// + "px";
 	}
-	
+
 	var toggleButton = document.getElementById('toggle');
-	
+
 	if ( toggleButton ) {
 		toggleButton.onclick = function() {
 			if (screen.height === window.outerHeight) {
@@ -110,7 +115,7 @@ Moai.Base.prototype.Init = function () {
 		}
 	}
 }
-	
+
 Moai.Base.prototype.guidGenerator = function () {
 	var S4 = function() {
 	   return ( ((1+Math.random())*0x10000)|0 ).toString ( 16 ).substring ( 1 );

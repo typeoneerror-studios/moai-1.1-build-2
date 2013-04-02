@@ -17,7 +17,7 @@
 
 #include <unistd.h>
 #include <stdio.h>
- 
+
 extern "C" {
 #include <lua.h>
 #include <lauxlib.h>
@@ -104,7 +104,7 @@ namespace NaClInputDeviceSensorID {
 
 //----------------------------------------------------------------//
 void NaClHandleInputEvent ( const pp::InputEvent & event ) {
-	
+
 	switch ( event.GetType() ) {
 
 		case PP_INPUTEVENT_TYPE_MOUSEDOWN:
@@ -208,7 +208,7 @@ void NaClFlush () {
 }
 
 void GenerateUIDMainThread ( void* userData, int32_t result ) {
-	
+
 	g_instance->PostMessage ( "UID" );
 }
 
@@ -321,7 +321,7 @@ void _AKUExitFullscreenModeFunc () {
 
 //----------------------------------------------------------------//
 void _AKUOpenWindowFunc ( const char* title, int width, int height ) {
-	
+
 	g_expectedWidth = width;
 	g_expectedHeight = height;
 
@@ -355,8 +355,9 @@ void* moai_main ( void *_instance ) {
 
 	NACL_LOG ( "Main Lua\n" );
 
-	AKURunScript ( "config.lua" );
-	AKURunScript ( "game.lua" );
+	// See: http://getmoai.com/forums/google-chrome-native-client-t147/page20.html#p746
+	// AKURunScript ( "config.lua" );
+	// AKURunScript ( "game.lua" );
 
 	//NaClGetUID ();
 
@@ -372,7 +373,7 @@ void* moai_main ( void *_instance ) {
 			HandleSocialMessage ( message );
 			MOAIApp::HandleStoreMessage ( message );
 		}
-		
+
 		NaClInput ();
 
 		AKUUpdate ();
@@ -399,7 +400,7 @@ bool MoaiInstance::Init ( uint32_t /* argc */, const char* /* argn */[], const c
 
 //----------------------------------------------------------------//
 bool MoaiInstance::HandleInputEvent	( const pp::InputEvent & event ) {
-	
+
 	g_InputQueue->Push ( event );
 
 	return PP_TRUE;
@@ -433,7 +434,7 @@ void MoaiInstance::DidChangeView ( const pp::Rect& position, const pp::Rect& cli
 	NACL_LOG ( "OpenGLContext %p\n", opengl_context );
 
 	opengl_context->InvalidateContext ( this );
-	
+
 	opengl_context->ResizeContext ( position.size ());
 
 	NACL_LOG ( "OpenGLContext MakeContextCurrent\n" );
@@ -468,7 +469,7 @@ void MoaiInstance::DidChangeView ( const pp::Rect& position, const pp::Rect& cli
 
 		AKUReserveInputDevices			( NaClInputDeviceID::TOTAL );
 		AKUSetInputDevice				( NaClInputDeviceID::DEVICE, "device" );
-	
+
 		AKUReserveInputDeviceSensors	( NaClInputDeviceID::DEVICE, NaClInputDeviceSensorID::TOTAL );
 		AKUSetInputDeviceKeyboard		( NaClInputDeviceID::DEVICE, NaClInputDeviceSensorID::KEYBOARD,		"keyboard" );
 		AKUSetInputDevicePointer		( NaClInputDeviceID::DEVICE, NaClInputDeviceSensorID::POINTER,		"pointer" );
@@ -525,7 +526,7 @@ void MoaiInstance::DrawSelf() {
 	if ( !opengl_context->flush_pending () ) {
 
 		opengl_context->MakeContextCurrent(this);
-		
+
 		AKURender ();
 
 		//glFinish ();
@@ -537,7 +538,7 @@ void MoaiInstance::DrawSelf() {
 
 //----------------------------------------------------------------//
 void MoaiInstance::HandleMessage ( const pp::Var& var_message ) {
-  
+
 	if ( !var_message.is_string ()) {
 		return;
 	}

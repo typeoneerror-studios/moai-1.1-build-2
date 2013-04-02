@@ -14,7 +14,7 @@
 
 	# check for valid NACL SDK root
 	if [ "$NACL_SDK_ROOT" = "" ] || [ ! -d $NACL_SDK_ROOT ]; then
-	
+
 		echo -e "*** Please specify a valid path to the NACL SDK in the NACL_SDK_ROOT"
 		echo -e "*** environment variable before running this script."
 		echo
@@ -49,7 +49,7 @@
 	else
 		echo "Building Moai Native Client binaries for $platform"
 	fi
-	
+
 	python -O -OO $NACL_PLATFORM_DIR/third_party/scons-2.0.1/script/scons \
 		--warn no-visual-c-missing \
 		$clean \

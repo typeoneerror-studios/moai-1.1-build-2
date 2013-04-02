@@ -44,7 +44,7 @@ void MOAIApp::RedeemProduct ( ) {
 	url.append ( "&applicationId=WolfToss" );
 
 	GetURLHandler* handler = GetURLHandler::Create( g_instance, url );
-	
+
 	if (handler != NULL) {
 
 		handler->SetMethod ( GetURLHandler::GET );
@@ -66,7 +66,7 @@ void MOAIApp::VerifyPaymentMainThread ( void * userData, int32_t result )  {
 	url.append ( "&applicationId=WolfToss" );
 
 	GetURLHandler* handler = GetURLHandler::Create( g_instance, url );
-	
+
 	if (handler != NULL) {
 
 		handler->SetMethod ( GetURLHandler::GET );
@@ -99,7 +99,7 @@ void MOAIApp::HandleStoreMessage ( std::string & message ) {
 		memset ( responseText, 0, responseSize );
 		memcpy ( responseText, message.c_str () + responseStartIndex, responseSize - 1 );
 
-		int responseId = atoi ( message.c_str () + responseEndIndex + 1 ); 
+		int responseId = atoi ( message.c_str () + responseEndIndex + 1 );
 
 		NACL_LOG ( "MOAIApp->PaymentFailed ( %d, %s )\n", responseId, responseText );*/
 		//g_SocialConnect->OnRequestSuccess ( responseId, responseText );
@@ -139,16 +139,16 @@ void MOAIApp::HandleStoreMessage ( std::string & message ) {
 	@in function callback The function that will receive an integer index as which button was pressed.
 	@in string cancelTitle The title of the cancel button.
 	@in string... buttons Other buttons to add to the alert box.
- 
+
 */
 int MOAIApp::_alert( lua_State* L ) {
-	
+
 	MOAILuaState state ( L );
-	
+
 	//cc8* title = state.GetValue< cc8* >(1, "Alert");
 	cc8* message = state.GetValue< cc8* >(2, "");
 	//cc8* cancelTitle = state.GetValue< cc8*>(4, NULL);
-	
+
 	NACL_LOG ( "ALERT: %s\n", message );
 	return 0;
 }
@@ -156,29 +156,29 @@ int MOAIApp::_alert( lua_State* L ) {
 //----------------------------------------------------------------//
 /**	@name	canMakePayments
 	@text	Verify that app has permission to request payments.
-	
+
 	@out	bool canMakePayments
 */
 int MOAIApp::_canMakePayments ( lua_State* L ) {
 	MOAILuaState state ( L );
-	
+
 	bool result = true;
 	lua_pushboolean ( state, result );
-	
+
 	return 1;
 }
 
 //----------------------------------------------------------------//
 /**	@name	requestPaymentForProduct
 	@text	Request payment for a product.
-	
+
 	@in		string productIdentifier
 	@opt	number quantity				Default value is 1.
 	@out	nil
 */
 int MOAIApp::_requestPaymentForProduct ( lua_State* L ) {
 	MOAILuaState state ( L );
-	
+
 	cc8* identifier = state.GetValue < cc8* >( 1, "" );
 	int quantity = state.GetValue < int >( 2, 1 );
 
@@ -202,27 +202,27 @@ int MOAIApp::_requestPaymentForProduct ( lua_State* L ) {
 //----------------------------------------------------------------//
 /**	@name	requestProductIdentifiers
 	@text	Varify the validity of a set of products.
-	
+
 	@in		table productIdentifiers			A table of product identifiers.
 	@out	nil
 */
 int MOAIApp::_requestProductIdentifiers ( lua_State* L ) {
 	MOAILuaState state ( L );
-	
+
 	NACL_LOG ( "_requestProductIdentifiers Not implemented\n" );
 
 	/*NSMutableSet* productSet = [[[ NSMutableSet alloc ] init ] autorelease ];
-	
+
 	int top = state.GetTop ();
 	for ( int i = 1; i <= top; ++i ) {
-	
+
 		if ( state.IsType ( i, LUA_TSTRING )) {
 			cc8* identifier = state.GetValue < cc8* >( i, "" );
 			[ productSet addObject :[ NSString stringWithUTF8String:identifier ]];
 		}
-	
+
 		if ( state.IsType ( i, LUA_TTABLE )) {
-			
+
 			int itr = state.PushTableItr ( i );
 			while ( state.TableItrNext ( itr )) {
 				cc8* identifier = state.GetValue < cc8* >( -1, "" );
@@ -231,7 +231,7 @@ int MOAIApp::_requestProductIdentifiers ( lua_State* L ) {
 			}
 		}
 	}*/
-	
+
 	return 0;
 }
 
@@ -240,10 +240,10 @@ int MOAIApp::_requestProductIdentifiers ( lua_State* L ) {
 	@text	Request a restore of all purchased non-consumables from the App Store.
 			Use this to retrieve a list of all previously purchased items (for example
 			after reinstalling the app on a different device).
- 
+
 */
 int MOAIApp::_restoreCompletedTransactions( lua_State* L ) {
-	
+
 	NACL_LOG ( "_restoreCompletedTransactions Not implemented\n" );
 	//[[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
 
@@ -254,7 +254,7 @@ int MOAIApp::_restoreCompletedTransactions( lua_State* L ) {
 //----------------------------------------------------------------//
 /**	@name	setListener
 	@text	Set a callback to handle events of a type.
-	
+
 	@in		number event		One of MOAIApp.ERROR, MOAIApp.DID_REGISTER, MOAIApp.REMOTE_NOTIFICATION,
 								MOAIApp.PAYMENT_QUEUE_TRANSACTION, MOAIApp.PRODUCT_REQUEST_RESPONSE.
 	@opt	function handler
@@ -262,13 +262,13 @@ int MOAIApp::_restoreCompletedTransactions( lua_State* L ) {
 */
 int MOAIApp::_setListener ( lua_State* L ) {
 	MOAILuaState state ( L );
-	
+
 	u32 idx = state.GetValue < u32 >( 1, TOTAL );
-	
+
 	if ( idx < TOTAL ) {
 		MOAIApp::Get ().mListeners [ idx ].SetStrongRef ( state, 2 );
 	}
-	
+
 	return 0;
 }
 
@@ -276,25 +276,39 @@ int MOAIApp::_setListener ( lua_State* L ) {
 /**	@name	getDirectoryInDomain
 	@text	Search the platform's internal directory structure for a special directory
 			as defined by the platform.
- 
+
 	@in		string domain	One of MOAIApp.DOMAIN_DOCUMENTS, MOAIApp.DOMAIN_APP_SUPPORT
 	@out	string directory The directory associated with the given domain.
 */
 int MOAIApp::_getDirectoryInDomain ( lua_State* L ) {
 	MOAILuaState state ( L );
-	
-	u32 dirCode = state.GetValue<u32>( 1, 0 ); 
-	
+
+	u32 dirCode = state.GetValue<u32>( 1, 0 );
+
 	lua_pushstring(L, "data");
 
 	return 1;
 }
 
+/** @name   logMessage
+    @text   Log a message to stdout. See: https://developers.google.com/native-client/devguide/devcycle/debugging
+
+    @in     string msg The message to log
+    @out    nul
+*/
+int MOAIApp::_logMessage ( lua_State* L ) {
+	MOAILuaState state ( L );
+	cc8* msg = state.GetValue < cc8* >( 1, "" );
+	fprintf(stdout, "%s\n", msg);
+
+	return 0;
+}
+
 int MOAIApp::_openURL ( lua_State* L ) {
 	MOAILuaState state ( L );
-	
+
 	cc8* url	= state.GetValue < cc8* >( 1, "" );
-	
+
 	NACL_LOG ("MOAIApp should open url: %s\n", url );
 
 	char message[2048];
@@ -302,15 +316,15 @@ int MOAIApp::_openURL ( lua_State* L ) {
 	sprintf ( message, "URL:Open:%s", url );
 
 	NaClPostMessage ( message );
-	
+
 	return 0;
 }
 
 int MOAIApp::_openURLPOP ( lua_State* L ) {
 	MOAILuaState state ( L );
-	
+
 	cc8* url	= state.GetValue < cc8* >( 1, "" );
-	
+
 	NACL_LOG ("MOAIApp should open popup url: %s\n", url );
 
 	char message[2048];
@@ -318,19 +332,19 @@ int MOAIApp::_openURLPOP ( lua_State* L ) {
 	sprintf ( message, "URL:OpenPop:%s", url );
 
 	NaClPostMessage ( message );
-	
+
 	return 0;
 }
- 
+
 
 //----------------------------------------------------------------//
 MOAIApp::MOAIApp () {
 
 	RTTI_SINGLE ( MOAILuaObject )
-	
+
 	/*this->mStoreKitListener = [[ MOAIStoreKitListener alloc ] init ];
 	[[ SKPaymentQueue defaultQueue ] addTransactionObserver:this->mStoreKitListener ];
-	
+
 	MOAISim& device = MOAISim::Get ();
 	device.SetUniqueIdentifier([[[UIDevice currentDevice] uniqueIdentifier] UTF8String]);
 
@@ -357,15 +371,15 @@ void MOAIApp::Reset () {
 
 //----------------------------------------------------------------//
 void MOAIApp::DidReceivePaymentQueueError ( cc8* extraInfo ) {
-	
+
 	MOAILuaRef& callback = this->mListeners [ PAYMENT_QUEUE_ERROR ];
-	
+
 	if ( callback ) {
 		/*MOAILuaStateHandle state = callback.GetSelf ();
-		
+
 		[ error toLua:state ];
 		lua_pushstring(state, extraInfo);
-		
+
 		state.DebugCall ( 2, 0 );*/
 	}
 }
@@ -377,14 +391,14 @@ void MOAIApp::PaymentQueueUpdatedTransactions ( int transactionResult, const cha
 	MOAILuaRef& callback = this->mListeners [ PAYMENT_QUEUE_TRANSACTION ];
 
 	//for ( SKPaymentTransaction* transaction in transactions ) {
-	
+
 		if ( callback ) {
-		
+
 			MOAILuaStateHandle state = callback.GetSelf ();
 			this->PushPaymentTransaction ( transactionResult, state );
 			state.DebugCall ( 1, 0 );
 		}
-		
+
 		//if ( transaction.transactionState != SKPaymentTransactionStatePurchasing ) {
 		//	[[ SKPaymentQueue defaultQueue ] finishTransaction:transaction ];
 		//}
@@ -396,25 +410,25 @@ void MOAIApp::ProductsRequestDidReceiveResponse () {
 
 	MOAILuaRef& callback = this->mListeners [ PRODUCT_REQUEST_RESPONSE ];
 	if ( callback ) {
-		
+
 		/*MOAILuaStateHandle state = callback.GetSelf ();
 		lua_newtable ( state );
-		
+
 		int count = 1;
 		for ( SKProduct* product in response.products ) {
-		
+
 			lua_pushnumber ( state, count++ );
 			lua_newtable ( state );
-			
+
 			state.SetField ( -1, "localizedTitle", [ product.localizedTitle UTF8String ]);
 			state.SetField ( -1, "localizedDescription", [ product.localizedDescription UTF8String ]);
 			state.SetField ( -1, "price", [ product.price floatValue ]);
 			state.SetField ( -1, "priceLocale", [ product.priceLocale.localeIdentifier UTF8String ]);
 			state.SetField ( -1, "productIdentifier", [ product.productIdentifier UTF8String ]);
-			
+
 			lua_settable ( state, -3 );
 		}
-		
+
 		// Note: If you're testing in-app purchases, chances are your product Id
 		// will take time to propagate into Apple's sandbox/test environment and
 		// thus the id's will be invalid for hours(?) (at the time of writing this).
@@ -422,7 +436,7 @@ void MOAIApp::ProductsRequestDidReceiveResponse () {
 		{
 			NSLog(@"StoreKit: Invalid product id: %@" , invalidProductId);
 		}*/
-		
+
 		//state.DebugCall ( 1, 0 );
 	}
 }
@@ -433,16 +447,16 @@ void MOAIApp::PushPaymentTransaction ( int transactionResult, lua_State *L ) {
 	//MOAILuaStateHandle state = MOAILuaRuntime::Get ().State ();
 	//lua_State *L = state;
 	lua_newtable ( L );
-	
+
 	lua_pushstring ( L, "transactionState" );
-	
+
 	switch ( transactionResult ) {
-		
+
 		case TRANSACTION_STATE_PURCHASED: {
 			lua_pushnumber ( L, TRANSACTION_STATE_PURCHASED );
 			break;
 		}
-		case TRANSACTION_STATE_FAILED: 
+		case TRANSACTION_STATE_FAILED:
 		case TRANSACTION_STATE_CANCELLED: {
 			lua_pushnumber ( L, TRANSACTION_STATE_CANCELLED );
 			break;
@@ -456,40 +470,40 @@ void MOAIApp::PushPaymentTransaction ( int transactionResult, lua_State *L ) {
 			break;
 		}
 	}
-	
+
 	lua_settable ( L, -3 );
-	
+
 	if ( TRANSACTION_STATE_PURCHASED ) {
-		
+
 		lua_pushstring ( L, "payment" );
 		lua_newtable ( L );
-		
+
 		lua_pushstring ( L, "productIdentifier" );
 		//[ transaction.payment.productIdentifier toLua:L ];
 		//AJV TODO, use product Id
 		lua_pushstring ( L, g_productID.c_str () );
 		lua_settable ( L, -3 );
-		
+
 		lua_pushstring ( L, "quantity" );
 		//AJV warning hardcoded to 1
 		lua_pushnumber ( L, 1 );
 		lua_settable ( L, -3 );
-		
+
 		lua_settable ( L, -3 );
 	}
-	
+
 	/*if ( transaction.transactionState == SKPaymentTransactionStateFailed ) {
 		lua_pushstring ( L, "error" );
 		[ transaction.error toLua:L ];
 		lua_settable ( L, -3 );
 	}
-	
+
 	if ( transaction.transactionState == SKPaymentTransactionStateRestored ) {
 		lua_pushstring ( L, "originalTransaction" );
 		this->PushPaymentTransaction ( L, transaction.originalTransaction );
 		lua_settable ( L, -3 );
 	}
-	
+
 	if ( transaction.transactionState == SKPaymentTransactionStatePurchased ) {
 		lua_pushstring ( L, "transactionReceipt" );
 		if( transaction.transactionReceipt != nil )
@@ -503,9 +517,9 @@ void MOAIApp::PushPaymentTransaction ( int transactionResult, lua_State *L ) {
 
 		lua_settable ( L, -3 );
 	}
-	
+
 	if (( transaction.transactionState == SKPaymentTransactionStatePurchased ) || ( transaction.transactionState == SKPaymentTransactionStateRestored )) {
-		
+
 		lua_pushstring ( L, "transactionDate" );
 		[ transaction.transactionDate toLua:L ];
 		lua_settable ( L, -3 );
@@ -522,7 +536,7 @@ void MOAIApp::RegisterLuaClass ( MOAILuaState& state ) {
 	state.SetField ( -1, "PAYMENT_QUEUE_TRANSACTION",	( u32 )PAYMENT_QUEUE_TRANSACTION );
 	state.SetField ( -1, "PAYMENT_QUEUE_ERROR",			( u32 )PAYMENT_QUEUE_ERROR );
 	state.SetField ( -1, "PRODUCT_REQUEST_RESPONSE",	( u32 )PRODUCT_REQUEST_RESPONSE );
-	
+
 	state.SetField ( -1, "DOMAIN_DOCUMENTS",			( u32 )DOMAIN_DOCUMENTS );
 	state.SetField ( -1, "DOMAIN_APP_SUPPORT",			( u32 )DOMAIN_APP_SUPPORT );
 
@@ -531,7 +545,7 @@ void MOAIApp::RegisterLuaClass ( MOAILuaState& state ) {
 	state.SetField ( -1, "TRANSACTION_STATE_FAILED",    ( u32 )TRANSACTION_STATE_FAILED );
 	state.SetField ( -1, "TRANSACTION_STATE_RESTORED",  ( u32 )TRANSACTION_STATE_RESTORED );
 	state.SetField ( -1, "TRANSACTION_STATE_CANCELLED", ( u32 )TRANSACTION_STATE_CANCELLED );
-	
+
 	luaL_Reg regTable[] = {
 		{ "alert",								_alert },
 
@@ -544,6 +558,7 @@ void MOAIApp::RegisterLuaClass ( MOAILuaState& state ) {
 		{ "getDirectoryInDomain",				_getDirectoryInDomain },
 		{ "openURL",							_openURL },
 		{ "openURLPOP",							_openURLPOP },
+		{ "logMessage",							_logMessage },
 		{ NULL, NULL }
 	};
 

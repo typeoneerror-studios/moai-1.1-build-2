@@ -21,7 +21,7 @@ private:
 		ASYNC_NAME_RESOLVE,
 		TOTAL,
 	};
-	
+
 	enum {
 		TRANSACTION_STATE_PURCHASING,
 		TRANSACTION_STATE_PURCHASED,
@@ -29,12 +29,12 @@ private:
 		TRANSACTION_STATE_RESTORED,
 		TRANSACTION_STATE_CANCELLED,
 	};
-		
+
 	enum {
 		DOMAIN_DOCUMENTS   = 0,
 		DOMAIN_APP_SUPPORT = 1,
 	};
-	
+
 	MOAILuaRef				mListeners [ TOTAL ];
 	//MOAIStoreKitListener*	mStoreKitListener;
 	//int						mNumRequests;
@@ -52,15 +52,16 @@ private:
 	static int		_getDirectoryInDomain					( lua_State* L );
 	static int		_openURL								( lua_State* L );
 	static int		_openURLPOP								( lua_State* L );
+	static int		_logMessage								( lua_State* L );
 
 	//----------------------------------------------------------------//
 	//void			PushPaymentTransaction					( lua_State* L, SKPaymentTransaction* transaction );
 	void			PushPaymentTransaction					( int transactionResult, lua_State *L );
 
 public:
-	
+
 	DECL_LUA_SINGLETON ( MOAIApp )
-	
+
 	static void HttpLoaded ( GetURLHandler *handler, const char *buffer, int32_t size );
 	static void VerifyPaymentMainThread ( void * userData, int32_t result );
 
@@ -69,7 +70,7 @@ public:
 
 
 	//SET ( UIApplication*, Application, mApplication )
-	
+
 	//----------------------------------------------------------------//
 				MOAIApp														();
 				~MOAIApp													();

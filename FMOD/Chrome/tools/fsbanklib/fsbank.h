@@ -222,26 +222,10 @@ FSBANK_RESULT FB_API FSBank_Release();
     'numSubSounds'          The number of elements in the 'subSounds' array.
     'encodeFormat'          The format to be used for encoding the FSB.
     'buildFlags'            Building flags which control how the sample data is encoded.
-    'quality'               Controls the quality level after compression. From 1 (high compression
+    'quality'               Controls the quality level after compression from 1 (high compression
                             / low quality) to 100 (high quality / low compression), use 0 for
-                            default quality.
-                            AT9:    Bitrate (Kbps) {x2 for stereo} [36, 48, 60, 72, 84, 96] maps
-                                    to FMOD quality [1 to 100]
-                            CELT:   Bitrate (Kbps) = FMOD quality * 3.2
-                            MPEG:   Bitrate (Kbps) = FMOD quality * 3.2
-                            Vorbis: Vorbis quality [-0.1 to 1.0] maps to FMOD quality [1 to 100] 
-                            XMA:    XMA quality = FMOD quality
-                            xWMA:   Bitrate (Kbps) depends on sample rate and channel count, quality
-                                    will choose bitrate if multiple options are available:
-                                    1ch 22KHz = [20]
-                                    1ch 32KHz = [20]
-                                    1ch 44KHz = [32, 48]
-                                    2ch 22Khz = [32]
-                                    2ch 32Khz = [32, 48]
-                                    2ch 44KHz = [32, 48, 96, 192]
-                                    2ch 48KHz = [48, 64, 96, 160, 192]
-                                    6ch 44KHz = [96, 192]
-                                    6ch 48KHz = [48, 192]
+                            default quality. MPEG, CELT and XMA only. MPEG / CELT bitrate based on
+                            quality * 3.2.
     'encryptKey'            Optional string 'key' used to encrypt the FSB, same key is required at
                             runtime for decryption.
     'outputFileName'        Name (and path) of the FSB to produce.
