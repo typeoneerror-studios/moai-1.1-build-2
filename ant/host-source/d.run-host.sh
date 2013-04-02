@@ -7,11 +7,11 @@
 #================================================================#
 
 	set -e
-	
+
 	# check for command line switches
 	usage="usage: $0 [-r localRootFolder]"
 	local_root=
-	
+
 	while [ $# -gt 0 ];	do
 	    case "$1" in
 	        -r)  local_root="$2"; shift;;
@@ -27,7 +27,7 @@
 	package=@SETTING_PACKAGE@
 	package_path=@SETTING_PACKAGE_PATH@
 	out_dir="`pwd`/build"
-	
+
 	rm -rf $out_dir
 
 	source ./settings-global.sh
@@ -36,8 +36,8 @@
 	if [ x"$android_sdk_root" != x ] && [ x"$local_root" != x ] && [[ ! $android_sdk_root == /* ]]; then
 		android_sdk_root=$local_root/$android_sdk_root
 	fi
-	
-	if [ x"$android_sdk_root" = x ] || [ ! -d $android_sdk_root ]; then		
+
+	if [ x"$android_sdk_root" = x ] || [ ! -d $android_sdk_root ]; then
 		echo -e "*** Please specify a valid path to the Android SDK in \"settings-local.sh\""
 		echo
 		exit 1
@@ -52,7 +52,7 @@
 
 	mkdir -p $out_dir/project/res
 	cp -fR	host-source/project/res/*	$out_dir/project/res
-	
+
 	mkdir -p $out_dir/project/res/drawable-ldpi
 	mkdir -p $out_dir/project/res/drawable-mdpi
 	mkdir -p $out_dir/project/res/drawable-hdpi
@@ -74,30 +74,30 @@
 	if [ x"$icon_xhdpi" != x ] && [ -f $icon_xhdpi ]; then
 		cp -f $icon_xhdpi $out_dir/project/res/drawable-xhdpi/icon.png
 	fi
-	
+
 	if [ x"$key_store" != x ] && [ x"$local_root" != x ] && [[ ! $key_store == /* ]]; then
 		key_store=$local_root/$key_store
 	fi
-	
+
 	if [ x"$key_store" != x ] && [ -f $key_store ]; then
 		cp -f $key_store $out_dir/project/`basename $key_store`
 	fi
-			
+
 	cp -f host-source/project/.classpath $out_dir/project/.classpath
 	cp -f host-source/project/proguard.cfg $out_dir/project/proguard.cfg
-	
+
 	mkdir -p $out_dir/project/$package_path
-	
+
 	backup_ext=.backup
-	
+
 	function fr () {
 		sed -i$backup_ext s%"$2"%"$3"%g $1
 		rm -f $1$backup_ext
 	}
-	
+
 	fr $out_dir/project/res/values/strings.xml @NAME@ "$app_name"
-	
-	cp -f host-source/project/.project $out_dir/project/.project 
+
+	cp -f host-source/project/.project $out_dir/project/.project
 	fr $out_dir/project/.project @NAME@ "$project_name"
 
 	cp -f host-source/project/build.xml $out_dir/project/build.xml
@@ -106,8 +106,8 @@
 	cp -f host-source/project/AndroidManifest.xml $out_dir/project/AndroidManifest.xml
 	fr $out_dir/project/AndroidManifest.xml	@DEBUGGABLE@ "$debug"
 	fr $out_dir/project/AndroidManifest.xml	@VERSION_CODE@ "$version_code"
-	fr $out_dir/project/AndroidManifest.xml	@VERSION_NAME@ "$version_name"	
-	
+	fr $out_dir/project/AndroidManifest.xml	@VERSION_NAME@ "$version_name"
+
 	cp -f host-source/project/ant.properties $out_dir/project/ant.properties
 	if [ x"$key_store" != x ]; then
 		key_store=`basename $key_store`
@@ -164,9 +164,9 @@
 			popd > /dev/null
 		fi
 	done
-	
+
 	fr $out_dir/project/AndroidManifest.xml	@PACKAGE@ "$package"
-	
+
 	cp -f host-source/project/local.properties $out_dir/project/local.properties
 	for file in `find $out_dir/ -name "local.properties"` ; do fr $file @SDK_ROOT@ "$android_sdk_root" ; done
 
@@ -174,10 +174,10 @@
 
 	fr $out_dir/project/$package_path/MoaiActivity.java @WORKING_DIR@ "$working_dir"
 	for file in `find $out_dir/project/$package_path/ -name "*.java"` ; do fr $file @PACKAGE@ "$package" ; done
-	
+
 	working_dir_depth=`grep -o "\/" <<<"$working_dir" | wc -l`
 	(( working_dir_depth += 1 ))
-	
+
 	for (( i=1; i<=$working_dir_depth; i++ )); do
 		if [ $i == 1 ]; then
 			init_dir=\.\.
@@ -185,19 +185,19 @@
 			init_dir=$init_dir\/\.\.
 		fi
 	done
-	
+
 	run_command="\"$init_dir/init.lua\""
-	
+
 	for file in "${run[@]}"; do
 		run_command="$run_command, \"$file\""
 	done
-	
+
 	run_command="runScripts ( new String [] { $run_command } );"
-	
+
 	fr $out_dir/project/$package_path/MoaiView.java @RUN_COMMAND@ "$run_command"
 
 	cp -f host-source/init.lua $out_dir/project/assets/init.lua
-	
+
 	for (( i=0; i<${#src_dirs[@]}; i++ )); do
 #		rsync -r --exclude=.svn --exclude=.DS_Store --exclude=*.bat --exclude=*.sh ${src_dirs[$i]}/. $out_dir/project/assets/${dest_dirs[$i]}
 		source_dir=${src_dirs[$i]}
@@ -212,9 +212,9 @@
 	if [ "$debug" == "true" ]; then
 		install_cmd="ant debug install"
 	else
-		install_cmd="ant release install"		
+		install_cmd="ant release install"
 	fi
-	
+
 	if [ $OSTYPE != cygwin ]; then
 		pushd $out_dir/project > /dev/null
 			ant uninstall
@@ -222,6 +222,6 @@
 			$install_cmd
 			adb shell am start -a android.intent.action.MAIN -n $package/$package.MoaiActivity
 			adb logcat -c
-			adb logcat MoaiLog:V AndroidRuntime:E *:S
+			adb logcat MoaiLog:V TOE:V AndroidRuntime:E *:S
 		popd > /dev/null
 	fi

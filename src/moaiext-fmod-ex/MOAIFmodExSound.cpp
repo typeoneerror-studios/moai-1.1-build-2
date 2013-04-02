@@ -4,6 +4,7 @@
 #include <moaiext-fmod-ex/MOAIFmodEx.h>
 #include <moaiext-fmod-ex/MOAIFmodExSound.h>
 #include <fmod.hpp>
+#include <fmod_errors.h>
 
 #ifdef MOAI_OS_IPHONE
 	#include <fmodiphone.h>
@@ -14,6 +15,8 @@
 #include <moai_nacl.h>
 #endif
 
+
+
 //================================================================//
 // local
 //================================================================//
@@ -23,7 +26,7 @@
 	@text	Loads the specified sound from file, or from a MOAIDataBuffer.
 
 	@overload
-	
+
 		@in		MOAIFmodExSound self
 		@in		string filename			The path to the sound to load from file.
 		@in		boolean streaming		Whether the sound should be streamed from the data source, rather than preloaded.
@@ -50,7 +53,7 @@ int MOAIFmodExSound::_load ( lua_State* L ) {
 		self->Load ( filename, streaming, async );
 	}
 	else {
-		
+
 		MOAIDataBuffer* data = state.GetLuaObject < MOAIDataBuffer >( 2, true );
 		if ( data ) {
 			self->Load( *data, streaming );
@@ -71,7 +74,7 @@ int MOAIFmodExSound::_load ( lua_State* L ) {
 int	MOAIFmodExSound::_loadBGM ( lua_State* L ) {
 	MOAI_LUA_SETUP ( MOAIFmodExSound, "U" )
 
-	
+
 	if ( state.IsType( 2, LUA_TSTRING ) ) {
 
 		cc8* filename	= state.GetValue < cc8* >( 2, "" );
@@ -79,7 +82,7 @@ int	MOAIFmodExSound::_loadBGM ( lua_State* L ) {
 		self->Load ( filename, true, false );
 	}
 	else {
-	
+
 		MOAIDataBuffer* data = state.GetLuaObject < MOAIDataBuffer >( 2, true );
 		if ( data ) {
 			self->Load( *data, true );
@@ -153,11 +156,41 @@ MOAIFmodExSound::~MOAIFmodExSound () {
 //----------------------------------------------------------------//
 void MOAIFmodExSound::Load ( MOAIDataBuffer& data, bool streaming ) {
 
+#if DEBUG_MOAI_FMOD
+
+	if ( this->mSound ) {
+
+	#if MOAI_ANDROID_HOST
+		__android_log_print(ANDROID_LOG_DEBUG, "TOE", "FMOD ISSUE: Sound already loaded \n");
+	#endif
+
+		return;
+	}
+
+#else
+
 	if ( this->mSound ) return;
-	
+
+#endif
+
+#if DEBUG_MOAI_FMOD
+
+	FMOD::System* soundSys = MOAIFmodEx::Get ().GetSoundSys ();
+	if ( !soundSys ) {
+
+		#if MOAI_ANDROID_HOST
+			__android_log_print(ANDROID_LOG_DEBUG, "TOE", "FMOD ISSUE: Load() \n");
+		#endif
+		return;
+	}
+
+#else
+
 	FMOD::System* soundSys = MOAIFmodEx::Get ().GetSoundSys ();
 	if ( !soundSys ) return;
-	
+
+#endif
+
 	void* bytes;
 	size_t size;
 	data.Lock ( &bytes, &size );
@@ -174,11 +207,25 @@ void MOAIFmodExSound::Load ( MOAIDataBuffer& data, bool streaming ) {
 	FMOD::Sound* sound = 0;
 
 	result = soundSys->createSound (( cc8* )bytes, mode, &info, &sound );
-	
+
 	data.Unlock ();
-	
+
+#if DEBUG_MOAI_FMOD
+
+	if ( result != FMOD_OK ) {
+		#if MOAI_ANDROID_HOST
+			__android_log_print(ANDROID_LOG_DEBUG, "TOE", "FMOD ISSUE: Load() Result != FMOD_OK\n");
+			__android_log_print(ANDROID_LOG_DEBUG, "TOE", "FMOD ISSUE: Load() Could not create sound or stream: (%d) %s\n", result, FMOD_ErrorString(result));
+		#endif
+		return;
+	}
+
+#else
+
 	if ( result != FMOD_OK ) return;
-	
+
+#endif
+
 	this->mSound = sound;
 }
 
@@ -186,22 +233,53 @@ void MOAIFmodExSound::Load ( MOAIDataBuffer& data, bool streaming ) {
 void MOAIFmodExSound::Load ( cc8* filename, bool streaming, bool async ) {
 
 	async = false;
+
+#if DEBUG_MOAI_FMOD
+
+	if ( this->mSound ) {
+
+		#if MOAI_ANDROID_HOST
+
+			__android_log_print(ANDROID_LOG_DEBUG, "TOE", "FMOD ISSUE: Load() this->msSound exists\n");
+
+		#endif
+
+		return;
+	}
+
+	FMOD::System* soundSys = MOAIFmodEx::Get ().GetSoundSys ();
+	if ( !soundSys ) {
+
+		#if MOAI_ANDROID_HOST
+
+			__android_log_print(ANDROID_LOG_DEBUG, "TOE", "FMOD ISSUE: Load() Could not get soundSys\n");
+
+		#endif
+
+		return;
+
+	}
+
+#else
+
 	if ( this->mSound ) return;
-	
+
 	FMOD::System* soundSys = MOAIFmodEx::Get ().GetSoundSys ();
 	if ( !soundSys ) return;
-	
+
+#endif
+
 	FMOD_MODE mode = 0;
 	mode = streaming ? FMOD_CREATESTREAM : FMOD_CREATECOMPRESSEDSAMPLE;
 	mode |= async ? FMOD_NONBLOCKING : 0;
-	
+
 	FMOD_RESULT result;
 	FMOD::Sound* sound = 0;
 	FMOD_CREATESOUNDEXINFO info;
 	memset ( &info, 0, sizeof( FMOD_CREATESOUNDEXINFO ));
-	
+
 	info.cbsize = sizeof ( FMOD_CREATESOUNDEXINFO );
-	
+
 	#ifdef MOAI_OS_IPHONE
 		info.audioqueuepolicy = FMOD_AUDIOQUEUE_CODECPOLICY_SOFTWAREONLY;
 	#endif
@@ -216,7 +294,7 @@ void MOAIFmodExSound::Load ( cc8* filename, bool streaming, bool async ) {
 	NaClFile *file = g_FileSystem->fopen ( filename, "r" );
 
 	if ( file ) {
-		
+
 		info.length = file->mSize;
 
 		result = soundSys->createSound (( cc8* )file->mData, FMOD_SOFTWARE | mode, &info, &sound );
@@ -235,8 +313,21 @@ void MOAIFmodExSound::Load ( cc8* filename, bool streaming, bool async ) {
 		result = soundSys->createSound ( filename, FMOD_SOFTWARE | mode, &info, &sound );
 	}
 #endif
-	
+
 	if ( result != FMOD_OK ) {
+
+		#if DEBUG_MOAI_FMOD
+
+			#if MOAI_ANDROID_HOST
+
+
+				__android_log_print(ANDROID_LOG_DEBUG, "TOE", "FMOD ISSUE: Load() Could not create sound or stream: (%d) %s\n", result, FMOD_ErrorString(result));
+
+			#endif
+
+			printf("FMOD ISSUE: Load() Could not create sound or stream: (%d) %s\n", result, FMOD_ErrorString(result));
+
+		#endif
 		return;
 	}
 
@@ -247,7 +338,7 @@ void MOAIFmodExSound::Load ( cc8* filename, bool streaming, bool async ) {
 void MOAIFmodExSound::Release () {
 
 	if ( !this->mSound ) return;
-	
+
 	if ( MOAIFmodEx::IsValid ()) {
 		this->mSound->release ();
 	}

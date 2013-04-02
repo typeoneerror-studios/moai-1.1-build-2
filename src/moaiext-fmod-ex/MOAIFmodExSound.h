@@ -7,6 +7,9 @@
 #include <moaicore/moaicore.h>
 #include <moaiext-fmod-ex/MOAIFmodEx.h>
 
+#define DEBUG_MOAI_FMOD 1
+#define MOAI_ANDROID_HOST 1
+
 class MOAIDataBuffer;
 
 //================================================================//
@@ -44,7 +47,7 @@ public:
 	void		Load					( cc8* filename, bool streaming, bool async );
 	void		RegisterLuaClass		( MOAILuaState& state );
 	void		RegisterLuaFuncs		( MOAILuaState& state );
-	void		Release					();			
+	void		Release					();
 	STLString	ToString				();
 };
 
