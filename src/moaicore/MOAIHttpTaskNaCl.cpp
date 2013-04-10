@@ -46,7 +46,7 @@ void MOAIHttpTaskNaCl::HttpGetMainThread ( void* userData, int32_t result ) {
 	MOAIHttpTaskNaCl * taskInfo = static_cast < MOAIHttpTaskNaCl * > ( userData );
 
 	GetURLHandler* handler = GetURLHandler::Create( g_instance, taskInfo->mUrl );
-	
+
 	if ( handler != NULL ) {
 
 		handler->SetMethod ( taskInfo->mMethod );
@@ -82,10 +82,10 @@ void MOAIHttpTaskNaCl::NaClFinish () {
 
 	NACL_LOG ("MOAIHttpTaskNaCl::Finish %p\n", this );
 	if ( this->mStream == &this->mMemStream ) {
-	
+
 		u32 size = this->mMemStream.GetLength ();
 		NACL_LOG ("MOAIHttpTaskNaCl::Finish get size %d\n", size );
-		
+
 		if ( size ) {
 			this->mData.Init ( size );
 			this->mStream->Seek ( 0, SEEK_SET );
@@ -112,19 +112,19 @@ void MOAIHttpTaskNaCl::Prepare ( GetURLHandler *handler ) {
 	// prepare the custom headers (if any)
 	HeaderMapIt headerMapIt = this->mHeaderMap.begin ();
 	for ( ; headerMapIt != this->mHeaderMap.end (); ++headerMapIt ) {
-	
+
 		STLString key = headerMapIt->first;
 		STLString value = headerMapIt->second;
-	
+
 		assert (( written + ( key.size () + value.size () + 3 )) < MAX_HEADER_LENGTH );
-	
+
 		if ( value.size ()) {
 			written += sprintf ( buffer + written, "%s: %s\n", key.c_str (), value.c_str ());
 		}
 		else {
 			written += sprintf ( buffer + written, "%s:\n", key.c_str ());
 		}
-		
+
 	}
 
 	//append headers
@@ -197,44 +197,48 @@ void MOAIHttpTaskNaCl::SetCookieSrc	( const char *file ) {
 	//unimplemented
 }
 
+void MOAIHttpTaskNaCl::SetFailOnError ( bool enable ) {
+	//unimplemented
+}
+
 //----------------------------------------------------------------//
 void MOAIHttpTaskNaCl::SetUrl ( cc8* url ) {
-	
+
 	this->mUrl = url;
 }
 
 //----------------------------------------------------------------//
 void MOAIHttpTaskNaCl::SetUserAgent ( cc8* useragent ) {
-	
+
 	//do nothing, user agent will be chrome
 }
 
 //----------------------------------------------------------------//
 void MOAIHttpTaskNaCl::SetVerb ( u32 verb ) {
-	
+
 	switch ( verb ) {
-	
+
 		case HTTP_GET:
 			mMethod = GetURLHandler::GET;
 			break;
-		
+
 		case HTTP_HEAD:
 			mMethod = GetURLHandler::HEAD;
 			break;
-		
+
 		case HTTP_POST:
 			mMethod = GetURLHandler::POST;
 			break;
-		
+
 		case HTTP_PUT:
 			mMethod = GetURLHandler::PUT;
 			break;
-		
+
 		case HTTP_DELETE:
 			mMethod = GetURLHandler::DELETE;
 			break;
 	}
-	
+
 	//set on http task
 }
 
