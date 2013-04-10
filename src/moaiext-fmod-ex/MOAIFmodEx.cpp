@@ -111,7 +111,7 @@ void MOAIFmodEx::OpenSoundSystem () {
 
 #if DEBUG_MOAI_FMOD
 
-	#if MOAI_ANDROID_HOST
+	#ifdef MOAI_OS_ANDROID
 
 		if ( result != FMOD_OK ) {
 
@@ -141,7 +141,7 @@ void MOAIFmodEx::OpenSoundSystem () {
 
 #if DEBUG_MOAI_FMOD
 
-	#if MOAI_ANDROID_HOST
+	#ifdef MOAI_OS_ANDROID
 
 		if ( result != FMOD_OK ) {
 			__android_log_print(ANDROID_LOG_DEBUG, "TOE", "FMOD ISSUE: OpenSoundSystem() init() \n");
@@ -160,7 +160,7 @@ void MOAIFmodEx::OpenSoundSystem () {
 
 #if DEBUG_MOAI_FMOD
 
-	#if MOAI_ANDROID_HOST
+	#ifdef MOAI_OS_ANDROID
 
 		if ( result != FMOD_OK ) {
 			__android_log_print(ANDROID_LOG_DEBUG, "TOE", "FMOD ISSUE: OpenSoundSystem() getMasterChannelGroup() \n");

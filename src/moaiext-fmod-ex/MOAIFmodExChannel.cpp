@@ -279,14 +279,14 @@ void MOAIFmodExChannel::PlayWithLoopPoint ( MOAIFmodExSound* sound, float loopPo
 #if DEBUG_MOAI_FMOD
 
 	if ( !sound ) {
-		#if MOAI_ANDROID_HOST
+		#ifdef MOAI_OS_ANDROID
 			__android_log_print(ANDROID_LOG_DEBUG, "TOE", "FMOD ISSUE: PlayWithLoopPoint() !sound\n");
 		#endif
 		printf ( "\n\nFMOD ISSUE: PlayWithLoopPoint() !sound\n\n" );
 		return;
 	}
 	if ( !sound->mSound ) {
-		#if MOAI_ANDROID_HOST
+		#ifdef MOAI_OS_ANDROID
 			__android_log_print(ANDROID_LOG_DEBUG, "TOE", "FMOD ISSUE: PlayWithLoopPoint() !sound->mSound\n");
 		#endif
 		printf ( "\n\nFMOD ISSUE: PlayWithLoopPoint() !sound->mSound %s\n\n", sound->GetFileName () );
@@ -295,7 +295,7 @@ void MOAIFmodExChannel::PlayWithLoopPoint ( MOAIFmodExSound* sound, float loopPo
 
 	FMOD::System* soundSys = MOAIFmodEx::Get ().GetSoundSys ();
 	if ( !soundSys ) {
-		#if MOAI_ANDROID_HOST
+		#ifdef MOAI_OS_ANDROID
 			__android_log_print(ANDROID_LOG_DEBUG, "TOE", "FMOD ISSUE: PlayWithLoopPoint() !soundSys\n");
 		#endif
 		printf ( "\n\nFMOD ISSUE: PlayWithLoopPoint() !soundSys\n\n" );
@@ -325,7 +325,7 @@ void MOAIFmodExChannel::PlayWithLoopPoint ( MOAIFmodExSound* sound, float loopPo
 
 	result = soundSys->playSound ( FMOD_CHANNEL_FREE, sound->mSound, true, &channel );
 	if ( result != FMOD_OK ) {
-		#if MOAI_ANDROID_HOST
+		#ifdef MOAI_OS_ANDROID
 			__android_log_print(ANDROID_LOG_DEBUG, "TOE", "FMOD ERROR: PlayWithLoopPoint() Sound did not play\n");
 		#endif
 		printf ( "FMOD ERROR: PlayWithLoopPoint() Sound did not play\n" );
@@ -348,14 +348,14 @@ void MOAIFmodExChannel::Play ( MOAIFmodExSound* sound, int loopCount ) {
 #if DEBUG_MOAI_FMOD
 
 	if ( !sound ) {
-		#if MOAI_ANDROID_HOST
+		#ifdef MOAI_OS_ANDROID
 			__android_log_print(ANDROID_LOG_DEBUG, "TOE", "FMOD ISSUE: Play() !sound\n");
 		#endif
 		printf ( "\n\nFMOD ISSUE: Play() !sound\n\n" );
 		return;
 	}
 	if ( !sound->mSound ) {
-		#if MOAI_ANDROID_HOST
+		#ifdef MOAI_OS_ANDROID
 			__android_log_print(ANDROID_LOG_DEBUG, "TOE", "FMOD ISSUE: Play() !sound->mSound\n");
 		#endif
 		printf ( "\n\nFMOD ISSUE: Play() !sound->mSound %s\n\n", sound->GetFileName () );
@@ -364,7 +364,7 @@ void MOAIFmodExChannel::Play ( MOAIFmodExSound* sound, int loopCount ) {
 
 	FMOD::System* soundSys = MOAIFmodEx::Get ().GetSoundSys ();
 	if ( !soundSys ) {
-		#if MOAI_ANDROID_HOST
+		#ifdef MOAI_OS_ANDROID
 			__android_log_print(ANDROID_LOG_DEBUG, "TOE", "FMOD ISSUE: Play() !soundSys\n");
 		#endif
 		printf ( "\n\nFMOD ISSUE: Play() !soundSys\n\n" );

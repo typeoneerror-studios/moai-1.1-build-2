@@ -160,7 +160,7 @@ void MOAIFmodExSound::Load ( MOAIDataBuffer& data, bool streaming ) {
 
 	if ( this->mSound ) {
 
-	#if MOAI_ANDROID_HOST
+	#ifdef MOAI_OS_ANDROID
 		__android_log_print(ANDROID_LOG_DEBUG, "TOE", "FMOD ISSUE: Sound already loaded \n");
 	#endif
 
@@ -178,7 +178,7 @@ void MOAIFmodExSound::Load ( MOAIDataBuffer& data, bool streaming ) {
 	FMOD::System* soundSys = MOAIFmodEx::Get ().GetSoundSys ();
 	if ( !soundSys ) {
 
-		#if MOAI_ANDROID_HOST
+		#ifdef MOAI_OS_ANDROID
 			__android_log_print(ANDROID_LOG_DEBUG, "TOE", "FMOD ISSUE: Load() \n");
 		#endif
 		return;
@@ -213,7 +213,7 @@ void MOAIFmodExSound::Load ( MOAIDataBuffer& data, bool streaming ) {
 #if DEBUG_MOAI_FMOD
 
 	if ( result != FMOD_OK ) {
-		#if MOAI_ANDROID_HOST
+		#ifdef MOAI_OS_ANDROID
 			__android_log_print(ANDROID_LOG_DEBUG, "TOE", "FMOD ISSUE: Load() Result != FMOD_OK\n");
 			__android_log_print(ANDROID_LOG_DEBUG, "TOE", "FMOD ISSUE: Load() Could not create sound or stream: (%d) %s\n", result, FMOD_ErrorString(result));
 		#endif
@@ -238,7 +238,7 @@ void MOAIFmodExSound::Load ( cc8* filename, bool streaming, bool async ) {
 
 	if ( this->mSound ) {
 
-		#if MOAI_ANDROID_HOST
+		#ifdef MOAI_OS_ANDROID
 
 			__android_log_print(ANDROID_LOG_DEBUG, "TOE", "FMOD ISSUE: Load() this->msSound exists\n");
 
@@ -250,7 +250,7 @@ void MOAIFmodExSound::Load ( cc8* filename, bool streaming, bool async ) {
 	FMOD::System* soundSys = MOAIFmodEx::Get ().GetSoundSys ();
 	if ( !soundSys ) {
 
-		#if MOAI_ANDROID_HOST
+		#ifdef MOAI_OS_ANDROID
 
 			__android_log_print(ANDROID_LOG_DEBUG, "TOE", "FMOD ISSUE: Load() Could not get soundSys\n");
 
@@ -318,7 +318,7 @@ void MOAIFmodExSound::Load ( cc8* filename, bool streaming, bool async ) {
 
 		#if DEBUG_MOAI_FMOD
 
-			#if MOAI_ANDROID_HOST
+			#ifdef MOAI_OS_ANDROID
 
 
 				__android_log_print(ANDROID_LOG_DEBUG, "TOE", "FMOD ISSUE: Load() Could not create sound or stream: (%d) %s\n", result, FMOD_ErrorString(result));
