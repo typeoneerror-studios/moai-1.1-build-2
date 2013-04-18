@@ -320,7 +320,6 @@ void MOAIFmodExSound::Load ( cc8* filename, bool streaming, bool async ) {
 
 			#ifdef MOAI_OS_ANDROID
 
-
 				__android_log_print(ANDROID_LOG_DEBUG, "TOE", "FMOD ISSUE: Load() Could not create sound or stream: (%d) %s\n", result, FMOD_ErrorString(result));
 
 			#endif
