@@ -15,15 +15,15 @@
 //----------------------------------------------------------------//
 /**	@name	getResponseCode
 	@text	Returns the response code returned by the server after a httpPost or httpGet call.
- 
+
 	@in		MOAIHttpTask self
 	@out	number code			The numeric response code returned by the server.
  */
 int MOAIHttpTaskBase::_getResponseCode ( lua_State* L ) {
   MOAI_LUA_SETUP ( MOAIHttpTaskBase, "U" )
-  	
+
   lua_pushnumber ( state, self->mResponseCode );
-  
+
   return 1;
 }
 
@@ -32,7 +32,7 @@ int MOAIHttpTaskBase::_getResponseCode ( lua_State* L ) {
 	@text	Returns the response header given its name, or nil if it wasn't provided by the server.
 			Header names are case-insensitive and if multiple responses are given, they will be
 			concatenated with a comma separating the values.
-			
+
 	@in		MOAIHttpTask self
 	@in		string header			The name of the header to return (case-insensitive).
 	@out	string response			The response given by the server or nil if none was specified.
@@ -98,14 +98,14 @@ int MOAIHttpTaskBase::_getString ( lua_State* L ) {
 */
 int MOAIHttpTaskBase::_httpGet ( lua_State* L ) {
 	MOAI_LUA_SETUP ( MOAIHttpTaskBase, "US" )
-	
+
 	cc8* url		= state.GetValue < cc8* >( 2, "" );
 	cc8* useragent	= state.GetValue < cc8* >( 3, DEFAULT_MOAI_HTTP_USERAGENT );
 	bool verbose	= state.GetValue < bool >( 4, false );
 	bool blocking	= state.GetValue < bool >( 5, false );
-	
+
 	self->InitForGet ( url, useragent, verbose );
-	
+
 	if ( blocking ) {
 		self->PerformSync ();
 	}
@@ -128,7 +128,7 @@ int MOAIHttpTaskBase::_httpGet ( lua_State* L ) {
 		@opt	boolean verbose
 		@opt	boolean blocking		Synchronous operation; block execution until complete. Default value is false.
 		@out	nil
-	
+
 	@overload
 
 		@in		MOAIHttpTaskBase self
@@ -141,18 +141,18 @@ int MOAIHttpTaskBase::_httpGet ( lua_State* L ) {
 */
 int MOAIHttpTaskBase::_httpPost ( lua_State* L ) {
 	MOAI_LUA_SETUP ( MOAIHttpTaskBase, "US" )
-	
+
 	cc8* url		= state.GetValue < cc8* >( 2, "" );
 	cc8* useragent	= state.GetValue < cc8* >( 4, DEFAULT_MOAI_HTTP_USERAGENT );
 	bool verbose	= state.GetValue < bool >( 5, false );
 	bool blocking	= state.GetValue < bool >( 6, false );
 
 	if ( state.IsType (3, LUA_TUSERDATA) ) {
-		
+
 		MOAIDataBuffer* data = state.GetLuaObject < MOAIDataBuffer >( 3, true );
-		
+
 		if ( data ) {
-			
+
 			void* bytes;
 			size_t size;
 			data->Lock ( &bytes, &size );
@@ -161,7 +161,7 @@ int MOAIHttpTaskBase::_httpPost ( lua_State* L ) {
 		}
 	}
 	else if ( state.IsType (3, LUA_TSTRING )) {
-		
+
 		size_t size;
 		cc8* postString = lua_tolstring ( state, 3, &size );
 		self->InitForPost ( url, useragent, postString, size, verbose );
@@ -187,9 +187,9 @@ int MOAIHttpTaskBase::_parseXml ( lua_State* L ) {
 	MOAI_LUA_SETUP ( MOAIHttpTaskBase, "U" )
 
 	if ( !self->mData.Size ()) return 0;
-	
+
 	cc8* xml = ( cc8* )self->mData.Data ();
-	
+
 	TiXmlDocument doc;
 	doc.Parse ( xml );
 	MOAIXmlParser::Parse ( state, doc.RootElement ());
@@ -206,7 +206,7 @@ int MOAIHttpTaskBase::_parseXml ( lua_State* L ) {
 */
 int MOAIHttpTaskBase::_performAsync ( lua_State* L ) {
 	MOAI_LUA_SETUP ( MOAIHttpTaskBase, "U" )
-	
+
 	self->PerformAsync ();
 	return 0;
 }
@@ -220,7 +220,7 @@ int MOAIHttpTaskBase::_performAsync ( lua_State* L ) {
 */
 int MOAIHttpTaskBase::_performSync ( lua_State* L ) {
 	MOAI_LUA_SETUP ( MOAIHttpTaskBase, "U" )
-	
+
 	self->PerformSync ();
 	return 0;
 }
@@ -234,7 +234,7 @@ int MOAIHttpTaskBase::_performSync ( lua_State* L ) {
 		@in		MOAIHttpTaskBase self
 		@opt	string data				The string containing text to send as POST data.
 		@out	nil
-	
+
 	@overload
 
 		@in		MOAIHttpTaskBase self
@@ -245,11 +245,11 @@ int MOAIHttpTaskBase::_setBody ( lua_State* L ) {
 	MOAI_LUA_SETUP ( MOAIHttpTaskBase, "U" )
 
 	if ( state.IsType (2, LUA_TUSERDATA) ) {
-		
+
 		MOAIDataBuffer* data = state.GetLuaObject < MOAIDataBuffer >( 2, true );
-		
+
 		if ( data ) {
-			
+
 			void* bytes;
 			size_t size;
 			data->Lock ( &bytes, &size );
@@ -258,7 +258,7 @@ int MOAIHttpTaskBase::_setBody ( lua_State* L ) {
 		}
 	}
 	else if ( state.IsType ( 2, LUA_TSTRING )) {
-		
+
 		size_t size;
 		cc8* postString = lua_tolstring ( state, 2, &size );
 		self->SetBody ( postString, size );
@@ -284,52 +284,70 @@ int MOAIHttpTaskBase::_setCallback ( lua_State* L ) {
 //----------------------------------------------------------------//
 /**	@name	setCookieDst
 	@text	Sets the file to save the cookies for this HTTP request
- 
+
 	@in		MOAIHttpTaskBase self
 	@in		string filename				name and path of the file to save the cookies to
 	@out	nil
  */
 int	MOAIHttpTaskBase::_setCookieDst		( lua_State* L ) {
 	MOAI_LUA_SETUP ( MOAIHttpTaskBase, "US" )
-	
+
 	cc8* file	= state.GetValue < cc8* >( 2, "" );
-	
+
 	self->SetCookieDst( file );
-	
+
 	return 0;
 }
 
 //----------------------------------------------------------------//
 /**	@name	setCookieSrc
 	@text	Sets the file to read the cookies for this HTTP request
- 
+
 	@in		MOAIHttpTaskBase self
 	@in		string filename				name and path of the file to read the cookies from
 	@out	nil
  */
 int MOAIHttpTaskBase::_setCookieSrc		( lua_State* L ) {
 	MOAI_LUA_SETUP ( MOAIHttpTaskBase, "US" )
-	
+
 	cc8* file	= state.GetValue < cc8* >( 2, "" );
-	
+
 	self->SetCookieSrc( file );
-	
+
 	return 0;
+}
+
+//----------------------------------------------------------------//
+/**	@name	setFailOnError
+ @text	Sets whether or not curl calls will fail if the http status code is above 400
+
+ @in	MOAIHttpTaskBase self
+ @in	bool enable
+ @out	nil
+ */
+int MOAIHttpTaskBase::_setFailOnError ( lua_State* L ) {
+	MOAI_LUA_SETUP ( MOAIHttpTaskBase, "UB" )
+
+	bool enable	= state.GetValue < bool >( 2, false );
+
+	self->SetFailOnError(( enable ) ? 1 : 0 );
+	return 0;
+
 }
 
 //----------------------------------------------------------------//
 /**	@name	setFollowRedirects
  @text	Sets whether or not curl should follow http header redirects.
- 
+
  @in	MOAIHttpTaskBase self
  @in	bool follow
  @out	nil
  */
 int MOAIHttpTaskBase::_setFollowRedirects ( lua_State* L ) {
 	MOAI_LUA_SETUP ( MOAIHttpTaskBase, "UB" )
-	
+
 	bool follow	= state.GetValue < bool >( 2, false );
-	
+
 	self->SetFollowRedirects(( follow ) ? 1 : 0 );
 	return 0;
 }
@@ -423,7 +441,7 @@ int  MOAIHttpTaskBase::_setVerbose ( lua_State* L ) {
 void MOAIHttpTaskBase::Finish () {
 
 	if ( this->mOnFinish ) {
-		
+
 		MOAILuaStateHandle state = MOAILuaRuntime::Get ().State ();
 		this->PushLocal ( state, this->mOnFinish );
 		this->PushLuaUserdata ( state );
@@ -436,7 +454,7 @@ void MOAIHttpTaskBase::Finish () {
 void MOAIHttpTaskBase::GetData ( void* buffer, u32 size ) {
 
 	USByteStream byteStream;
-	
+
 	byteStream.SetBuffer ( this->mData, this->mData.Size ());
 	byteStream.SetLength ( this->mData.Size ());
 	byteStream.ReadBytes ( buffer, size );
@@ -446,7 +464,7 @@ void MOAIHttpTaskBase::GetData ( void* buffer, u32 size ) {
 void MOAIHttpTaskBase::InitForGet ( cc8* url, cc8* useragent, bool verbose ) {
 
 	this->Reset ();
-	
+
 	this->SetUrl ( url );
 	this->SetVerb ( HTTP_GET );
 	this->SetUserAgent ( useragent );
@@ -457,7 +475,7 @@ void MOAIHttpTaskBase::InitForGet ( cc8* url, cc8* useragent, bool verbose ) {
 void MOAIHttpTaskBase::InitForPost ( cc8* url, cc8* useragent, const void* buffer, u32 size, bool verbose ) {
 
 	this->Reset ();
-	
+
 	this->SetUrl ( url );
 	this->SetVerb ( HTTP_POST );
 	this->SetBody ( buffer, size );
@@ -469,7 +487,7 @@ void MOAIHttpTaskBase::InitForPost ( cc8* url, cc8* useragent, const void* buffe
 MOAIHttpTaskBase::MOAIHttpTaskBase () :
 	mFollowRedirects ( 0 ),
 	mResponseCode ( 0 ) {
-	
+
 	RTTI_SINGLE ( MOAILuaObject )
 }
 
@@ -504,6 +522,7 @@ void MOAIHttpTaskBase::RegisterLuaFuncs ( MOAILuaState& state ) {
 		{ "setCookieDst",		_setCookieDst },
 		{ "setCookieSrc",		_setCookieSrc },
 		{ "setBody",			_setBody },
+		{ "setFailOnError",		_setFailOnError },
 		{ "setFollowRedirects",	_setFollowRedirects },
 		{ "setHeader",			_setHeader },
 		{ "setUrl",				_setUrl },
@@ -512,7 +531,7 @@ void MOAIHttpTaskBase::RegisterLuaFuncs ( MOAILuaState& state ) {
 		{ "setVerbose",			_setVerbose },
 		{ NULL, NULL }
 	};
-	
+
 	luaL_register ( state, 0, regTable );
 }
 
@@ -524,6 +543,6 @@ void MOAIHttpTaskBase::SetFollowRedirects ( u32 value) {
 
 //----------------------------------------------------------------//
 void MOAIHttpTaskBase::SetHeader ( cc8* key, cc8* value ) {
-	
+
 	this->mHeaderMap [ key ] = value;
 }

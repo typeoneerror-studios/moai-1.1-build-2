@@ -18,20 +18,20 @@ SUPPRESS_EMPTY_FILE_WARNING
 
 //----------------------------------------------------------------//
 u32 MOAIHttpTaskCurl::_writeData ( char* data, u32 n, u32 l, void* s ) {
-	
+
 	MOAIHttpTaskCurl* self = ( MOAIHttpTaskCurl* )s;
 	u32 size = n * l;
-	
+
 	self->mStream->WriteBytes ( data, size );
 	return size;
 }
 
 //----------------------------------------------------------------//
 u32 MOAIHttpTaskCurl::_writeHeader ( char* data, u32 n, u32 l, void* s ) {
-	
+
 	MOAIHttpTaskCurl* self = ( MOAIHttpTaskCurl* )s;
 	u32 size = n * l;
-	   	
+
 	char *endp = data + size;
 	char *colon = data;
 	while ( colon < endp && *colon != ':' ) {
@@ -70,14 +70,14 @@ u32 MOAIHttpTaskCurl::_writeHeader ( char* data, u32 n, u32 l, void* s ) {
 	STLString key = "content-length";
 	u32 keyLength = ( u32 )strlen ( key );
 	if ( strncmp ( data, key, keyLength ) == 0 ) {
-	
+
 		STLString header = data;
 		u32 end = ( u32 )header.find_last_of ( '\n' );
 		STLString value = header.clip ( keyLength + 2, end - 1 );
 
 		u32 length = atoi ( value );
 		if ( length ) {
-			
+
 			self->mData.Init ( length );
 			self->mByteStream.SetBuffer ( self->mData, length );
 			self->mByteStream.SetLength ( length );
@@ -95,32 +95,32 @@ u32 MOAIHttpTaskCurl::_writeHeader ( char* data, u32 n, u32 l, void* s ) {
 void MOAIHttpTaskCurl::AffirmHandle () {
 
 	if ( this->mEasyHandle ) return;
-	
+
 	CURLcode result;
-	
+
 	this->mEasyHandle = curl_easy_init ();
-	
+
 	result = curl_easy_setopt ( this->mEasyHandle, CURLOPT_HEADERFUNCTION, _writeHeader );
 	PrintError ( result );
-	
+
 	result = curl_easy_setopt ( this->mEasyHandle, CURLOPT_HEADERDATA, this );
 	PrintError ( result );
 
 	result = curl_easy_setopt ( this->mEasyHandle, CURLOPT_WRITEFUNCTION, _writeData );
 	PrintError ( result );
-	
+
 	result = curl_easy_setopt ( this->mEasyHandle, CURLOPT_WRITEDATA, this );
 	PrintError ( result );
-	
+
 	result = curl_easy_setopt ( this->mEasyHandle, CURLOPT_FAILONERROR, 1 );
 	PrintError ( result );
-	
+
 	result = curl_easy_setopt ( this->mEasyHandle, CURLOPT_NOPROGRESS, 1 );
 	PrintError ( result );
-	
+
 	result = curl_easy_setopt ( this->mEasyHandle, CURLOPT_SSL_VERIFYPEER, 0 );
 	PrintError ( result );
-	
+
 	result = curl_easy_setopt ( this->mEasyHandle, CURLOPT_SSL_VERIFYHOST, 0 );
 	PrintError ( result );
 }
@@ -133,15 +133,15 @@ void MOAIHttpTaskCurl::Clear () {
 	this->mMemStream.Clear ();
 	this->mData.Clear ();
 	this->mResponseHeaders.clear();
-	
+
 	this->mResponseCode = 0;
 	this->mStream = 0;
-	
+
 	if ( this->mEasyHandle ) {
 		curl_easy_cleanup ( this->mEasyHandle );
 		this->mEasyHandle = 0;
 	}
-	
+
 	if ( this->mHeaderList ) {
 		curl_slist_free_all ( this->mHeaderList );
 		this->mHeaderList = 0;
@@ -158,9 +158,9 @@ void MOAIHttpTaskCurl::CurlFinish () {
 	}
 
 	if ( this->mStream == &this->mMemStream ) {
-	
+
 		u32 size = this->mMemStream.GetLength ();
-		
+
 		if ( size ) {
 			this->mData.Init ( size );
 			this->mStream->Seek ( 0, SEEK_SET );
@@ -179,7 +179,7 @@ MOAIHttpTaskCurl::MOAIHttpTaskCurl () :
 	mStream ( 0 ) {
 
 	RTTI_SINGLE ( MOAIHttpTaskBase )
-	
+
 	this->Reset ();
 }
 
@@ -202,32 +202,32 @@ void MOAIHttpTaskCurl::Prepare () {
 	// prepare the custom headers (if any)
 	HeaderMapIt headerMapIt = this->mHeaderMap.begin ();
 	for ( ; headerMapIt != this->mHeaderMap.end (); ++headerMapIt ) {
-	
+
 		STLString key = headerMapIt->first;
 		STLString value = headerMapIt->second;
-	
+
 		assert (( key.size () + value.size () + 3 ) < MAX_HEADER_LENGTH );
-	
+
 		if ( value.size ()) {
 			sprintf ( buffer, "%s: %s", key.c_str (), value.c_str ());
 		}
 		else {
 			sprintf ( buffer, "%s:", key.c_str ());
 		}
-		
+
 		this->mHeaderList = curl_slist_append ( this->mHeaderList, buffer );
 	}
-	
+
 	if ( this->mHeaderList ) {
 		CURLcode result = curl_easy_setopt ( this->mEasyHandle, CURLOPT_HTTPHEADER, this->mHeaderList );
 		PrintError ( result );
 	}
 
 	CURLcode result = curl_easy_setopt ( this->mEasyHandle, CURLOPT_CONNECTTIMEOUT, this->mDefaultTimeout );
-	
+
 	// follow redirects based on settings in base class (default is to NOT follow redirects)
 	result = curl_easy_setopt ( this->mEasyHandle, CURLOPT_FOLLOWLOCATION, this->mFollowRedirects );
-	
+
 	PrintError ( result );
 }
 
@@ -287,14 +287,14 @@ void MOAIHttpTaskCurl::SetBody ( const void* buffer, u32 size ) {
 
 	result = curl_easy_setopt ( this->mEasyHandle, CURLOPT_POSTFIELDS, this->mBody.Data ());
 	PrintError ( result );
-	
+
     result = curl_easy_setopt ( this->mEasyHandle, CURLOPT_POSTFIELDSIZE, ( long )size );
     PrintError ( result );
 }
 
 //----------------------------------------------------------------//
 void MOAIHttpTaskCurl::SetCookieDst	( const char *file ) {
-	
+
 	CURLcode result = curl_easy_setopt( this->mEasyHandle, CURLOPT_COOKIEFILE, file );
 	PrintError ( result );
 
@@ -307,17 +307,25 @@ void MOAIHttpTaskCurl::SetCookieSrc	( const char *file ) {
 }
 
 //----------------------------------------------------------------//
+void MOAIHttpTaskCurl::SetFailOnError ( bool enable ) {
+
+	CURLcode result = curl_easy_setopt ( this->mEasyHandle, CURLOPT_FAILONERROR, ( u32 ) enable );
+	PrintError ( result );
+
+}
+
+//----------------------------------------------------------------//
 void MOAIHttpTaskCurl::SetUrl ( cc8* url ) {
 
 	CURLcode result = curl_easy_setopt ( this->mEasyHandle, CURLOPT_URL, url );
 	PrintError ( result );
-	
+
 	this->mUrl = url;
 }
 
 //----------------------------------------------------------------//
 void MOAIHttpTaskCurl::SetUserAgent ( cc8* useragent ) {
-	
+
 	CURLcode result = curl_easy_setopt ( this->mEasyHandle, CURLOPT_USERAGENT, useragent );
 	PrintError ( result );
 }
@@ -326,32 +334,32 @@ void MOAIHttpTaskCurl::SetUserAgent ( cc8* useragent ) {
 void MOAIHttpTaskCurl::SetVerb ( u32 verb ) {
 
 	CURLcode result = CURLE_OK;
-	
+
 	switch ( verb ) {
-	
+
 		case HTTP_GET:
 			result = curl_easy_setopt ( this->mEasyHandle, CURLOPT_CUSTOMREQUEST, "GET" );
 			break;
-		
+
 		case HTTP_HEAD:
 			result = curl_easy_setopt ( this->mEasyHandle, CURLOPT_CUSTOMREQUEST, "HEAD" );
 			break;
-		
+
 		case HTTP_POST:
 			result = curl_easy_setopt ( this->mEasyHandle, CURLOPT_CUSTOMREQUEST, "POST" );
 			break;
-		
+
 		case HTTP_PUT:
 			result = curl_easy_setopt ( this->mEasyHandle, CURLOPT_CUSTOMREQUEST, "PUT" );
 			break;
-		
+
 		case HTTP_DELETE:
 			result = curl_easy_setopt ( this->mEasyHandle, CURLOPT_CUSTOMREQUEST, "DELETE" );
 			break;
 	}
-	
+
 	PrintError ( result );
-	
+
 	result = curl_easy_setopt ( this->mEasyHandle, CURLOPT_NOBODY, verb == HTTP_HEAD ? 1 : 0 );
 	PrintError ( result );
 }
