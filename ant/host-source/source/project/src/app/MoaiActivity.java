@@ -43,7 +43,7 @@ import android.net.Uri;
 import android.provider.Settings.Secure;
 
 // FMOD
-import org.fmod.FMODAudioDevice;
+// import org.fmod.FMODAudioDevice;
 
 //================================================================//
 // MoaiActivity
@@ -61,13 +61,13 @@ public class MoaiActivity extends Activity {
 	private boolean							mWaitingToResume = false;
 	private boolean							mWindowFocusLost = false;
 	private float []						mAccelerometerData = null;
-	private FMODAudioDevice					fmod = new FMODAudioDevice();
+	// private FMODAudioDevice					fmod = new FMODAudioDevice();
 
 	//----------------------------------------------------------------//
 	static {
 
-		MoaiLog.i ( "Loading libfmodex.so" );
-		System.loadLibrary ( "fmodex" );
+		// MoaiLog.i ( "Loading libfmodex.so" );
+		// System.loadLibrary ( "fmodex" );
 
 		MoaiLog.i ( "Loading libmoai.so" );
 		System.loadLibrary ( "moai" );
@@ -228,7 +228,7 @@ public class MoaiActivity extends Activity {
 
 		super.onStart ();
 		Moai.onStart ();
-		fmod.start();
+		// fmod.start();
 	}
 
 	//----------------------------------------------------------------//
@@ -236,7 +236,7 @@ public class MoaiActivity extends Activity {
 
 		MoaiLog.i ( "MoaiActivity onStop: activity STOPPED" );
 
-		fmod.stop();
+		// fmod.stop();
 		super.onStop ();
 		Moai.onStop ();
 	}
