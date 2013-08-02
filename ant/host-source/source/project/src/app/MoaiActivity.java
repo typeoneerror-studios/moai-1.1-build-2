@@ -129,10 +129,10 @@ public class MoaiActivity extends Activity {
 		enableAccelerometerEvents ( false );
 		enableLocationEvents ( false );
 
-		LinearLayoutIMETrap con = MoaiKeyboard.getContainer ();
-		setContentView ( con );
-		con.addView ( mMoaiView );
-		con.addView ( MoaiKeyboard.getEditText ());
+		// LinearLayoutIMETrap con = MoaiKeyboard.getContainer ();
+		// setContentView ( con );
+		// con.addView ( mMoaiView );
+		// con.addView ( MoaiKeyboard.getEditText ());
 
     }
 

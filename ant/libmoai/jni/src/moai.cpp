@@ -288,8 +288,8 @@
 		MOAIMoviePlayerAndroid::Affirm ();
 		REGISTER_LUA_CLASS ( MOAIMoviePlayerAndroid );
 
-		MOAIKeyboardAndroid::Affirm ();
-		REGISTER_LUA_CLASS ( MOAIKeyboardAndroid );
+		// MOAIKeyboardAndroid::Affirm ();
+		// REGISTER_LUA_CLASS ( MOAIKeyboardAndroid );
 
 #ifndef DISABLE_ADCOLONY
 		MOAIAdColonyAndroid::Affirm ();
