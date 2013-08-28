@@ -11,6 +11,15 @@
 	typedef void (WINAPI *PGNSI)(LPSYSTEM_INFO);
 #endif
 
+#ifdef __APPLE__
+
+	#include <Carbon/Carbon.h>
+	#include <CoreFoundation/CoreFoundation.h>
+	#include <sys/types.h>
+	#include <sys/stat.h>
+
+#endif
+
 //================================================================//
 // local
 //================================================================//
@@ -32,12 +41,12 @@ int MOAIEnvironment::_generateGUID ( lua_State* L ) {
 //----------------------------------------------------------------//
 /**	@name	getMACAddress
 	@text	Finds and returns the primary MAC Address
- 
+
 	@out	string MAC
 */
 
 int MOAIEnvironment::_getMACAddress ( lua_State* L ) {
-	
+
 	STLString macAddress = USAdapterInfo::GetMACAddress ();
 	lua_pushstring ( L, macAddress );
 	return 1;
@@ -54,9 +63,9 @@ int MOAIEnvironment::_getMACAddress ( lua_State* L ) {
 */
 int MOAIEnvironment::_setValue ( lua_State* L ) {
 	MOAILuaState state ( L );
-	
+
 	if ( state.IsType ( 1, LUA_TSTRING )) {
-	
+
 		MOAIEnvironment& environment = MOAIEnvironment::Get ();
 		environment.SetValue ( state );
 	}
@@ -71,37 +80,37 @@ int MOAIEnvironment::_setValue ( lua_State* L ) {
 void MOAIEnvironment::DetectEnvironment () {
 
 	RTTI_SINGLE ( MOAIGlobalEventSource )
-	
+
 	#if defined( MOAI_OS_WINDOWS )
-	
+
 		this->SetValue ( MOAI_ENV_osBrand, "Windows" );
-		
+
 		UUID uuid;
 		UuidCreateSequential ( &uuid );
-		
+
 		// For now, we'll just use the MAC address which is the last 6 bytes of the uuid.
 		char buf[13];
 		sprintf ( buf, "%02X%02X%02X%02X%02X%02X", uuid.Data4[2], uuid.Data4[3], uuid.Data4[4], uuid.Data4[5], uuid.Data4[6], uuid.Data4[7]);
 		this->SetValue ( MOAI_ENV_udid, buf );
-		
+
 		char path[MAX_PATH];
 		//HRESULT hr = SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, path);
 		SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, path);
 		this->SetValue ( MOAI_ENV_documentDirectory, path );
-		
+
 		const int BUFSIZE = 256;
 		TCHAR pszOS[BUFSIZE];
 
 		OSVERSIONINFOEX osvi;
 		SYSTEM_INFO si;
-		PGNSI pGNSI;				
+		PGNSI pGNSI;
 
 		ZeroMemory(&si, sizeof(SYSTEM_INFO));
 		ZeroMemory(&osvi, sizeof(OSVERSIONINFOEX));
 
 		osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
 		GetVersionEx((OSVERSIONINFO*) &osvi);
-		
+
 		pGNSI = (PGNSI) GetProcAddress(GetModuleHandle(TEXT("kernel32.dll")), "GetNativeSystemInfo");
 		if(NULL != pGNSI) {
 			pGNSI(&si);
@@ -111,8 +120,8 @@ void MOAIEnvironment::DetectEnvironment () {
 		}
 
 		if ( VER_PLATFORM_WIN32_NT==osvi.dwPlatformId && osvi.dwMajorVersion > 4 ) {
-		
-			strcpy ( pszOS, TEXT ( "Win" ));			
+
+			strcpy ( pszOS, TEXT ( "Win" ));
 			if ( osvi.dwMajorVersion == 6 ) {
 				if ( osvi.dwMinorVersion == 1 ) {
 					if( osvi.wProductType == VER_NT_WORKSTATION )
@@ -126,7 +135,7 @@ void MOAIEnvironment::DetectEnvironment () {
 				}
 			}
 			else if ( osvi.dwMajorVersion == 5 ) {
-				if (osvi.dwMinorVersion == 2) {				
+				if (osvi.dwMinorVersion == 2) {
 					if( osvi.wProductType == VER_NT_WORKSTATION && si.wProcessorArchitecture==PROCESSOR_ARCHITECTURE_AMD64) {
 						strcat(pszOS, TEXT( "XPx64"));
 					}
@@ -135,26 +144,42 @@ void MOAIEnvironment::DetectEnvironment () {
 					}
 				}
 				else if ( osvi.dwMinorVersion == 1 ) {
-					strcat(pszOS, TEXT("XP"));					
+					strcat(pszOS, TEXT("XP"));
 				}
 				else if ( osvi.dwMinorVersion == 0 ) {
 					strcat(pszOS, TEXT("2000"));
 				}
 			}
-			
+
 			this->SetValue ( MOAI_ENV_osVersion, pszOS );
 		}
 		else {
 			this->SetValue ( MOAI_ENV_osVersion, "WinUnknown" );
 		}
-		
+
 	#elif defined( MOAI_OS_LINUX )
-	
+
 		this->SetValue ( MOAI_ENV_osBrand, "Linux" );
 
 	#elif defined ( MOAI_OS_OSX )
-	
+
 		this->SetValue ( MOAI_ENV_osBrand, "OSX" );
+
+		CFStringRef shortName = CSCopyUserName(true);
+
+	    char path[1024];
+	    CFStringRef docs = CFStringCreateWithFormat(NULL , NULL , CFSTR( "/Users/%@/Documents" ) , shortName);
+	    CFStringGetCString(docs, path, sizeof(path), kCFStringEncodingUTF8);
+
+	    int status = mkdir(path, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+
+	    MOAIEnvironment& environment = MOAIEnvironment::Get ();
+	    environment.SetValue(MOAI_ENV_documentDirectory, path);
+
+	    CFRelease(shortName);
+	    CFRelease(docs);
+
+		this->SetValue ( MOAI_ENV_documentDirectory, path );
 	  #if 0 /* doesn't compile yet */
 		// OS Version
 		SInt32 majorVersion,minorVersion,bugFixVersion;
@@ -187,7 +212,7 @@ void MOAIEnvironment::RegisterLuaClass ( MOAILuaState& state ) {
 	state.SetField ( -1, "CONNECTION_TYPE_NONE", ( u32 )CONNECTION_TYPE_NONE );
 	state.SetField ( -1, "CONNECTION_TYPE_WIFI", ( u32 )CONNECTION_TYPE_WIFI );
 	state.SetField ( -1, "CONNECTION_TYPE_WWAN", ( u32 )CONNECTION_TYPE_WWAN );
-	
+
 	state.SetField ( -1, "OS_BRAND_ANDROID", ( u32 )OS_BRAND_ANDROID );
 	state.SetField ( -1, "OS_BRAND_IOS", ( u32 )OS_BRAND_IOS );
 	state.SetField ( -1, "OS_BRAND_OSX", ( u32 )OS_BRAND_OSX );
@@ -223,20 +248,20 @@ void MOAIEnvironment::SetValue ( lua_State* L ) {
 	int top = state.GetTop ();
 
 	this->PushLuaClassTable ( state );
-		
+
 	state.CopyToTop ( -3 ); // key
 	state.CopyToTop ( -3 ); // value
-	
+
 	lua_settable ( state, -3 );
 	state.Pop ( 1 );
-	
+
 	if ( this->PushListener ( EVENT_VALUE_CHANGED, state )) {
-	
+
 		state.CopyToTop ( -3 ); // key
 		state.CopyToTop ( -3 ); // value
-		
+
 		state.DebugCall ( 2, 0 );
 	}
-	
+
 	top = state.GetTop ();
 }
