@@ -35,6 +35,7 @@ struct AKUContext {
 	AKU_DEFINE_FUNC_CONTEXT ( ExitFullscreenMode );
 	AKU_DEFINE_FUNC_CONTEXT ( OpenWindow );
 	AKU_DEFINE_FUNC_CONTEXT ( SetSimStep );
+	AKU_DEFINE_FUNC_CONTEXT ( Quit );
 
 	MOAIGlobals*		mGlobals;
 	void*				mUserdata;
@@ -78,6 +79,10 @@ static void _SetSimStep ( double step ) {
 	UNUSED ( step );
 }
 AKU_DEFINE_FUNC_ACCESSORS ( SetSimStep, _SetSimStep )
+
+//----------------------------------------------------------------//
+static void _Quit () {}
+AKU_DEFINE_FUNC_ACCESSORS ( Quit, _Quit )
 
 //----------------------------------------------------------------//
 static void _deleteContext ( AKUContext* context ) {

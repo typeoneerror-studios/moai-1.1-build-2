@@ -38,12 +38,14 @@ typedef void ( *AKUErrorTracebackFunc )         ( const char* message, struct lu
 typedef void ( *AKUExitFullscreenModeFunc )		();
 typedef void ( *AKUOpenWindowFunc )				( const char* title, int width, int height );
 typedef void ( *AKUSetSimStepFunc )				( double step );
+typedef void ( *AKUQuitFunc ) 					();
 
 AKU_DECLARE_FUNC_ACCESSORS ( EnterFullscreenMode )
 AKU_DECLARE_FUNC_ACCESSORS ( ErrorTraceback )
 AKU_DECLARE_FUNC_ACCESSORS ( ExitFullscreenMode )
 AKU_DECLARE_FUNC_ACCESSORS ( OpenWindow )
 AKU_DECLARE_FUNC_ACCESSORS ( SetSimStep )
+AKU_DECLARE_FUNC_ACCESSORS ( Quit )
 
 struct lua_State;
 typedef int AKUContextID;

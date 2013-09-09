@@ -99,6 +99,23 @@ int MOAISim::_exitFullscreenMode ( lua_State* L ) {
 }
 
 //----------------------------------------------------------------//
+/**	@name quit
+	@text	Quits the host.
+
+	@out	nil
+*/
+int MOAISim::_quit ( lua_State* L ) {
+
+	MOAILuaState stat ( L );
+	AKUQuitFunc quit = AKUGetFunc_Quit ();
+	if ( quit ) {
+		quit ();
+	}
+
+	return 0;
+}
+
+//----------------------------------------------------------------//
 /**	@name forceGarbageCollection
 	@text	Runs the garbage collector repeatedly until no more MOAIObjects
 			can be collected.
@@ -759,6 +776,7 @@ void MOAISim::RegisterLuaClass ( MOAILuaState& state ) {
 		{ "crash",						_crash },
 		{ "enterFullscreenMode",		_enterFullscreenMode },
 		{ "exitFullscreenMode",			_exitFullscreenMode },
+		{ "quit",						_quit },
 		{ "forceGarbageCollection",		_forceGarbageCollection },
 		{ "framesToTime",				_framesToTime },
 		{ "getDeviceTime",				_getDeviceTime },
