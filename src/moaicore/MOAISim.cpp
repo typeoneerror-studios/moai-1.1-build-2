@@ -116,6 +116,24 @@ int MOAISim::_quit ( lua_State* L ) {
 }
 
 //----------------------------------------------------------------//
+/**	@name openURL
+	@text	Opens a URL
+
+	@out	nil
+*/
+int MOAISim::_openURL ( lua_State* L ) {
+
+	MOAILuaState state ( L );
+	cc8* url = lua_tostring ( state, 1 );
+	AKUOpenURLFunc openURL = AKUGetFunc_OpenURL ();
+	if ( openURL ) {
+		openURL ( url );
+	}
+
+	return 0;
+}
+
+//----------------------------------------------------------------//
 /**	@name forceGarbageCollection
 	@text	Runs the garbage collector repeatedly until no more MOAIObjects
 			can be collected.
@@ -777,6 +795,7 @@ void MOAISim::RegisterLuaClass ( MOAILuaState& state ) {
 		{ "enterFullscreenMode",		_enterFullscreenMode },
 		{ "exitFullscreenMode",			_exitFullscreenMode },
 		{ "quit",						_quit },
+		{ "openURL",                    _openURL },
 		{ "forceGarbageCollection",		_forceGarbageCollection },
 		{ "framesToTime",				_framesToTime },
 		{ "getDeviceTime",				_getDeviceTime },

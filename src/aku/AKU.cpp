@@ -36,6 +36,7 @@ struct AKUContext {
 	AKU_DEFINE_FUNC_CONTEXT ( OpenWindow );
 	AKU_DEFINE_FUNC_CONTEXT ( SetSimStep );
 	AKU_DEFINE_FUNC_CONTEXT ( Quit );
+	AKU_DEFINE_FUNC_CONTEXT ( OpenURL );
 
 	MOAIGlobals*		mGlobals;
 	void*				mUserdata;
@@ -83,6 +84,12 @@ AKU_DEFINE_FUNC_ACCESSORS ( SetSimStep, _SetSimStep )
 //----------------------------------------------------------------//
 static void _Quit () {}
 AKU_DEFINE_FUNC_ACCESSORS ( Quit, _Quit )
+
+//----------------------------------------------------------------//
+static void _OpenURL ( const char* urlToOpen ) {
+	UNUSED ( urlToOpen );
+}
+AKU_DEFINE_FUNC_ACCESSORS ( OpenURL, _OpenURL )
 
 //----------------------------------------------------------------//
 static void _deleteContext ( AKUContext* context ) {

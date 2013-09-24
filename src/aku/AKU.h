@@ -39,6 +39,7 @@ typedef void ( *AKUExitFullscreenModeFunc )		();
 typedef void ( *AKUOpenWindowFunc )				( const char* title, int width, int height );
 typedef void ( *AKUSetSimStepFunc )				( double step );
 typedef void ( *AKUQuitFunc ) 					();
+typedef void ( *AKUOpenURLFunc )                ( const char* urlToOpen );
 
 AKU_DECLARE_FUNC_ACCESSORS ( EnterFullscreenMode )
 AKU_DECLARE_FUNC_ACCESSORS ( ErrorTraceback )
@@ -46,6 +47,7 @@ AKU_DECLARE_FUNC_ACCESSORS ( ExitFullscreenMode )
 AKU_DECLARE_FUNC_ACCESSORS ( OpenWindow )
 AKU_DECLARE_FUNC_ACCESSORS ( SetSimStep )
 AKU_DECLARE_FUNC_ACCESSORS ( Quit )
+AKU_DECLARE_FUNC_ACCESSORS ( OpenURL )
 
 struct lua_State;
 typedef int AKUContextID;

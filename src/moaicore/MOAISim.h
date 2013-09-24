@@ -84,6 +84,7 @@ private:
 	static int		_enterFullscreenMode		( lua_State* L );
 	static int		_exitFullscreenMode			( lua_State* L );
 	static int      _quit 						( lua_State* L );
+	static int      _openURL                    ( lua_State* L );
 	static int		_forceGarbageCollection		( lua_State* L );
 	static int		_framesToTime				( lua_State* L );
 	static int		_getDeviceTime				( lua_State* L );
