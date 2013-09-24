@@ -36,6 +36,7 @@
 #define MOAI_ENV_screenWidth				"screenWidth"
 #define MOAI_ENV_udid						"udid"
 #define MOAI_ENV_openUdid					"openUdid"
+#define MOAI_ENV_supportsHD                 "supportsHD"
 
 //================================================================//
 // MOAIEnvironment
@@ -44,12 +45,12 @@
 	@text	<p>Table of key/value pairs containing information about the current
 			environment. Also contains the generateGUID (), which will move to
 			MOAIUnique in a future release.</p>
-			
+
 			<p>If a given key is not supported in the current environment it will
 			not exist (it's value will be nil).</p>
-			
+
 			<p>The keys are:</p>
-			
+
 			<p>
 			<ul>
 			<li>appDisplayName</li>
@@ -82,11 +83,11 @@
 			<li>udid</li>
 			</ul>
 			</p>
-	
+
 	@const CONNECTION_TYPE_NONE		Signifies that there is no active connection
 	@const CONNECTION_TYPE_WIFI		Signifies that the current connection is via WiFi
 	@const CONNECTION_TYPE_WWAN		Signifies that the current connection is via WWAN
-	
+
 	@const OS_BRAND_ANDROID			Signifies that Moai is currently running on Android
 	@const OS_BRAND_IOS				Signifies that Moai is currently running on iOS
 	@const OS_BRAND_OSX				Signifies that Moai is currently running on OSX
@@ -97,9 +98,9 @@
 class MOAIEnvironment :
 	public MOAIGlobalClass < MOAIEnvironment, MOAIGlobalEventSource > {
 private:
-	
+
 	MOAILuaRef			mListeners;
-	
+
 	//----------------------------------------------------------------//
 	static int			_generateGUID				( lua_State* L );
 	static int			_getMACAddress				( lua_State* L );
@@ -108,7 +109,7 @@ private:
 	//----------------------------------------------------------------//
 	void				SetValue					( lua_State* L );
 
-public:	
+public:
 
 	enum {
 		EVENT_VALUE_CHANGED,
@@ -119,8 +120,8 @@ public:
 		CONNECTION_TYPE_WIFI,
 		CONNECTION_TYPE_WWAN,
 	};
-	
-	enum {	
+
+	enum {
 		OS_BRAND_ANDROID,
 		OS_BRAND_IOS,
 		OS_BRAND_OSX,
@@ -128,7 +129,7 @@ public:
 		OS_BRAND_WINDOWS,
 		OS_BRAND_UNAVAILABLE
 	};
-	
+
 	DECL_LUA_SINGLETON ( MOAIEnvironment )
 
 	//----------------------------------------------------------------//
@@ -137,16 +138,16 @@ public:
 						~MOAIEnvironment			();
 	void				RegisterLuaClass			( MOAILuaState& state );
 	void				SetValue					( cc8* key );
-	
+
 	//----------------------------------------------------------------//
 	template < typename TYPE >
 	void SetValue ( cc8* key, TYPE value ) {
-	
+
 		MOAILuaStateHandle state = MOAILuaRuntime::Get ().State ();
-		
+
 		state.Push ( key );
 		state.Push ( value );
-		
+
 		this->SetValue ( state );
 	}
 };

@@ -79,6 +79,7 @@ AKU_API void			AKURunString					( const char* script );
 AKU_API void			AKUSetScreenDpi					( int dpi );
 AKU_API void			AKUSetScreenSize				( int width, int height );
 AKU_API void			AKUSetViewSize					( int width, int height );
+AKU_API void            AKUSetSupportsHD                ( bool supportsHD );
 AKU_API void			AKUSoftReleaseGfxResources		( int age );
 AKU_API int				AKUSetWorkingDirectory			( char const* path );
 AKU_API void			AKUUpdate						();

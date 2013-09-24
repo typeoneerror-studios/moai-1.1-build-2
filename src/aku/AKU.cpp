@@ -474,6 +474,12 @@ void AKUSetViewSize ( int width, int height ) {
 }
 
 //----------------------------------------------------------------//
+void AKUSetSupportsHD ( bool supportsHD ) {
+
+	MOAIEnvironment::Get ().SetValue ( MOAI_ENV_supportsHD, supportsHD );
+}
+
+//----------------------------------------------------------------//
 int AKUSetWorkingDirectory ( char const* path ) {
 
 	return zl_chdir ( path );
