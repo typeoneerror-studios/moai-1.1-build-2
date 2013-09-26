@@ -10,7 +10,15 @@
 #include <moaicore/MOAILuaRef.h>
 #include <moaicore/MOAILuaState-impl.h>
 
+#ifdef LUA_JIT
+
+#include <lua.h>
+
+#else
+
 #include <lstate.h>
+
+#endif
 
 #define DUMP_FORMAT "%p <%s> %s"
 
@@ -23,6 +31,9 @@ typedef STLSet < struct Table* > TableSet;
 //----------------------------------------------------------------//
 static void _dumpType ( lua_State* L, int idx, const char *name, bool verbose, TableSet& foundTables ) {
 
+	
+#ifndef LUA_JIT
+	
 	MOAILuaState state ( L );
 
 	const char *format = DUMP_FORMAT;
@@ -138,11 +149,16 @@ static void _dumpType ( lua_State* L, int idx, const char *name, bool verbose, T
 	}
 
 	USLog::Print ( "\n" );
+	
+#endif
 }
 
 //----------------------------------------------------------------//
 static void _dumpTypeByAddress ( lua_State* L, TValue* tvalue, const char *name, bool verbose, TableSet& foundTables ) {
 
+	
+#ifndef LUA_JIT
+	
 	MOAILuaState state ( L );
 	
 	lua_lock ( L );
@@ -152,6 +168,8 @@ static void _dumpTypeByAddress ( lua_State* L, TValue* tvalue, const char *name,
 
 	_dumpType ( L, -1, name, verbose, foundTables );
 	lua_pop ( L, 1 );
+	
+#endif
 }
 
 //================================================================//
@@ -246,6 +264,8 @@ static int _dump ( lua_State* L ) {
 //----------------------------------------------------------------//
 static int _dumpStack ( lua_State* L ) {
 
+#ifndef LUA_JIT
+	
 	MOAILuaState state ( L );
 
 	bool verbose = state.GetValue < bool >( 1, true );
@@ -258,6 +278,8 @@ static int _dumpStack ( lua_State* L ) {
 		_dumpTypeByAddress ( state, tvalue, "", verbose, foundTables );
 	}
 	return 0;
+	
+#endif
 }
 
 //----------------------------------------------------------------//
@@ -537,7 +559,16 @@ MOAILuaStateHandle MOAILuaRuntime::Open () {
 	}
 
 	// open the main state
+#ifdef LUA_JIT
+	
+	this->mMainState = luaL_newstate();
+	
+#else
+	
 	this->mMainState = lua_newstate ( _tracking_alloc, NULL );
+	
+#endif	
+
 	lua_atpanic ( this->mMainState, &_panic );
 
 	// set up the ref tables

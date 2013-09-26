@@ -12,6 +12,16 @@ This is a hacked version of MOAI 1.1. We use this specicically in Shibashiba bec
 * Setup and additional support for FMOD including BG music with loop points and bug fixes.
 * Other patches from MOAI >= 1.2.
 
+## Building the Moai Library for LuaJIT on OSX.
+
+The following is cribbed from [this post](http://getmoai.com/forums/moai-luajit-t1463/#p8656).
+
+1. Open `xcode/libmoai-luajit/libmoai.xcodeproj`.
+2. Build the `libmoai-osx-*` targets (excluding FMOD).
+3. Using the libs built in step 2, build the mochi host. Put the mochi host in your path.
+4. `cd` to the root on this Moai project in Terminal. Type: `cd src/lua-headers && mochi main.lua`. This will generate a new `src/lua-headers/moai_lua.h` with the proper bytecode format for LuaJIT.
+5. Rebuild the `libmoai-osx-*` targets.
+6. Repeat step 3 to get a working mochi host.
 
 ## Building
 
@@ -35,7 +45,7 @@ You'll find all the build stuff in *./xcode/*. The project in *./xcode/osx* is u
 3. If no errors, run *openosx.sh* from the command line.
 4. From the path that opens, copy *moai/macosx/Release/moai* and *moai-fmod/macosx/Release/moai-fmod* binaries to the Shibashiba build (one without -fmod is the untz build) in *bin/osx*.
 5. cd into *bin/osx* and run the following command:
-		
+
 		install_name_tool -change ./libfmodex.dylib @executable_path/libfmodex.dylib moai-fmod
 
 
