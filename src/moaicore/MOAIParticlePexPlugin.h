@@ -28,7 +28,7 @@ private:
 
 	u32 mNumParticles;
 	EmitterType mEmitterType;
-	
+
 	float mLifespan;
 	float mLifespanVariance;
 	float mLifespanTerm[2];
@@ -42,7 +42,7 @@ private:
 	float mStartColor[4];
 	float mStartColorVariance[4];
 	int mStartColorRegister[4];
-	
+
 	float mFinishColor[4];
 	float mFinishColorVariance[4];
 	s32 mFinishColorRegister[4];
@@ -50,45 +50,45 @@ private:
 	float mStartSize;
 	float mStartSizeVariance;
 	s32	  mStartSizeRegister;
-	
+
 	float mFinishSize;
 	float mFinishSizeVariance;
 	s32	  mFinishSizeRegister;
-	
+
 	float mGravity[2];
-	
+
 	float mMaxRadius;
 	float mMaxRadiusVariance;
 	s32	  mMaxRadiusRegister;
-	
+
 	float mMinRadius;
-	
+
 	float mRadialAcceleration;
 	float mRadialAccelVariance;
 	s32	  mRadialAccelRegister;
-	
+
 	float mTanAccel;
 	float mTanAccelVariance;
 	s32   mTanAccelRegister;
-	
+
 	float mRotStart;
 	float mRotStartVariance;
 	s32	  mRotStartRegister;
-	
+
 	float mRotEnd;
 	float mRotEndVariance;
 	s32	  mRotEndRegister;
-	
+
 	float mSpeed;
 	float mSpeedVariance;
 	s32	  mSpeedRegister;
-	
+
 	float mRotPerSecond;
 	float mRotPerSecondVariance;
-	
+
 	float mSourcePos[2];
 	float mSourcePosVariance[2];
-	
+
 	float mDuration;
 
 	u32 mBlendFuncSrc;
@@ -110,7 +110,7 @@ private:
 	// Emission information.
 	u32 mEmissionCount;
 	float mEmissionRate;
-	
+
 	//----------------------------------------------------------------//
 	static int		_getBlendMode		( lua_State* L );
 	static int		_getDuration		( lua_State* L );
@@ -121,20 +121,22 @@ private:
 	static int		_getRect			( lua_State* L );
 	static int		_getTextureName		( lua_State* L );
 	static int		_load				( lua_State* L );
+	static int      _loadFromString     ( lua_State* L );
 
 	static void		Parse						( MOAIParticlePexPlugin& plugin, TiXmlNode* node );
-	
+	// static void    Parse            ( cc8* filename, MOAIParticlePexPlugin& plugin, TiXmlNode* node );
+
 	void			_initGravityScript			( float* particle, float* registers );
 	void			_initRadialScript			( float* particle, float* registers );
 	void			_renderGravityScript		( float* particle, float* registers, AKUParticleSprite* sprite, float t0, float t1,  float term );
 	void			_renderRadialScript		    ( float* particle, float* registers, AKUParticleSprite* sprite, float t0, float t1,  float term );
 
 public:
-	
+
 	friend class MOAIParticleState;
-	
+
 	DECL_LUA_FACTORY ( MOAIParticlePexPlugin )
-	
+
 	//----------------------------------------------------------------//
 					MOAIParticlePexPlugin		();
 					~MOAIParticlePexPlugin		();
@@ -143,5 +145,5 @@ public:
 	void			RegisterLuaClass			( MOAILuaState& state );
 	void			RegisterLuaFuncs			( MOAILuaState& state );
 };
-	
+
 #endif

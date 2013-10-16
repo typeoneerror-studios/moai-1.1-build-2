@@ -14,7 +14,7 @@
 // An implementation of a particle plugin that implements the
 // behavior that this tool creates:
 //   http://particledesigner.71squared.com/
-// 
+//
 // It basically has a ton of tweakable variables and changes behavior
 // based on those variables at runtime. This implementation currently
 // tries to reduce the register count per particle by detecting when
@@ -34,7 +34,7 @@
 
 int	MOAIParticlePexPlugin::_getBlendMode( lua_State* L ){
 	MOAI_LUA_SETUP ( MOAIParticlePexPlugin, "U" )
-	
+
 	lua_pushnumber ( state, self->mBlendFuncSrc );
 	lua_pushnumber ( state, self->mBlendFuncDst );
 	return 2;
@@ -42,7 +42,7 @@ int	MOAIParticlePexPlugin::_getBlendMode( lua_State* L ){
 
 int MOAIParticlePexPlugin::_getDuration( lua_State* L ){
 	MOAI_LUA_SETUP ( MOAIParticlePexPlugin, "U" )
-	
+
 	lua_pushnumber ( state, self->mDuration );
 	return 1;
 }
@@ -84,7 +84,7 @@ int MOAIParticlePexPlugin::_getRect( lua_State* L ){
 //----------------------------------------------------------------//
 /**	@name	getTextureName
 	@text	Return the texture name associated with plugin.
-	
+
 	@in		MOAIParticlePlugin self
 	@out	string textureName
 */
@@ -98,51 +98,83 @@ int MOAIParticlePexPlugin::_getTextureName( lua_State* L ){
 //----------------------------------------------------------------//
 /**	@name	load
 	@text	Create a particle plugin from an XML file
-	
+
 	@in		String file to load
 	@out	MOAIParticlePexPlugin - The plugin object that has been initialized with XML's data
 */
 int MOAIParticlePexPlugin::_load( lua_State* L ){
 
-	MOAILuaState state ( L );										
-	if ( !state.CheckParams ( 1, "S" )) {							
-		MOAILog ( L, MOAILogMessages::MOAI_ParamTypeMismatch );		
-		return 0;													
-	}																
-		
+	MOAILuaState state ( L );
+	if ( !state.CheckParams ( 1, "S" )) {
+		MOAILog ( L, MOAILogMessages::MOAI_ParamTypeMismatch );
+		return 0;
+	}
+
 	cc8* xml = lua_tostring ( state, 1 );
 
-	
+
 	if ( MOAILogMessages::CheckFileExists ( xml, L )) {
-		TiXmlDocument doc;
-		doc.LoadFile ( xml );
+		STLString absFilePath = USFileSys::GetAbsoluteFilePath ( xml );
+		TiXmlDocument doc(absFilePath.c_str());
+		doc.LoadFile();
 		MOAIParticlePexPlugin *particle = new MOAIParticlePexPlugin();
 		MOAIParticlePexPlugin::Parse ( *particle, doc.RootElement ());
 		particle->mParticlePath = xml;
+		// MOAIParticlePexPlugin::Parse ( xml, *particle, doc.RootElement ());
 		particle->PushLuaUserdata( state );
 		return 1;
 	}
-	
+
 	return 0;
 }
+
+int MOAIParticlePexPlugin::_loadFromString ( lua_State* L ) {
+
+	MOAILuaState state ( L );
+
+
+	cc8* filePath = lua_tostring ( state, 1 );
+	cc8* fileData = lua_tostring ( state, 2 );
+
+	STLString data = fileData;
+
+
+	TiXmlDocument doc;
+	doc.Parse ( (const char*)data.c_str(), 0, TIXML_ENCODING_UTF8 );
+
+	MOAIParticlePexPlugin *particle = new MOAIParticlePexPlugin();
+	// MOAIParticlePexPlugin::Parse ( filePath, *particle, doc.RootElement () );
+	MOAIParticlePexPlugin::Parse ( *particle, doc.RootElement ());
+	particle->mParticlePath = filePath;
+	particle->PushLuaUserdata ( state );
+	return 1;
+
+}
+
+
 //================================================================//
 // MOAIParticlePlugin
 //================================================================//
 
 
 void MOAIParticlePexPlugin::Parse( MOAIParticlePexPlugin& plugin, TiXmlNode* node )
+// void MOAIParticlePexPlugin::Parse( cc8* filename, MOAIParticlePexPlugin& plugin, TiXmlNode* node )
 {
 	if ( !node ) return;
-	
+
+	// plugin.mParticlePath = filename;
+ //    STLString absFilePath = USFileSys::GetAbsoluteFilePath ( filename );
+ //    STLString absDirPath = USFileSys::TruncateFilename ( absFilePath );
+
 	TiXmlElement* element = node->ToElement();
 
 	if ( element && strcmp(element->Value (), "patricleEmitterConfig") ) {
-		
+
 		plugin.mSize = 0;
 		// round up the children
 		STLSet < string > children;
 		TiXmlElement* childElement = node->FirstChildElement ();
-		
+
 		for ( ; childElement; childElement = childElement->NextSiblingElement ()) {
 			STLString text = childElement->Value ();
 			TiXmlAttribute* attribute = childElement->FirstAttribute ();
@@ -281,15 +313,19 @@ void MOAIParticlePexPlugin::Parse( MOAIParticlePexPlugin& plugin, TiXmlNode* nod
 					plugin.mTanAccelRegister = plugin.mSize++;
 			}
 			else if(text == "texture")
+			{
 				plugin.mTextureName = attribute->Value();
-			
+				// plugin.mTextureName = absDirPath;
+		  //       plugin.mTextureName.append ( attribute->Value () );
+			}
+
 		}
-		
+
 		plugin.mStartXRegister = plugin.mSize++;
 		plugin.mStartYRegister = plugin.mSize++;
 
 		if(plugin.mEmitterType == EMITTER_GRAVITY)
-		{		
+		{
 			plugin.mDirectionXRegister = plugin.mSize++;
 			plugin.mDirectionYRegister = plugin.mSize++;
 		}
@@ -310,7 +346,7 @@ void MOAIParticlePexPlugin::Parse( MOAIParticlePexPlugin& plugin, TiXmlNode* nod
 
 		plugin.mLifespanTerm[0] = plugin.mLifespan - plugin.mLifespanVariance < 0 ? 0 : plugin.mLifespan - plugin.mLifespanVariance;
 		plugin.mLifespanTerm[1] = plugin.mLifespan + plugin.mLifespanVariance;
-		
+
 	}
 }
 
@@ -322,17 +358,17 @@ void MOAIParticlePexPlugin::_initGravityScript( float* particle, float* register
 
 		if(mStartColorRegister[i] > -1 )
 		{
-			float minVal = mStartColor[i] - mStartColorVariance[i] < 0 ? 0 : mStartColor[i] - mStartColorVariance[i];	
+			float minVal = mStartColor[i] - mStartColorVariance[i] < 0 ? 0 : mStartColor[i] - mStartColorVariance[i];
 			registers[mStartColorRegister[i]] = USFloat::Rand (minVal,  mStartColor[i] + mStartColorVariance[i] );
-		}	
+		}
 
-			
+
 		if(this->mFinishColorRegister[i]  > -1 )
 		{
-			float minVal = mFinishColor[i] - mFinishColorVariance[i] < 0 ? 0 : mFinishColor[i] - mFinishColorVariance[i];	
+			float minVal = mFinishColor[i] - mFinishColorVariance[i] < 0 ? 0 : mFinishColor[i] - mFinishColorVariance[i];
 			registers[mFinishColorRegister[i]] =USFloat::Rand (minVal,  mFinishColor[i] + mFinishColorVariance[i] );
 		}
-			
+
 	}
 
 	if(mStartSizeRegister > -1)
@@ -341,7 +377,7 @@ void MOAIParticlePexPlugin::_initGravityScript( float* particle, float* register
 		registers[mStartSizeRegister] = USFloat::Rand (minVal,  mStartSize + mStartSizeVariance);
 	}
 
-			
+
 	if(mFinishSizeRegister > -1)
 	{
 		float minVal = mFinishSize - mFinishSizeVariance < 0 ? 0 :  mFinishSize - mFinishSizeVariance;
@@ -350,7 +386,7 @@ void MOAIParticlePexPlugin::_initGravityScript( float* particle, float* register
 
 	if(mRotStartRegister > -1 )
 		registers[mRotStartRegister] = USFloat::Rand (mRotStart-mRotStartVariance, mRotStart+mRotStartVariance);
-	
+
 
 	if(mRotEndRegister > -1)
 		registers[mRotStartRegister] = USFloat::Rand (mRotEnd-mRotEndVariance, mRotEnd+mRotEndVariance);
@@ -364,7 +400,7 @@ void MOAIParticlePexPlugin::_initGravityScript( float* particle, float* register
 		angleStartDeg = (float)(atan2 ( particle[MOAIParticle::PARTICLE_DY], particle[MOAIParticle::PARTICLE_DX] ) * R2D) + randAngle;
 		particle[MOAIParticle::PARTICLE_DX] = (float)Cos(angleStartDeg * (float)D2R);
 		particle[MOAIParticle::PARTICLE_DY] = (float)Sin(angleStartDeg * (float)D2R);
-		
+
 
 	}
 	else
@@ -374,7 +410,7 @@ void MOAIParticlePexPlugin::_initGravityScript( float* particle, float* register
 		particle[MOAIParticle::PARTICLE_DY] = (float)Sin(angleStartDeg * (float)D2R);
 	}
 
-	
+
 	// Set initial speed
 	if(mSpeedRegister > -1)
 	{
@@ -390,16 +426,16 @@ void MOAIParticlePexPlugin::_initGravityScript( float* particle, float* register
 
 	registers[mStartXRegister] = particle[MOAIParticle::PARTICLE_X];
 	registers[mStartYRegister] = particle[MOAIParticle::PARTICLE_Y];
-	
+
 	if(mRadialAccelRegister > -1)
 		registers[mRadialAccelRegister] = USFloat::Rand(mRadialAcceleration - mRadialAccelVariance, mRadialAcceleration + mRadialAccelVariance);
 
-	
+
 	if(mTanAccelRegister > -1)
 		registers[mTanAccelRegister] = USFloat::Rand(mTanAccel - mTanAccelVariance, mTanAccel + mTanAccelVariance);
 
 }
-		
+
 void MOAIParticlePexPlugin::_initRadialScript( float* particle, float* registers)
 {
 
@@ -409,17 +445,17 @@ void MOAIParticlePexPlugin::_initRadialScript( float* particle, float* registers
 
 		if(mStartColorRegister[i] > -1 )
 		{
-			float minVal = mStartColor[i] - mStartColorVariance[i] < 0 ? 0 : mStartColor[i] - mStartColorVariance[i];	
+			float minVal = mStartColor[i] - mStartColorVariance[i] < 0 ? 0 : mStartColor[i] - mStartColorVariance[i];
 			registers[mStartColorRegister[i]] = USFloat::Rand (minVal,  mStartColor[i] + mStartColorVariance[i] );
-		}	
+		}
 
-			
+
 		if(this->mFinishColorRegister[i]  > -1 )
 		{
-			float minVal = mFinishColor[i] - mFinishColorVariance[i] < 0 ? 0 : mFinishColor[i] - mFinishColorVariance[i];	
+			float minVal = mFinishColor[i] - mFinishColorVariance[i] < 0 ? 0 : mFinishColor[i] - mFinishColorVariance[i];
 			registers[mFinishColorRegister[i]] =USFloat::Rand (minVal,  mFinishColor[i] + mFinishColorVariance[i] );
 		}
-			
+
 	}
 
 	if(mStartSizeRegister > -1)
@@ -428,7 +464,7 @@ void MOAIParticlePexPlugin::_initRadialScript( float* particle, float* registers
 		registers[mStartSizeRegister] = USFloat::Rand (minVal,  mStartSize + mStartSizeVariance);
 	}
 
-			
+
 	if(mFinishSizeRegister > -1)
 	{
 		float minVal = mFinishSize - mFinishSizeVariance < 0 ? 0 :  mFinishSize - mFinishSizeVariance;
@@ -437,7 +473,7 @@ void MOAIParticlePexPlugin::_initRadialScript( float* particle, float* registers
 
 	if(mRotStartRegister > -1 )
 		registers[mRotStartRegister] = USFloat::Rand (mRotStart-mRotStartVariance, mRotStart+mRotStartVariance);
-	
+
 
 	if(mRotEndRegister > -1)
 		registers[mRotStartRegister] = USFloat::Rand (mRotEnd-mRotEndVariance, mRotEnd+mRotEndVariance);
@@ -459,11 +495,11 @@ void MOAIParticlePexPlugin::_initRadialScript( float* particle, float* registers
 		particle[MOAIParticle::PARTICLE_DY] = Sin(mAngle * (float)D2R);
 		angleStartDeg = mAngle;
 	}
-	
+
 	if( mRotPerSecondVariance != 0)
 	{
 		float randVal =  USFloat::Rand (mRotPerSecond - mRotPerSecondVariance, mRotPerSecond + mRotPerSecondVariance);
-		registers[mRotPerSecondRegister] = randVal;		
+		registers[mRotPerSecondRegister] = randVal;
 	}
 	else
 		registers[mRotPerSecondRegister] = mRotPerSecond;
@@ -484,7 +520,7 @@ void MOAIParticlePexPlugin::_initRadialScript( float* particle, float* registers
 		particle[MOAIParticle::PARTICLE_Y] += Sin(angleStartDeg * (float)D2R) * mMaxRadius;
 	}
 
-	registers[mRadialRegister] = angleStartDeg;	
+	registers[mRadialRegister] = angleStartDeg;
 }
 
 void MOAIParticlePexPlugin::_renderGravityScript		( float* particle, float* registers, AKUParticleSprite* sprite, float t0, float t1, float term )
@@ -493,7 +529,7 @@ void MOAIParticlePexPlugin::_renderGravityScript		( float* particle, float* regi
 	float sVal, eVal;
 	for(int i = 0; i < 4; i++)
 	{
-			
+
 		if(mStartColorRegister[i] > -1 )
 			sVal = registers[mStartColorRegister[i]];
 		else
@@ -564,7 +600,7 @@ void MOAIParticlePexPlugin::_renderGravityScript		( float* particle, float* regi
 	particle[MOAIParticle::PARTICLE_X] = particle[MOAIParticle::PARTICLE_X] - registers[mStartXRegister];
 	particle[MOAIParticle::PARTICLE_Y] = particle[MOAIParticle::PARTICLE_Y] - registers[mStartYRegister];
 
-	if(mRadialAcceleration != 0 || mRadialAccelVariance != 0 || 
+	if(mRadialAcceleration != 0 || mRadialAccelVariance != 0 ||
 		mTanAccel != 0 || mTanAccelVariance != 0)
 	{
 		float xVal, yVal;
@@ -584,7 +620,7 @@ void MOAIParticlePexPlugin::_renderGravityScript		( float* particle, float* regi
 				xVal = 0;
 				yVal = 0;
 			}
-	
+
 			if( mRadialAccelRegister > -1)
 			{
 				xVal *= registers[mRadialAccelRegister];
@@ -629,14 +665,14 @@ void MOAIParticlePexPlugin::_renderGravityScript		( float* particle, float* regi
 			moveY += yVal;
 		}
 	}
-	
-	
+
+
 	moveX += mGravity[0];
 	moveY += mGravity[1];
-	
+
 	float delta = t1 - t0;
 	delta *= term;
-	
+
 	moveX *= delta;
 	moveY *= delta;
 
@@ -653,7 +689,7 @@ void MOAIParticlePexPlugin::_renderGravityScript		( float* particle, float* regi
 	sprite->mYLoc = particle[ MOAIParticle::PARTICLE_Y ];
 
 	sprite->mGfxID = 1;
-	
+
 }
 void MOAIParticlePexPlugin::_renderRadialScript( float* particle, float* registers, AKUParticleSprite* sprite, float t0, float t1, float term)
 {
@@ -661,7 +697,7 @@ void MOAIParticlePexPlugin::_renderRadialScript( float* particle, float* registe
 	float sVal, eVal;
 	for(int i = 0; i < 4; i++)
 	{
-			
+
 		if(mStartColorRegister[i] > -1 )
 			sVal = registers[mStartColorRegister[i]];
 		else
@@ -727,7 +763,7 @@ void MOAIParticlePexPlugin::_renderRadialScript( float* particle, float* registe
 	else
 		sprite->mZRot = sVal;
 
-	
+
 	registers[mRadialRegister] += registers[mRotPerSecondRegister] * ((t1 - t0)*term);
 
 	if(mMaxRadiusRegister > -1)
@@ -735,7 +771,7 @@ void MOAIParticlePexPlugin::_renderRadialScript( float* particle, float* registe
 	else
 		sVal = mMaxRadius;
 	float magVal = USInterpolate::Interpolate ( USInterpolate::kLinear, sVal, mMinRadius, t1 );
-	
+
 	particle[MOAIParticle::PARTICLE_X] = registers[mStartXRegister] - Cos(registers[mRadialRegister] * (float)D2R) * magVal;
     particle[MOAIParticle::PARTICLE_Y] = registers[mStartYRegister] - Sin(registers[mRadialRegister] * (float)D2R) * magVal;
 
@@ -790,9 +826,10 @@ void MOAIParticlePexPlugin::RegisterLuaClass ( MOAILuaState& state ) {
 	//UNUSED ( state );
 	luaL_Reg regTable [] = {
 		{ "load", _load },
+		{ "loadFromString", _loadFromString },
 		{ NULL, NULL }
 	};
-	
+
 	luaL_register ( state, 0, regTable );
 }
 
