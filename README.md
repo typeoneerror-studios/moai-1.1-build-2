@@ -16,12 +16,9 @@ This is a hacked version of MOAI 1.1. We use this specicically in Shibashiba bec
 
 The following is cribbed from [this post](http://getmoai.com/forums/moai-luajit-t1463/#p8656).
 
-1. Open `xcode/libmoai-luajit/libmoai.xcodeproj`.
+1. Open `xcode/libmoai-luajit/libmoai.xcodeproj`. The "luajit" version of the project adds a #define, LUA_JIT, that correctly includes the correct files, etc. for building LuaJIT.
 2. Build the `libmoai-osx-*` targets (excluding FMOD).
-3. Using the libs built in step 2, build the mochi host. Put the mochi host in your path.
-4. `cd` to the root on this Moai project in Terminal. Type: `cd src/lua-headers && mochi main.lua`. This will generate a new `src/lua-headers/moai_lua.h` with the proper bytecode format for LuaJIT.
-5. Rebuild the `libmoai-osx-*` targets.
-6. Repeat step 3 to get a working mochi host.
+3. Using the libs built in step 2, build the mochi host.
 
 ## Building
 
