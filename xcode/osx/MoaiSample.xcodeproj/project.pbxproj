@@ -753,6 +753,7 @@
 					GLUTHOST_USE_UNTZ,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -774,6 +775,7 @@
 					GLUTHOST_USE_UNTZ,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
