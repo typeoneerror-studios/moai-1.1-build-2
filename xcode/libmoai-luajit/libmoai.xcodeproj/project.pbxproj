@@ -1534,6 +1534,10 @@
 		66D967FD14047A2500017919 /* MOAIScriptDeck.h in Headers */ = {isa = PBXBuildFile; fileRef = 66D967F914047A2500017919 /* MOAIScriptDeck.h */; };
 		66DD89241540E7950008E0DB /* MOAIOpenUDID.m in Sources */ = {isa = PBXBuildFile; fileRef = 66DD89231540E7950008E0DB /* MOAIOpenUDID.m */; };
 		66DD89271540E7AD0008E0DB /* MOAIOpenUDID.h in Headers */ = {isa = PBXBuildFile; fileRef = 66DD89261540E7AD0008E0DB /* MOAIOpenUDID.h */; };
+		766EA1871863706600CD9EC8 /* AKU-macosx.h in Headers */ = {isa = PBXBuildFile; fileRef = 766EA1851863706600CD9EC8 /* AKU-macosx.h */; };
+		766EA1881863706600CD9EC8 /* AKU-macosx.mm in Sources */ = {isa = PBXBuildFile; fileRef = 766EA1861863706600CD9EC8 /* AKU-macosx.mm */; };
+		766EA18A1863715900CD9EC8 /* moaiext-macosx.h in Headers */ = {isa = PBXBuildFile; fileRef = 766EA1891863715900CD9EC8 /* moaiext-macosx.h */; };
+		766EA18B1863754F00CD9EC8 /* AKU-macosx.mm in Sources */ = {isa = PBXBuildFile; fileRef = 766EA1861863706600CD9EC8 /* AKU-macosx.mm */; };
 		C359A149143A81BA005E7829 /* RAudioBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = C359A148143A81BA005E7829 /* RAudioBuffer.h */; };
 		C37D422213B16930009600BB /* BufferedAudioSource.h in Headers */ = {isa = PBXBuildFile; fileRef = C37D421E13B1692F009600BB /* BufferedAudioSource.h */; };
 		C37D422413B16930009600BB /* BufferedAudioSourceThread.h in Headers */ = {isa = PBXBuildFile; fileRef = C37D422013B16930009600BB /* BufferedAudioSourceThread.h */; };
@@ -4091,6 +4095,9 @@
 		66D967F914047A2500017919 /* MOAIScriptDeck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MOAIScriptDeck.h; sourceTree = "<group>"; };
 		66DD89231540E7950008E0DB /* MOAIOpenUDID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MOAIOpenUDID.m; sourceTree = "<group>"; };
 		66DD89261540E7AD0008E0DB /* MOAIOpenUDID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MOAIOpenUDID.h; sourceTree = "<group>"; };
+		766EA1851863706600CD9EC8 /* AKU-macosx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "AKU-macosx.h"; path = "aku/AKU-macosx.h"; sourceTree = "<group>"; };
+		766EA1861863706600CD9EC8 /* AKU-macosx.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "AKU-macosx.mm"; path = "aku/AKU-macosx.mm"; sourceTree = "<group>"; };
+		766EA1891863715900CD9EC8 /* moaiext-macosx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "moaiext-macosx.h"; path = "../../src/moaiext-macosx/moaiext-macosx.h"; sourceTree = SOURCE_ROOT; };
 		C359A148143A81BA005E7829 /* RAudioBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RAudioBuffer.h; path = ../../3rdparty/untz/src/RAudioBuffer.h; sourceTree = "<group>"; };
 		C37D421D13B1692F009600BB /* BufferedAudioSource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BufferedAudioSource.cpp; path = ../../3rdparty/untz/src/BufferedAudioSource.cpp; sourceTree = "<group>"; };
 		C37D421E13B1692F009600BB /* BufferedAudioSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BufferedAudioSource.h; path = ../../3rdparty/untz/src/BufferedAudioSource.h; sourceTree = "<group>"; };
@@ -6112,6 +6119,7 @@
 				CD5089FA155E3AC30002FC3B /* moaiext-fmod-ex */,
 				CD524476135982480086DA15 /* moaiext-iphone */,
 				CD07C31713A174EB00C9386C /* moaiext-luaext */,
+				766EA1831863703B00CD9EC8 /* moaiext-macosx */,
 				CD07C31613A174CD00C9386C /* moaiext-untz */,
 				0324E5AA13564BC8000ADC60 /* uslscore */,
 				CD49003F141AB69900913D80 /* zlcore */,
@@ -6735,6 +6743,24 @@
 			);
 			name = openUDID;
 			path = ../../3rdparty/openUDID;
+			sourceTree = "<group>";
+		};
+		766EA1831863703B00CD9EC8 /* moaiext-macosx */ = {
+			isa = PBXGroup;
+			children = (
+				766EA1841863705000CD9EC8 /* aku */,
+				766EA1891863715900CD9EC8 /* moaiext-macosx.h */,
+			);
+			name = "moaiext-macosx";
+			sourceTree = "<group>";
+		};
+		766EA1841863705000CD9EC8 /* aku */ = {
+			isa = PBXGroup;
+			children = (
+				766EA1851863706600CD9EC8 /* AKU-macosx.h */,
+				766EA1861863706600CD9EC8 /* AKU-macosx.mm */,
+			);
+			name = aku;
 			sourceTree = "<group>";
 		};
 		CD04AEB6147256B0009C20E5 /* zlib */ = {
@@ -10333,7 +10359,9 @@
 				E9940DC814B7A4A0006465CC /* USCgt.h in Headers */,
 				E9940DCC14B7A4A0006465CC /* USColor.h in Headers */,
 				E9940DD014B7A4A0006465CC /* USCurve.h in Headers */,
+				766EA18A1863715900CD9EC8 /* moaiext-macosx.h in Headers */,
 				E9940DD414B7A4A0006465CC /* USData.h in Headers */,
+				766EA1871863706600CD9EC8 /* AKU-macosx.h in Headers */,
 				E9940DD814B7A4A0006465CC /* USDataIOTask.h in Headers */,
 				E9940DDA14B7A4A0006465CC /* USDelegate.h in Headers */,
 				E9940DE014B7A4A0006465CC /* USDistance.h in Headers */,
@@ -11282,6 +11310,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				766EA18B1863754F00CD9EC8 /* AKU-macosx.mm in Sources */,
 				0324E83213564BC8000ADC60 /* AKU.cpp in Sources */,
 				0324E83613564BC8000ADC60 /* pch.cpp in Sources */,
 				0324E83813564BC8000ADC60 /* MOAIAction.cpp in Sources */,
@@ -12463,6 +12492,7 @@
 				E9C4062B1518616F00C7AB04 /* MOAITextDesigner.cpp in Sources */,
 				E9C4062A1518615A00C7AB04 /* MOAIGlyphSet.cpp in Sources */,
 				E9C406281518614200C7AB04 /* MOAITextureBase.cpp in Sources */,
+				766EA1881863706600CD9EC8 /* AKU-macosx.mm in Sources */,
 				0324E69413564BC8000ADC60 /* AKU.cpp in Sources */,
 				0324E69813564BC8000ADC60 /* pch.cpp in Sources */,
 				0324E69A13564BC8000ADC60 /* MOAIAction.cpp in Sources */,
@@ -13235,6 +13265,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libstdc++";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				DEAD_CODE_STRIPPING = YES;
@@ -13669,6 +13701,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libstdc++";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
@@ -14445,6 +14479,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libstdc++";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				DEAD_CODE_STRIPPING = YES;
@@ -15034,6 +15070,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libstdc++";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				DEAD_CODE_STRIPPING = YES;
